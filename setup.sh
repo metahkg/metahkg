@@ -1,4 +1,6 @@
 # !/bin/bash
+git clone https://gitlab.com/metahkg/metahkg-web.git
+git clone https://gitlab.com/metahkg/metahkg-server.git
 echo "Please type in your password if prompted.";
 echo "Checking root access...";
 sudo -l > /dev/null || {
