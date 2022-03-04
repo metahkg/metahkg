@@ -10,7 +10,7 @@ dev build (probably daily): [metahkg.wcyat.engineer](https://metahkg.wcyat.engin
 [![Nodejs](https://badges.aleen42.com/src/node.svg)](https://nodejs.org)
 [![Typescript](https://badges.aleen42.com/src/typescript.svg)](https://www.typescriptlang.org/)
 
-[![Gitlab](https://badges.aleen42.com/src/gitlab.svg)](https://github.com/metahkg/metahkg)
+[![Gitlab](https://badges.aleen42.com/src/gitlab.svg)](https://gitlab.com/metahkg/metahkg)
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/metahkg/metahkg)
 [![GitHub license](https://img.shields.io/github/license/metahkg/metahkg)](https://github.com/metahkg/metahkg/blob/master/LICENSE)
 
