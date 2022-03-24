@@ -6,7 +6,7 @@
     "type": "git",
     "url": "git+https://gitlab.com/metahkg/metahkg.git"
   },
-  "scripts" : {
+  "scripts": {
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy"
   },
   "keywords": [
