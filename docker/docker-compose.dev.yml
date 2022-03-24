@@ -4,7 +4,7 @@ services:
     container_name: server
     build:
       context: ../metahkg-server
-      dockerfile: ../metahkg-server/Dockerfile
+      dockerfile: ./Dockerfile
     tty: true
     ports:
       - 3000:3000
@@ -17,15 +17,16 @@ services:
       awsRegion: ${awsRegion}
       s3Bucket: ${s3Bucket}
     volumes:
-      - ../metahkg-server/src:/usr/src/app/src
+      - ./src:/usr/src/app/src
     depends_on:
-      - DB
-      - redis
+      - mongo
   mongo:
     container_name: metahkg-mongo
     image: mongo
-    command: mongod --port ${MONGO_PORT};
+    command: mongod
     restart: always
+    ports:
+      - 27017:27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}

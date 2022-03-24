@@ -24,5 +24,7 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Deploying
 
+Please run `git submodule foreach git pull` upon cloning the repository.
+
 See DEPLOY.md.
 For a fast setup run ./setup.sh.
