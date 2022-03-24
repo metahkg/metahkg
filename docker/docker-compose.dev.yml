@@ -19,7 +19,7 @@ services:
     volumes:
       - ../metahkg-server/src:/usr/src/app/src
     depends_on:
-      - DB
+      - mongo
       - redis
   mongo:
     container_name: metahkg-mongo
