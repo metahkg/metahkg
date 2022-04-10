@@ -1,5 +1,13 @@
 # metahkg
 
+Please clone with:
+
+```bash
+git clone --recurse-submodules https://gitlab.com/metahkg/metahkg.git
+# and then
+cd metahkg && git submodule foreach git pull
+```
+
 This is the monorepo for metahkg.
 
 stable: [metahkg.org](https://metahkg.org)
@@ -23,8 +31,6 @@ Currently, it aims to be a fully featured alternative to lihkg. However, I might
 As contrasted with lihkg, metahkg is open to everyone and anyone can create an account with a email address, no matter issued by a university or not.
 
 ## Deploying
-
-Please run `git submodule foreach git pull` upon cloning the repository.
 
 See DEPLOY.md.
 For a fast setup run ./setup.sh.

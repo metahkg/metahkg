@@ -28,6 +28,18 @@ metahkg-users> db.verification.createIndex({ "createdAt": 1 }, { expireAfterSeco
 metahkg-users> exit
 ```
 
+To use authentication:
+
+```bash
+$ mongosh
+test> use admin
+admin> db.createUser({ user: "<username>", pwd: "<password>", roles: [ "root", "userAdminAnyDatabase" ])
+admin> use metahkg-threads
+metahkg-threads> db.createUser({ user: "<username>", pwd: "<password>", roles: [ { role: "readWrite", db: "metahkg-threads" } ] })
+metahkg-threads> use metahkg-users
+metahkg-users> db.createUser({ user: "<username>", pwd: "<password>", roles: [ { role: "readWrite", db: "metahkg-users" } ] })
+```
+
 ### Environmental variables
 
 ```bash
