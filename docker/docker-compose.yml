@@ -8,6 +8,7 @@ services:
     tty: true
     ports:
       - ${port}:${port}
+    restart: always
     environment:
       DB_URI: ${DB_URI}
       mailgun_key: ${mailgun_key}
