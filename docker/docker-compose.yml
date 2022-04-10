@@ -7,15 +7,13 @@ services:
       dockerfile: ./Dockerfile
     tty: true
     ports:
-      - 3000:3000
+      - ${port}:${port}
     environment:
       DB_URI: ${DB_URI}
       mailgun_key: ${mailgun_key}
       domain: ${domain}
       port: ${port}
       recaptchasecret: ${recaptchasecret}
-      awsRegion: ${awsRegion}
-      s3Bucket: ${s3Bucket}
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
@@ -23,10 +21,10 @@ services:
   mongo:
     container_name: metahkg-mongo
     image: mongo
-    command: mongod
+    command: mongod --auth --port=${MONGO_PORT}
     restart: always
     ports:
-      - 27017:27017
+      - ${MONGO_PORT}:${MONGO_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
