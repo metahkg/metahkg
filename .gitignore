@@ -1,3 +1,5 @@
 .lh/
 node_modules
 .env
+docker/src/*
+docker/data/*

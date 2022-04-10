@@ -1,26 +1,27 @@
-
+version: '3.2'
 services:
   web:
-    container_name: web
+    container_name: metahkg-web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
+      args:
+        DB_URI: ${DB_URI}
+      network: host
     network_mode: host
     tty: true
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     restart: always
     environment:
-      DB_URI: ${DB_URI}
       port: ${WEB_PORT}
-      REACT_APP_categories: ${REACT_APP_categories}
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
       - server
       - mongo
   server:
-    container_name: server
+    container_name: metahkg-server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
@@ -49,12 +50,5 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-  # mongo-express:
-  #   image: mongo-express
-  #   restart: always
-  #   ports:
-  #     - 18081:8081
-  #   environment:
-  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USER}
-  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PASSWORD}
-  #     ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}/
+    volumes:
+      - ./data:/data/db
