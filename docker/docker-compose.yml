@@ -1,14 +1,13 @@
 version: '3.2'
 services:
   web:
-    container_name: metahkg-web
+    container_name: web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
       args:
-        DB_URI: ${DB_URI}
+        DB_URI: ${DB_URI_EXTERNAL}
       network: host
-    network_mode: host
     tty: true
     ports:
       - ${WEB_PORT}:${WEB_PORT}
@@ -20,15 +19,16 @@ services:
     depends_on:
       - server
       - mongo
+    networks:
+      - metahkg-network
   server:
-    container_name: metahkg-server
+    container_name: server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
     tty: true
     ports:
       - ${port}:${port}
-    network_mode: host
     restart: always
     environment:
       DB_URI: ${DB_URI}
@@ -40,8 +40,10 @@ services:
       - ./src:/usr/src/app/src
     depends_on:
       - mongo
+    networks:
+      - metahkg-network
   mongo:
-    container_name: metahkg-mongo
+    container_name: mongo
     image: mongo
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
@@ -52,3 +54,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
     volumes:
       - ./data:/data/db
+    networks:
+      - metahkg-network
+networks:    
+  metahkg-network:
+    external: true
