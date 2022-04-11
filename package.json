@@ -21,6 +21,8 @@
   },
   "homepage": "https://gitlab.com/metahkg/metahkg#readme",
   "devDependencies": {
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.0",
+    "mongodb": "^4.5.0",
+    "system-commands": "^1.1.7"
   }
 }
