@@ -2,11 +2,10 @@
 
 ## Prerequisites
 
-- x86_64 debian linux (only tested on ubuntu)
+- x86_64 linux (only tested on ubuntu & arch)
 - mongodb (either locally or remotely)
-- mailgun key (for sending emails, obviously)
+- mailgun api key (for sending emails, obviously)
 - recaptcha site key and secret pair (for anti-spamming)
-- a publicily accessible s3 bucket
 
 ## Set up
 
@@ -17,15 +16,14 @@ Alternatively, use the following step-by-step guide. It assumes that you have in
 ### Mongodb
 
 ```bash
-$ mongoimport -d=metahkg-threads metahkg-server/templates/server/category.json
+$ mongoimport -d=metahkg metahkg-server/templates/server/category.json
 $ mongosh
-test> use metahkg-threads
-metahkg-threads> db.hottest.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 172800 })
-metahkg-threads> db.summary.createIndex({ "op": "text", "title": "text" }) //for text search
-metahkg-threads> use metahkg-users
-metahkg-users> db.limit.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 86400 })
-metahkg-users> db.verification.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 300 })
-metahkg-users> exit
+test> use metahkg
+metahkg> db.viral.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 172800 })
+metahkg> db.summary.createIndex({ "op": "text", "title": "text" }) //for text search
+metahkg> db.limit.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 86400 })
+metahkg> db.verification.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 300 })
+metahkg> exit
 ```
 
 To use authentication:
@@ -34,10 +32,9 @@ To use authentication:
 $ mongosh
 test> use admin
 admin> db.createUser({ user: "<username>", pwd: "<password>", roles: [ "root", "userAdminAnyDatabase" ])
-admin> use metahkg-threads
-metahkg-threads> db.createUser({ user: "<username>", pwd: "<password>", roles: [ { role: "readWrite", db: "metahkg-threads" } ] })
-metahkg-threads> use metahkg-users
-metahkg-users> db.createUser({ user: "<username>", pwd: "<password>", roles: [ { role: "readWrite", db: "metahkg-users" } ] })
+admin> use metahkg
+metahkg> db.createUser({ user: "<username>", pwd: "<password>", roles: [ { role: "readWrite", db: "metahkg" } ] })
+metahkg> exit
 ```
 
 ### Environmental variables
