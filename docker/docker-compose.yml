@@ -5,6 +5,8 @@ services:
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
+      args:
+        REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
     tty: true
     ports:
       - ${WEB_PORT}:${WEB_PORT}
