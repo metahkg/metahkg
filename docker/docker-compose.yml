@@ -5,9 +5,6 @@ services:
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
-      args:
-        DB_URI: ${DB_URI_EXTERNAL}
-      network: host
     tty: true
     ports:
       - ${WEB_PORT}:${WEB_PORT}

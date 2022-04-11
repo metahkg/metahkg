@@ -7,7 +7,8 @@
     "url": "git+https://gitlab.com/metahkg/metahkg.git"
   },
   "scripts": {
-    "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy"
+    "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
+    "clean:docker": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi"
   },
   "keywords": [
     "forum",
