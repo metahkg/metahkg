@@ -11,7 +11,7 @@ async function setup() {
     if ((await metahkgthreads.collection("category").find().toArray()).length) {
         console.log("documents found. not inserting categories.");
     } else {
-        await system(`mongoimport -d=metahkg-threads --uri=${mongouri} templates/server/category.json`);
+        await system(`mongoimport -d=metahkg-threads --uri=${mongouri} metahkg-server/templates/server/category.json`);
     }
     await metahkgthreads.collection("hottest").createIndex({ "createdAt": 1 }, { expireAfterSeconds: 172800 });
     await metahkgthreads.collection("summary").createIndex({ "op": "text", "title": "text" }); //text search
