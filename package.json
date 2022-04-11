@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://gitlab.com/metahkg/metahkg/issues"
   },
-  "homepage": "https://gitlab.com/metahkg/metahkg#readme"
+  "homepage": "https://gitlab.com/metahkg/metahkg#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.0"
+  }
 }
