@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   web:
-    container_name: web
+    container_name: metahkg${DOCKER_PREFIX}-web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
@@ -21,7 +21,7 @@ services:
     networks:
       - metahkg-network
   server:
-    container_name: server
+    container_name: metahkg${DOCKER_PREFIX}-server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
@@ -35,6 +35,7 @@ services:
       domain: ${domain}
       port: ${port}
       recaptchasecret: ${recaptchasecret}
+      jwtKey: ${jwtKey}
     volumes:
       - ./images:/usr/src/app/images
       - ./src:/usr/src/app/src
@@ -43,7 +44,7 @@ services:
     networks:
       - metahkg-network
   mongo:
-    container_name: mongo
+    container_name: metahkg${DOCKER_PREFIX}-mongo
     image: mongo
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
