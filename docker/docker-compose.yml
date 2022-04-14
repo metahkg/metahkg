@@ -1,6 +1,6 @@
 version: '3.2'
 services:
-  web:
+  metahkg-web:
     container_name: metahkg${DOCKER_PREFIX}-web
     build:
       context: ../metahkg-web
@@ -16,11 +16,11 @@ services:
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
-      - server
-      - mongo
+      - metahkg-server
+      - metahkg-links
     networks:
       - metahkg-network
-  server:
+  metahkg-server:
     container_name: metahkg${DOCKER_PREFIX}-server
     build:
       context: ../metahkg-server
@@ -31,6 +31,7 @@ services:
     restart: always
     environment:
       DB_URI: ${DB_URI}
+      LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
       domain: ${domain}
       port: ${port}
@@ -40,10 +41,27 @@ services:
       - ./images:/usr/src/app/images
       - ./src:/usr/src/app/src
     depends_on:
-      - mongo
+      - metahkg-mongo
     networks:
       - metahkg-network
-  mongo:
+  metahkg-links:
+    container_name: metahkg${DOCKER_PREFIX}-links
+    build:
+      context: ../metahkg-links
+      dockerfile: ./Dockerfile
+    tty: true
+    restart: always
+    ports:
+      - ${LINKS_PORT}:${LINKS_PORT}
+    environment:
+      port: ${LINKS_PORT}
+      DB_URI: ${DB_URI}
+      metahkgDomain: ${domain}
+    networks:
+      - metahkg-network
+    depends_on:
+      - metahkg-mongo
+  metahkg-mongo:
     container_name: metahkg${DOCKER_PREFIX}-mongo
     image: mongo
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
