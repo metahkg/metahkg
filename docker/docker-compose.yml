@@ -9,11 +9,15 @@ services:
       - ${port}:80
     restart: always
     environment:
-      METAHKG_LINKS_NAME: metahkg-links
-      METAHKG_SERVER_NAME: metahkg-server
-      METAHKG_WEB_NAME: metahkg-web
+      METAHKG_LINKS_NAME: metahkg${DOCKER_PREFIX}-links
+      METAHKG_SERVER_NAME: metahkg${DOCKER_PREFIX}-server
+      METAHKG_WEB_NAME: metahkg${DOCKER_PREFIX}-web
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
+    depends_on:
+      - metahkg-server
+      - metahkg-web
+      - metahkg-links
     networks:
       - metahkg-network
   metahkg-web:
@@ -89,6 +93,6 @@ services:
       - ./data:/data/db
     networks:
       - metahkg-network
-networks:    
+networks:
   metahkg-network:
-    external: true
+    driver: bridge
