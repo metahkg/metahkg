@@ -1,18 +1,33 @@
-version: '3.2'
 services:
+  metahkg-nginx:
+    container_name: metahkg${DOCKER_PREFIX}-nginx
+    image: metahkg${DOCKER_PREFIX}/nginx
+    build:
+      context: ../nginx
+      dockerfile: ./Dockerfile
+    ports:
+      - ${port}:80
+    restart: always
+    environment:
+      METAHKG_LINKS_NAME: metahkg-links
+      METAHKG_SERVER_NAME: metahkg-server
+      METAHKG_WEB_NAME: metahkg-web
+      domain: ${domain}
+      LINKS_DOMAIN: ${LINKS_DOMAIN}
+    networks:
+      - metahkg-network
   metahkg-web:
     container_name: metahkg${DOCKER_PREFIX}-web
+    image: metahkg${DOCKER_PREFIX}/web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
       args:
         REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
     tty: true
-    ports:
-      - ${WEB_PORT}:${WEB_PORT}
     restart: always
     environment:
-      port: ${WEB_PORT}
+      port: 3002
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
@@ -22,19 +37,18 @@ services:
       - metahkg-network
   metahkg-server:
     container_name: metahkg${DOCKER_PREFIX}-server
+    image: metahkg${DOCKER_PREFIX}/server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
     tty: true
-    ports:
-      - ${port}:${port}
     restart: always
     environment:
       DB_URI: ${DB_URI}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
       domain: ${domain}
-      port: ${port}
+      port: 3001
       recaptchasecret: ${recaptchasecret}
       jwtKey: ${jwtKey}
     volumes:
@@ -46,15 +60,14 @@ services:
       - metahkg-network
   metahkg-links:
     container_name: metahkg${DOCKER_PREFIX}-links
+    image: metahkg${DOCKER_PREFIX}/links
     build:
       context: ../metahkg-links
       dockerfile: ./Dockerfile
     tty: true
     restart: always
-    ports:
-      - ${LINKS_PORT}:${LINKS_PORT}
     environment:
-      port: ${LINKS_PORT}
+      port: 3003
       DB_URI: ${DB_URI}
       metahkgDomain: ${domain}
     networks:

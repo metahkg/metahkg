@@ -133,3 +133,29 @@
 - [ ] change password / username
 
 - [ ] signup conditions
+
+- [ ] instagram/twitter/fb embed
+
+- [ ] user crop profile image
+
+- [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
+
+- [ ] change secondary color in settings
+
+- [ ] link preview
+
+- [ ] react-images
+
+- [ ] react-photo-gallery
+
+- [ ] mode based menu ("profile" | "menu" | "recall")
+
+- [ ] react-social-media-embed
+
+- [ ] @streben/react-link-preview
+
+- [ ] male & female custom colors
+
+- [ ] reactions to comments
+
+- [ ] admin: visibility (users only / everyone)

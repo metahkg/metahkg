@@ -1,0 +1,9 @@
+server {
+    server_tokens off;
+    listen 80;
+    listen [::]:80;
+    server_name $LINKS_DOMAIN;
+    location / {
+        proxy_pass http://${METAHKG_LINKS_NAME}:3003;
+    }
+}
