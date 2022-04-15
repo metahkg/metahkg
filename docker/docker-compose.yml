@@ -3,7 +3,7 @@ services:
     container_name: metahkg${DOCKER_PREFIX}-nginx
     image: metahkg${DOCKER_PREFIX}/nginx
     build:
-      context: ../nginx
+      context: ./nginx
       dockerfile: ./Dockerfile
     ports:
       - ${port}:80
