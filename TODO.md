@@ -56,7 +56,7 @@
 
 - [ ] reset password
 
-- [ ] resend confirmation
+- [x] resend confirmation
 
 - [ ] del acc
 
@@ -64,17 +64,13 @@
 
 - [ ] improve log out (no need navigate)
 
-- [ ] docker
-
-- [ ] pin message
-
-- [ ] add op id
+- [x] docker
 
 - [ ] log in popup
 
-- [ ] don’t use aws (gravatar / local ?)
+- [x] don’t use aws (gravatar / local ?)
 
-- [ ] mobile show long date on click
+- [x] mobile show long date on click
 
 - [x] api for some of the comments not whole page
 
@@ -114,7 +110,7 @@
 
 - [ ] block users
 
-- [ ] jwm
+- [x] jwt
 
 - [x] adult category
 
@@ -140,7 +136,7 @@
 
 - [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
 
-- [ ] change secondary color in settings
+- [x] change secondary color in settings
 
 - [ ] link preview
 
@@ -159,3 +155,11 @@
 - [ ] reactions to comments
 
 - [ ] admin: visibility (users only / everyone)
+
+- [x] hot -> viral
+
+- [ ] pin message
+
+- [ ] notification
+
+- [x] start and set up mongodb before starting server
