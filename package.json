@@ -1,12 +1,13 @@
 {
   "name": "metahkg",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Metahkg is a free and open source lihkg-style forum.",
   "repository": {
     "type": "git",
     "url": "git+https://gitlab.com/metahkg/metahkg.git"
   },
   "scripts": {
+    "setup": "(yarn install || npm install) && node mongodb/mongo-setup.js",
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
     "start:docker": "cd docker && docker-compose up -d --build",
     "clean:docker": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi"
@@ -27,3 +28,4 @@
     "system-commands": "^1.1.7"
   }
 }
+

@@ -1,0 +1,12 @@
+server {
+    server_tokens off;
+    listen 80 default;
+    listen [::]:80 default;
+    server_name $domain;
+    location /api {
+        proxy_pass http://${METAHKG_SERVER_NAME}:3001;
+    }
+    location / {
+        proxy_pass http://${METAHKG_WEB_NAME}:3002;
+    }
+}

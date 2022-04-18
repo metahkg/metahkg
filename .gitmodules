@@ -4,3 +4,6 @@
 [submodule "metahkg-web"]
 	path = metahkg-web
 	url = https://gitlab.com/metahkg/metahkg-web.git
+[submodule "metahkg-links"]
+	path = metahkg-links
+	url = https://gitlab.com/metahkg/metahkg-links

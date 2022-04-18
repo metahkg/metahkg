@@ -1,50 +1,88 @@
-version: '3.2'
 services:
-  web:
-    container_name: web
+  metahkg-nginx:
+    container_name: metahkg${DOCKER_PREFIX}-nginx
+    image: metahkg${DOCKER_PREFIX}/nginx
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    tty: true
+    ports:
+      - ${port}:80
+    restart: always
+    environment:
+      METAHKG_LINKS_NAME: metahkg${DOCKER_PREFIX}-links
+      METAHKG_SERVER_NAME: metahkg${DOCKER_PREFIX}-server
+      METAHKG_WEB_NAME: metahkg${DOCKER_PREFIX}-web
+      domain: ${domain}
+      LINKS_DOMAIN: ${LINKS_DOMAIN}
+    depends_on:
+      - metahkg-server
+      - metahkg-web
+      - metahkg-links
+    networks:
+      - metahkg-network
+  metahkg-web:
+    container_name: metahkg${DOCKER_PREFIX}-web
+    image: metahkg${DOCKER_PREFIX}/web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
       args:
         REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
     tty: true
-    ports:
-      - ${WEB_PORT}:${WEB_PORT}
     restart: always
     environment:
-      port: ${WEB_PORT}
+      port: 3002
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
-      - server
-      - mongo
+      - metahkg-server
+      - metahkg-links
     networks:
       - metahkg-network
-  server:
-    container_name: server
+  metahkg-server:
+    container_name: metahkg${DOCKER_PREFIX}-server
+    image: metahkg${DOCKER_PREFIX}/server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
     tty: true
-    ports:
-      - ${port}:${port}
     restart: always
     environment:
-      DB_URI: ${DB_URI}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${DOCKER_PREFIX}-mongo:${MONGO_PORT}
+      LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
       domain: ${domain}
-      port: ${port}
+      port: 3001
       recaptchasecret: ${recaptchasecret}
+      jwtKey: ${jwtKey}
     volumes:
       - ./images:/usr/src/app/images
       - ./src:/usr/src/app/src
     depends_on:
-      - mongo
+      - metahkg-mongo
     networks:
       - metahkg-network
-  mongo:
-    container_name: mongo
+  metahkg-links:
+    container_name: metahkg${DOCKER_PREFIX}-links
+    image: metahkg${DOCKER_PREFIX}/links
+    build:
+      context: ../metahkg-links
+      dockerfile: ./Dockerfile
+    tty: true
+    restart: always
+    environment:
+      port: 3003
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${DOCKER_PREFIX}-mongo:${MONGO_PORT}
+      metahkgDomain: ${domain}
+    networks:
+      - metahkg-network
+    depends_on:
+      - metahkg-mongo
+  metahkg-mongo:
+    container_name: metahkg${DOCKER_PREFIX}-mongo
     image: mongo
+    tty: true
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
     ports:
@@ -53,10 +91,10 @@ services:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: metahkg
-    volumes:
-      - ./data:/data/db
     networks:
       - metahkg-network
-networks:    
+    volumes:
+      - ./data:/data/db
+networks:
   metahkg-network:
-    external: true
+    driver: bridge
