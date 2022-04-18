@@ -1,7 +1,7 @@
 services:
   metahkg-nginx:
-    container_name: metahkg${DOCKER_PREFIX}-nginx
-    image: metahkg${DOCKER_PREFIX}/nginx
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-nginx
+    image: metahkg${COMPOSE_PROJECT_NAME}/nginx
     build:
       context: ./nginx
       dockerfile: ./Dockerfile
@@ -10,9 +10,9 @@ services:
       - ${port}:80
     restart: always
     environment:
-      METAHKG_LINKS_NAME: metahkg${DOCKER_PREFIX}-links
-      METAHKG_SERVER_NAME: metahkg${DOCKER_PREFIX}-server
-      METAHKG_WEB_NAME: metahkg${DOCKER_PREFIX}-web
+      METAHKG_LINKS_NAME: metahkg${COMPOSE_PROJECT_NAME}-links
+      METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
+      METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
     depends_on:
@@ -22,8 +22,8 @@ services:
     networks:
       - metahkg-network
   metahkg-web:
-    container_name: metahkg${DOCKER_PREFIX}-web
-    image: metahkg${DOCKER_PREFIX}/web
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-web
+    image: metahkg${COMPOSE_PROJECT_NAME}/web
     build:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
@@ -41,15 +41,15 @@ services:
     networks:
       - metahkg-network
   metahkg-server:
-    container_name: metahkg${DOCKER_PREFIX}-server
-    image: metahkg${DOCKER_PREFIX}/server
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-server
+    image: metahkg${COMPOSE_PROJECT_NAME}/server
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
     tty: true
     restart: always
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${DOCKER_PREFIX}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
       domain: ${domain}
@@ -64,8 +64,8 @@ services:
     networks:
       - metahkg-network
   metahkg-links:
-    container_name: metahkg${DOCKER_PREFIX}-links
-    image: metahkg${DOCKER_PREFIX}/links
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-links
+    image: metahkg${COMPOSE_PROJECT_NAME}/links
     build:
       context: ../metahkg-links
       dockerfile: ./Dockerfile
@@ -73,14 +73,14 @@ services:
     restart: always
     environment:
       port: 3003
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${DOCKER_PREFIX}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       metahkgDomain: ${domain}
     networks:
       - metahkg-network
     depends_on:
       - metahkg-mongo
   metahkg-mongo:
-    container_name: metahkg${DOCKER_PREFIX}-mongo
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
     image: mongo
     tty: true
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
