@@ -29,12 +29,14 @@ services:
       dockerfile: ./Dockerfile
       args:
         REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
+        env: ${env}
     tty: true
     restart: always
     environment:
       port: 3002
+      env: ${env}
     volumes:
-      - ./src:/usr/src/app/src
+      - ../metahkg-web/src:/usr/src/app/src
     depends_on:
       - metahkg-server
       - metahkg-links
@@ -46,6 +48,8 @@ services:
     build:
       context: ../metahkg-server
       dockerfile: ./Dockerfile
+      args:
+        env: ${env}
     tty: true
     restart: always
     environment:
@@ -56,9 +60,11 @@ services:
       port: 3001
       recaptchasecret: ${recaptchasecret}
       jwtKey: ${jwtKey}
+      cors: ${cors}
+      env: ${env}
     volumes:
       - ./images:/usr/src/app/images
-      - ./src:/usr/src/app/src
+      - ../metahkg-server/src:/usr/src/app/src
     depends_on:
       - metahkg-mongo
     networks:
