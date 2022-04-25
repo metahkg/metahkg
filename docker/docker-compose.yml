@@ -56,6 +56,7 @@ services:
       DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
+      mailgun_domain: ${mailgun_domain}
       domain: ${domain}
       port: 3001
       recaptchasecret: ${recaptchasecret}
