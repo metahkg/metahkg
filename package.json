@@ -1,6 +1,6 @@
 {
   "name": "metahkg",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "Metahkg is a free and open source lihkg-style forum.",
   "repository": {
     "type": "git",
@@ -26,6 +26,6 @@
     "dotenv": "^16.0.0",
     "mongodb": "^4.5.0",
     "system-commands": "^1.1.7"
-  }
+  },
+  "dependencies": {}
 }
-

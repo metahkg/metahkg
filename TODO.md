@@ -1,4 +1,4 @@
-# TODO
+# Tasks / Ideas
 
 - [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 
@@ -92,7 +92,7 @@
 
 - [x] add paper for share link bar
 
-- [ ] quote: check startsWith for edited
+- [ ] ~~quote: check startsWith for edited~~
 
 - [ ] ~~conversation: canRender: all ids equal and all lengths > 0~~
 
@@ -116,7 +116,7 @@
 
 - [x] settings
 
-- [ ] <https://github.com/cyrilwanner/react-optimized-image>
+- [ ] ~~<https://github.com/cyrilwanner/react-optimized-image>~~
 
 - [x] go to last viewed comment on next visit
 
@@ -163,3 +163,23 @@
 - [ ] notification
 
 - [x] start and set up mongodb before starting server
+
+- [ ] preview
+
+- [ ] add should fold / should hide in comments (blocked)
+
+- [ ] render comments on visible23asz
+
+- [ ] regex email pattern (restriction)
+
+- [ ]  react-avatar-editor
+
+- [ ]  react-native-fast-image
+
+- [ ]   rc-image
+
+- [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
+
+- [ ] decode jwt locally
+
+- [ ] scroll to bottom
