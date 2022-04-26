@@ -1,12 +1,4 @@
-# metahkg
-
-Please clone with:
-
-```bash
-git clone --recurse-submodules https://gitlab.com/metahkg/metahkg.git
-# and then
-cd metahkg && git submodule foreach git pull
-```
+# Metahkg
 
 This is the monorepo for metahkg.
 
@@ -30,7 +22,36 @@ Currently, it aims to be a fully featured alternative to lihkg. However, I might
 
 As contrasted with lihkg, metahkg is open to everyone and anyone can create an account with a email address, no matter issued by a university or not.
 
+## Docs
+
+Metahkg docs:
+
+- [master branch](https://master.docs.metahkg.org)
+- [dev branch](https://dev.docs.metahkg.org)
+
+## Cloning
+
+Please clone with:
+
+```bash
+git clone --recurse-submodules https://gitlab.com/metahkg/metahkg.git
+# and then
+cd metahkg && git submodule foreach git pull
+```
+
 ## Deploying
 
-See DEPLOY.md.
-For a fast setup run ./setup.sh.
+### Docker
+
+It is recommended to use docker for deployment (also supports hot reload).
+
+Docs:
+
+- master branch [master.docs.metahkg.org/docker](https://master.docs.metahkg.org/docker)
+- dev branch [dev.docs.metahkg.org/docker](https://dev.docs.metahkg.org/docker)
+
+## Manually
+
+**_WARNING:_** This is NOT RECOMMENDED and might be OUTDATED!
+
+For manual deployment, see DEPLOY.md.
