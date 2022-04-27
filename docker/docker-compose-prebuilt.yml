@@ -29,6 +29,7 @@ services:
     environment:
       port: 3002
       env: ${env}
+      REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
     volumes:
       - ../metahkg-web/src:/usr/src/app/src
     depends_on:
