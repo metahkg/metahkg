@@ -10,6 +10,7 @@
     "setup": "(yarn install || npm install) && node mongodb/mongo-setup.js",
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
     "start:docker": "cd docker && docker-compose up -d --build",
+    "docker:prebuilt": "yarn update:docker && cd docker && docker-compose -f docker-compose-prebuilt.yml up -d --build",
     "clean:docker": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi",
     "update:docker": "./docker-pull.sh"
   },
