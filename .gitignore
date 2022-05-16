@@ -6,3 +6,4 @@ docker/data/*
 docker/images/*
 .vscode/
 .idea/
+yarn*.log
