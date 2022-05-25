@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:alpine
 
 WORKDIR /etc/nginx/templates
 
