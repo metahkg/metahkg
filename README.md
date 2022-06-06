@@ -24,10 +24,7 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Docs
 
-Metahkg docs:
-
-- [master branch](https://master.docs.metahkg.org)
-- [dev branch](https://dev.docs.metahkg.org)
+[Metahkg docs](https://docs.metahkg.org)
 
 ## Cloning
 
@@ -45,10 +42,7 @@ cd metahkg && git submodule foreach git pull
 
 It is recommended to use docker for deployment (also supports hot reload).
 
-Docs:
-
-- master branch [master.docs.metahkg.org/docker](https://master.docs.metahkg.org/docker)
-- dev branch [dev.docs.metahkg.org/docker](https://dev.docs.metahkg.org/docker)
+[Docs](https://docs.metahkg.org/docs/category/deploy-metahkg)
 
 ## Manually
 
