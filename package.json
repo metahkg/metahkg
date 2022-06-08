@@ -7,6 +7,7 @@
     "url": "git+https://gitlab.com/metahkg/metahkg.git"
   },
   "scripts": {
+    "test": "exit 0",
     "setup": "(yarn install || npm install) && node mongodb/mongo-setup.js",
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
     "start:docker": "yarn docker",
