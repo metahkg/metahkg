@@ -1,7 +1,3 @@
-> All code in this repository is licensed under the GNU Affero General Public License
-> Version 3.0 OR LATER, unless the directory contains a LICENSE or LICENSE.md file, in 
-> which case that file applies to the code in that subdirectory.
-
 ### GNU AFFERO GENERAL PUBLIC LICENSE
 
 Version 3, 19 November 2007
