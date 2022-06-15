@@ -32,6 +32,7 @@ services:
       REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
     volumes:
       - ../metahkg-web/src:/usr/src/app/src
+      - ../metahkg-web/public:/usr/src/app/public
     depends_on:
       - metahkg-server
       - metahkg-links
