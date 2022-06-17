@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginx:1.20-alpine
 
 WORKDIR /etc/nginx/templates
 
