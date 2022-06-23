@@ -22,6 +22,19 @@ Currently, it aims to be a fully featured alternative to lihkg. However, I might
 
 As contrasted with lihkg, metahkg is open to everyone and anyone can create an account with a email address, no matter issued by a university or not.
 
+## Repos
+
+This repository is a collection of three submodules:
+- metahkg-web
+- metahkg-server
+- metahkg-links
+
+They are dependent of one another, and compatibility is guaranteed if they are all on a same branch (i.e. master or dev).
+
+## Metahkg Api Wrapper
+
+We have an api wrapper [here](https://gitlab.com/metahkg/metahkg-api) for easily accessing the api. Please use the api wrapper with a same version of metahkg-server. [metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
+
 ## Docs
 
 [Metahkg docs](https://docs.metahkg.org)
