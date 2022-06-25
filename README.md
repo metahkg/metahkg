@@ -30,6 +30,11 @@ This repository is a collection of three submodules:
 - metahkg-links
 
 They are dependent of one another, and compatibility is guaranteed if they are all on a same branch (i.e. master or dev).
+Note that there might be delays on updating.
+
+## Versioning
+
+Metahkg is now in rapid release. Metahkg-web and metahkg-server should follow a same version.
 
 ## Metahkg Api Wrapper
 
