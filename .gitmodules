@@ -1,9 +1,12 @@
 [submodule "metahkg-server"]
 	path = metahkg-server
 	url = https://gitlab.com/metahkg/metahkg-server.git
+	branch = dev
 [submodule "metahkg-web"]
 	path = metahkg-web
 	url = https://gitlab.com/metahkg/metahkg-web.git
+	branch = dev
 [submodule "metahkg-links"]
 	path = metahkg-links
 	url = https://gitlab.com/metahkg/metahkg-links
+	branch = dev
