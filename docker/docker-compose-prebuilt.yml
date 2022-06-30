@@ -54,6 +54,7 @@ services:
       jwtKey: ${jwtKey}
       cors: ${cors}
       env: ${env}
+      register: ${register}
     volumes:
       - ./images:/usr/src/app/images
       - ../metahkg-server/src:/usr/src/app/src
