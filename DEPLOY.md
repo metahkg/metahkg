@@ -15,25 +15,14 @@ Docs:
 
 ### Prerequisites
 
-- x86_64 linux (only tested on ubuntu & arch)
+- amd64 linux (only tested on ubuntu & arch)
 - mongodb (either locally or remotely)
-- mailgun api key (for sending emails, obviously)
+- mailgun api key (for sending emails)
 - recaptcha site key and secret pair (for anti-spamming)
 
 ### Set up
 
 #### Mongodb
-
-```bash
-$ mongoimport -d=metahkg metahkg-server/templates/server/category.json
-$ mongosh
-test> use metahkg
-metahkg> db.viral.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 172800 })
-metahkg> db.summary.createIndex({ "op": "text", "title": "text" }) //for text search
-metahkg> db.limit.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 86400 })
-metahkg> db.verification.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 604800 })
-metahkg> exit
-```
 
 To use authentication:
 
@@ -49,9 +38,7 @@ metahkg> exit
 #### Environmental variables
 
 ```bash
-cd metahkg-web
-cp templates/template.env .env
-cd ../metahkg-server
+cd metahkg-server
 cp templates/template.env .env
 ```
 
@@ -62,7 +49,7 @@ Then edit values in the .env files.
 ```bash
 cd metahkg-web
 yarn install
-yarn run deploy
+yarn deploy
 ```
 
 ### Deploying backend
@@ -71,7 +58,7 @@ yarn run deploy
 # run at the repository (metahkg-server) root
 cd metahkg-server
 yarn install
-yarn run deploy
+yarn deploy
 ```
 
 You must need a domain. If you don't have one and deploys it locally only,

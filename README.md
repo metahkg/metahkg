@@ -14,6 +14,9 @@ dev build (probably daily): [dev.metahkg.org](https://dev.metahkg.org)
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/metahkg/metahkg)
 [![GitHub license](https://img.shields.io/github/license/metahkg/metahkg)](https://github.com/metahkg/metahkg/blob/master/LICENSE)
 
+[![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
+[![Discord](https://img.shields.io/discord/992390401740775555)](https://discord.gg/yrf2v8KGdc)
+
 ## About
 
 This open-source project was created primarily because of me being unable to register a lihkg account as a high school student.
@@ -25,6 +28,7 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 ## Repos
 
 This repository is a collection of three submodules:
+
 - metahkg-web
 - metahkg-server
 - metahkg-links

@@ -1,5 +1,109 @@
 # Tasks / Ideas
 
+- [ ] vote button --> not logged in --> login popup
+
+- [ ] ig / fb / reddit embed
+
+- [ ] if unseen add yellow dot
+
+- [ ] use elastic/open search
+
+- [ ] spam detection
+
+- [ ] word limit
+
+- [ ] reset password (backend done)
+
+- [ ] del acc
+
+- [ ] overview (total posts users etc.)
+
+- [ ] improve log out (no need navigate)
+
+- [ ] pm <https://github.com/guptasajal411/instant-chat-app/>
+
+- [ ] log in dialog
+
+- [ ] admin dashboard (logs ban user etc)
+
+- [ ] block users
+
+- [ ] terms, privacy
+
+- [ ] <https://github.com/cyrilwanner/react-optimized-image>
+
+- [ ] <https://www.npmjs.com/package/react-grid-gallery>
+
+- [ ] user crop profile image
+
+- [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
+
+- [ ] link preview
+
+- [ ] react-images
+
+- [ ] react-photo-gallery
+
+- [ ] mode based menu ("profile" | "menu" | "recall")
+
+- [ ] react-social-media-embed
+
+- [ ] @streben/react-link-preview
+
+- [ ] male & female custom colors
+
+- [ ] reactions to comments
+
+- [ ] admin: visibility (users only / everyone)
+
+- [ ] notification
+
+- [ ] preview link
+
+- [ ] add should fold / should hide in comments (blocked)
+
+- [ ] render comments on visible
+
+- [ ] regex email pattern (restriction)
+
+- [ ]  react-avatar-editor
+
+- [ ]  react-native-fast-image
+
+- [ ]   rc-image
+
+- [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
+
+- [ ] change global total votes on vote
+
+- [ ] <https://github.com/bvaughn/react-virtualized>
+
+- [ ] display block for image loaders
+
+- [ ] add streamable
+
+- [ ] quote & add comment to another thread (use a dialog to choose thread)
+
+- [ ] slack-like comments
+
+- [ ] Admin management api
+
+- [ ] use a global color theme
+
+- [ ] notification
+
+- [ ] preview of comments
+
+- [ ] functions for quickly switching menu mode
+
+- [ ] puppeteer predeploy?
+
+- [ ] if in quote do not add treat as normal photo
+
+- [ ] move to nextjs
+
+- [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)), regex email
+
 - [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 
 - [x] add telegram group link
@@ -28,19 +132,15 @@
 
 - [x] notifications (logged out, not found…)
 
-- [x] facebook/twitter/reddit
+- [x] twitter/youtube embed
 
 - [x] unify notification / shares
 
 - [x] 404 page
 
-- [ ] pm <https://github.com/guptasajal411/instant-chat-app/>
-
 - [x] telegram admin bot
 
 - [x] recall
-
-- [ ] if (unseen) {add yellow dot}
 
 - [x] a link for every comment (use timeout and scrollintoview)
 
@@ -48,25 +148,9 @@
 
 - [x] mobile dock
 
-- [ ] use elastic/open search
-
-- [ ] spam detection
-
-- [ ] word limit
-
-- [ ] reset password
-
 - [x] resend confirmation
 
-- [ ] del acc
-
-- [ ] overview (total posts users etc.)
-
-- [ ] improve log out (no need navigate)
-
 - [x] docker
-
-- [ ] log in popup
 
 - [x] don’t use aws (gravatar / local ?)
 
@@ -74,15 +158,13 @@
 
 - [x] api for some of the comments not whole page
 
-- [ ] html sanitize
-
-- [ ] vote button --> not signed in --> sign in popup
+- [x] html sanitize
 
 - [x] improve api (more restful)
 
 - [x] add target="_blank" to links
 
-- [ ] replies
+- [x] replies
 
 - [x] quote: fetch from api
 
@@ -92,23 +174,13 @@
 
 - [x] add paper for share link bar
 
-- [ ] ~~quote: check startsWith for edited~~
-
-- [ ] ~~conversation: canRender: all ids equal and all lengths > 0~~
-
 - [x] pagebottom (~~terms, privacy,~~ gitlab…)
 
-- [ ] terms, privacy
-
 - [x] move to recaptcha
-
-- [ ] admin dashboard (logs ban user etc)
 
 - [x] stop linearprogress 1 second after ready
 
 - [x] node-html-parser
-
-- [ ] block users
 
 - [x] jwt
 
@@ -116,70 +188,16 @@
 
 - [x] settings
 
-- [ ] ~~<https://github.com/cyrilwanner/react-optimized-image>~~
-
 - [x] go to last viewed comment on next visit
 
 - [x] current comment
 
-- [ ] <https://www.npmjs.com/package/react-grid-gallery>
+- [x] react-photo-gallery
 
-- [ ] react-photo-gallery
-
-- [ ] change password / username
-
-- [ ] signup conditions
-
-- [ ] instagram/twitter/fb embed
-
-- [ ] user crop profile image
-
-- [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
+- [x] change username
 
 - [x] change secondary color in settings
 
-- [ ] link preview
-
-- [ ] react-images
-
-- [ ] react-photo-gallery
-
-- [ ] mode based menu ("profile" | "menu" | "recall")
-
-- [ ] react-social-media-embed
-
-- [ ] @streben/react-link-preview
-
-- [ ] male & female custom colors
-
-- [ ] reactions to comments
-
-- [ ] admin: visibility (users only / everyone)
-
-- [x] hot -> viral
-
-- [ ] pin message
-
-- [ ] notification
-
 - [x] start and set up mongodb before starting server
 
-- [ ] preview
-
-- [ ] add should fold / should hide in comments (blocked)
-
-- [ ] render comments on visible23asz
-
-- [ ] regex email pattern (restriction)
-
-- [ ]  react-avatar-editor
-
-- [ ]  react-native-fast-image
-
-- [ ]   rc-image
-
-- [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
-
-- [ ] decode jwt locally
-
-- [ ] scroll to bottom
+- [x] pin message
