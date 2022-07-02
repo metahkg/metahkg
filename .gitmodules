@@ -7,3 +7,6 @@
 [submodule "metahkg-links"]
 	path = metahkg-links
 	url = https://gitlab.com/metahkg/metahkg-links
+[submodule "metahkg-api"]
+	path = metahkg-api
+	url = https://gitlab.com/metahkg/metahkg-api
