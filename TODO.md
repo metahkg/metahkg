@@ -1,4 +1,6 @@
-# Tasks / Ideas
+# Todo
+
+> See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] vote button --> not logged in --> login popup
 
@@ -38,8 +40,6 @@
 
 - [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
 
-- [ ] link preview
-
 - [ ] react-images
 
 - [ ] react-photo-gallery
@@ -48,8 +48,6 @@
 
 - [ ] react-social-media-embed
 
-- [ ] @streben/react-link-preview
-
 - [ ] male & female custom colors
 
 - [ ] reactions to comments
@@ -57,8 +55,6 @@
 - [ ] admin: visibility (users only / everyone)
 
 - [ ] notification
-
-- [ ] preview link
 
 - [ ] add should fold / should hide in comments (blocked)
 
@@ -102,9 +98,11 @@
 
 - [ ] move to nextjs
 
-- [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)), regex email
+- [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)),
 
-- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
+- [ ] regex email
+
+- [ ] preview comment- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 
 - [x] add telegram group link
 
@@ -200,4 +198,6 @@
 
 - [x] start and set up mongodb before starting server
 
-- [x] pin message
+- [x] pin comment
+
+- [x] link preview @dhaiwat10/react-link-preview
