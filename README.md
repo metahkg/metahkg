@@ -12,7 +12,10 @@ dev build (probably daily): [dev.metahkg.org](https://dev.metahkg.org)
 
 [![Gitlab](https://badges.aleen42.com/src/gitlab.svg)](https://gitlab.com/metahkg/metahkg)
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/metahkg/metahkg)
-[![GitHub license](https://img.shields.io/github/license/metahkg/metahkg)](https://github.com/metahkg/metahkg/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/metahkg/metahkg)](https://gitlab.com/metahkg/metahkg/-/tree/master/LICENSE.md)
+
+[![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
+[![Discord](https://img.shields.io/discord/992390401740775555)](https://discord.gg/yrf2v8KGdc)
 
 ## About
 
@@ -24,21 +27,30 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Repos
 
-This repository is a collection of three submodules:
+This repository is a collection of four repositories:
+
 - metahkg-web
 - metahkg-server
 - metahkg-links
+- metahkg-api
 
-They are dependent of one another, and compatibility is guaranteed if they are all on a same branch (i.e. master or dev).
-Note that there might be delays on updating.
+Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this polyrepo is not frequently updated.
 
 ## Versioning
 
-Metahkg is now in rapid release. Metahkg-web and metahkg-server should follow a same version.
+All sub-projects here follow a same versioning, based on metahkg-server's versioning, compatibility is guaranteed for a same major version.
+
+e.g. metahkg-server v2.5.1 would be compatibile with metahkg-api v2.5.x and metahkg-web v2.5.x, and vice versa.
+
+## Branches
+
+Two (or one) major versions are maintained at each time, one at the master branch and another at the dev branch. The version at dev branch is in development, and rather unstable, while that in master branch is considered stable but will only receive bug fixes until the next major version is ready. All new features are developed in dev branch.
 
 ## Metahkg Api Wrapper
 
-We have an api wrapper [here](https://gitlab.com/metahkg/metahkg-api) for easily accessing the api. Please use the api wrapper with a same version of metahkg-server. [metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
+We have an api wrapper [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api wrapper with a same major version of metahkg-server.
+
+[metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
 
 ## Docs
 
