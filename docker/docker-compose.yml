@@ -29,6 +29,9 @@ services:
       dockerfile: ./Dockerfile
       args:
         REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
+        REACT_APP_IMAGES_API_URL: ${REACT_APP_IMAGES_API_URL}
+        REACT_APP_build: ${REACT_APP_build}
+        REACT_APP_version: ${REACT_APP_version}
         env: ${env}
     tty: true
     restart: always

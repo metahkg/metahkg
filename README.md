@@ -12,7 +12,7 @@ dev build (probably daily): [dev.metahkg.org](https://dev.metahkg.org)
 
 [![Gitlab](https://badges.aleen42.com/src/gitlab.svg)](https://gitlab.com/metahkg/metahkg)
 [![Github](https://badges.aleen42.com/src/github.svg)](https://github.com/metahkg/metahkg)
-[![GitHub license](https://img.shields.io/github/license/metahkg/metahkg)](https://gitlab.com/metahkg/metahkg/-/tree/master/LICENSE.md)
+[![License](https://img.shields.io/gitlab/license/metahkg/metahkg)](https://gitlab.com/metahkg/metahkg/-/tree/master/LICENSE.md)
 
 [![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
 [![Discord](https://img.shields.io/discord/992390401740775555)](https://discord.gg/yrf2v8KGdc)
