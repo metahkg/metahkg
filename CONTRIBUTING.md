@@ -4,7 +4,7 @@ Generally, all contributions are welcome. Please submit merge requests on [gitla
 
 ## Repository Structure
 
-This repository is designed to be a polyrepo. It is a collection of repositories that power metahkg.
+This repository is designed to be a collection of components of metahkg.
 
 Please create merge requests in the corresponding sub-repositories, not here, if the changes are not about docker and other things in here. (Do not request merging to master unless it is a bug fix!)
 

@@ -1,7 +1,5 @@
 # Metahkg
 
-This is the polyrepo of metahkg.
-
 stable: [metahkg.org](https://metahkg.org)
 
 dev build (probably daily): [dev.metahkg.org](https://dev.metahkg.org)
@@ -34,7 +32,7 @@ This repository is a collection of four repositories:
 - metahkg-links
 - metahkg-api
 
-Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this polyrepo is not frequently updated.
+Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
 
 ## Versioning
 
