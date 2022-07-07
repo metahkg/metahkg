@@ -1,9 +1,8 @@
-.lh/
-node_modules
+/.lh/
+/node_modules/
 .env
-docker/src/*
-docker/data/*
-docker/images/*
-.vscode/
-.idea/
+/docker/data/
+/docker/images/
+/.vscode/
+/.idea/
 yarn*.log
