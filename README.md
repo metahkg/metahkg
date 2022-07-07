@@ -1,6 +1,6 @@
 # Metahkg
 
-This is the monorepo for metahkg.
+This is the polyrepo of metahkg.
 
 stable: [metahkg.org](https://metahkg.org)
 
