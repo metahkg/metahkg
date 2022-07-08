@@ -44,11 +44,11 @@ e.g. metahkg-server v2.5.1 would be compatibile with metahkg-api v2.5.x and meta
 
 Two (or one) major versions are maintained at each time, one at the master branch and another at the dev branch. The version at dev branch is in development, and rather unstable, while that in master branch is considered stable but will only receive bug fixes until the next major version is ready. All new features are developed in dev branch.
 
+[metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
+
 ## Metahkg Api Wrapper
 
 We have an api wrapper [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api wrapper with a same major version of metahkg-server.
-
-[metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
 
 ## Docs
 
