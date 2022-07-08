@@ -13,6 +13,8 @@
     "start:docker": "yarn docker",
     "docker": "cd docker && docker-compose up -d --build",
     "docker:prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.yml pull --ignore-pull-failures && docker-compose -f docker-compose-prebuilt.yml up -d --build",
+    "docker:express": "cd docker && docker-compose -f docker-compose.express.yml up -d --build",
+    "docker:express-prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.express.yml up -d --build",
     "docker:down": "cd docker && docker-compose down",
     "docker:logs": "cd docker && docker-compose logs",
     "docker:clean": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi",
