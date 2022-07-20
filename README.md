@@ -2,7 +2,7 @@
 
 stable: [metahkg.org](https://metahkg.org)
 
-dev build (probably daily): [dev.metahkg.org](https://dev.metahkg.org)
+dev build: [dev.metahkg.org](https://dev.metahkg.org)
 
 [![React](https://badges.aleen42.com/src/react.svg)](http://reactjs.org/)
 [![Nodejs](https://badges.aleen42.com/src/node.svg)](https://nodejs.org)
@@ -72,7 +72,7 @@ It is recommended to use docker for deployment (also supports hot reload).
 
 [Docs](https://docs.metahkg.org/docs/category/deploy-metahkg)
 
-## Manually
+### Manually
 
 **_WARNING:_** This is NOT RECOMMENDED and might be OUTDATED!
 
