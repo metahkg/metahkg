@@ -2,6 +2,22 @@
 
 > See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
+- [ ] add create category & add createdAt to category object
+
+- [ ] reactions
+
+- [ ] handle synchronous requests that occur at a perfectly same time (see https://stackoverflow.com/questions/21218651/mongodb-auto-increment-id)
+
+- [ ] videojs
+
+- [ ] improve pagify (scroll to bottom after page change)
+
+- [ ] improve the replies popup (more alike that of lihkg)
+
+- [ ] delete view thread history
+
+- [ ] react swipable view
+
 - [ ] vote button --> not logged in --> login popup
 
 - [ ] ig / fb / reddit embed
@@ -62,11 +78,11 @@
 
 - [ ] regex email pattern (restriction)
 
-- [ ]  react-avatar-editor
+- [ ] react-avatar-editor
 
-- [ ]  react-native-fast-image
+- [ ] react-native-fast-image
 
-- [ ]   rc-image
+- [ ] rc-image
 
 - [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
 
@@ -102,7 +118,9 @@
 
 - [ ] regex email
 
-- [ ] preview comment- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
+- [ ] preview comment
+
+- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 
 - [x] add telegram group link
 
@@ -160,7 +178,7 @@
 
 - [x] improve api (more restful)
 
-- [x] add target="_blank" to links
+- [x] add target="\_blank" to links
 
 - [x] replies
 
@@ -198,6 +216,6 @@
 
 - [x] start and set up mongodb before starting server
 
-- [x] pin comment
+- [x] pin message
 
 - [x] link preview @dhaiwat10/react-link-preview
