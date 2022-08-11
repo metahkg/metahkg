@@ -6,6 +6,9 @@ server {
     location /api {
         proxy_pass http://${METAHKG_SERVER_NAME}:3001;
     }
+    location /sitemap.xml {
+        proxy_pass http://${METAHKG_SERVER_NAME}:3001;
+    }
     location / {
         proxy_pass http://${METAHKG_WEB_NAME}:3002;
     }
