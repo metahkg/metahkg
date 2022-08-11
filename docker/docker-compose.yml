@@ -40,6 +40,7 @@ services:
       env: ${env}
     volumes:
       - ../metahkg-web/src:/usr/src/app/src
+      - ../metahkg-web/tailwind.config.js:/usr/src/app/tailwind.config.js
       - ../metahkg-web/public:/usr/src/app/public
     depends_on:
       - metahkg-server
