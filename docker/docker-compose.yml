@@ -39,9 +39,9 @@ services:
       port: 3002
       env: ${env}
     volumes:
-      - ../metahkg-web/src:/usr/src/app/src
-      - ../metahkg-web/tailwind.config.js:/usr/src/app/tailwind.config.js
-      - ../metahkg-web/public:/usr/src/app/public
+      - ../metahkg-web/src:/home/user/src
+      - ../metahkg-web/tailwind.config.js:/home/user/tailwind.config.js
+      - ../metahkg-web/public:/home/user/public
     depends_on:
       - metahkg-server
       - metahkg-links
@@ -70,8 +70,8 @@ services:
       env: ${env}
       register: ${register}
     volumes:
-      - ./images:/usr/src/app/images
-      - ../metahkg-server/src:/usr/src/app/src
+      - ./images:/home/user/images
+      - ../metahkg-server/src:/home/user/src
     depends_on:
       - metahkg-mongo
     networks:
