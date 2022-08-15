@@ -13,6 +13,7 @@ services:
       METAHKG_LINKS_NAME: metahkg${COMPOSE_PROJECT_NAME}-links
       METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
       METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
+      METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
     depends_on:
