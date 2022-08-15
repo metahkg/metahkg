@@ -16,6 +16,7 @@ services:
       METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
+      IMAGES_DOMAIN: ${IMAGES_DOMAIN}
     depends_on:
       - metahkg-server
       - metahkg-web
