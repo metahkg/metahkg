@@ -13,8 +13,10 @@ services:
       METAHKG_LINKS_NAME: metahkg${COMPOSE_PROJECT_NAME}-links
       METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
       METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
+      METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
+      IMAGES_DOMAIN: ${IMAGES_DOMAIN}
     depends_on:
       - metahkg-server
       - metahkg-web
@@ -29,7 +31,7 @@ services:
       dockerfile: ./Dockerfile
       args:
         REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
-        REACT_APP_IMAGES_API_URL: ${REACT_APP_IMAGES_API_URL}
+        REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
         REACT_APP_build: ${REACT_APP_build}
         REACT_APP_version: ${REACT_APP_version}
         env: ${env}
@@ -91,6 +93,16 @@ services:
       - metahkg-network
     depends_on:
       - metahkg-mongo
+  metahkg-images:
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-images
+    image:  ghcr.io/willnorris/imageproxy:latest
+    tty: true
+    restart: always
+    entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
+    networks:
+      - metahkg-network
+    volumes:
+      - ./imageproxy:/tmp/imageproxy
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
     image: mongo
