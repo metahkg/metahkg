@@ -2,6 +2,90 @@
 
 > See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
+- [ ] use https://github.com/missive/emoji-mart after it migrates to typescript
+
+- [ ] add visiblity option for threads (public / internal)
+
+- [ ] https://github.com/notAI-tech/NudeNet for nude classification
+
+- [ ] authentication with passkeys
+
+- [ ] make list of threads the center when no threads are clicked
+
+- [ ] tag users (e.g. @wcyat
+
+- [ ] search in recall
+
+- [ ] multiple pinned comments
+
+- [ ] picture in picture player as a snackbar
+
+- [ ] star sort by last comment and reverse star time
+
+- [x] streamable
+
+- [ ] pm
+
+- [ ] poll
+
+- [x] star, unstar
+
+- [ ] follow, unfollow
+
+- [x] emotions
+
+- [ ] report comments
+
+- [ ] regex email pattern (register restriction)
+
+- [ ] light mode
+
+- [ ] i18n
+
+- [ ] types for comments (poll/image/video etc.)
+
+- [ ] poll feature (maybe special html tag, e.g. `<poll></poll>`)
+
+- [ ] generate title and description from server
+
+- [x] generate sitemap from server
+
+- [ ] add tags to categories
+
+- [ ] redesign sidebar (lihkg-style)
+
+- [ ] tinymce image editor
+
+- [x] Avatar editor show zoom and degree, max zoom 5x
+
+- [x] avatar editor
+
+- [ ] fully block (hide threads and all comments, including in quotes)
+
+- [ ] block users should work in quotes
+
+- [ ] option to set page limit (frontend)
+
+- [ ] [animate.css](https://animate.style) for animations (e.g. image resize)
+
+- [ ] pin threads
+
+- [ ] tags for threads (reddit/stackoverflow style)
+
+- [ ] convert html to text and shortened versions
+
+- [ ] about dialog
+
+- [ ] search by thread id
+
+- [ ] sort by popularity (search, history)
+
+- [ ] follow users
+
+- [ ] get user's previous comments (maybe /api/users/{id}/comments)
+
+- [ ] markdown editor (maybe codemirror?)
+
 - [ ] add create category & add createdAt to category object
 
 - [ ] reactions
@@ -76,19 +160,16 @@
 
 - [ ] render comments on visible
 
-- [ ] regex email pattern (restriction)
 
-- [ ] react-avatar-editor
+- [x] react-avatar-editor
 
 - [ ] react-native-fast-image
 
 - [ ] rc-image
 
-- [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
-
 - [ ] change global total votes on vote
 
-- [ ] <https://github.com/bvaughn/react-virtualized>
+- [ ] https://github.com/bvaughn/react-virtualized
 
 - [ ] display block for image loaders
 
@@ -104,11 +185,7 @@
 
 - [ ] notification
 
-- [ ] preview of comments
-
 - [ ] functions for quickly switching menu mode
-
-- [ ] puppeteer predeploy?
 
 - [ ] if in quote do not add treat as normal photo
 
@@ -116,9 +193,9 @@
 
 - [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)),
 
-- [ ] regex email
+- [ ] regex email for register
 
-- [ ] preview comment
+- [ ] preview comment when creating
 
 - [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 
