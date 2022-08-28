@@ -104,6 +104,7 @@ services:
       - metahkg-network
     volumes:
       - ./data:/data/db
+      - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
 networks:
   metahkg-network:
     driver: bridge
