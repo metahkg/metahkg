@@ -2,21 +2,125 @@
 
 > See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
+- [ ] tooltip preview image link (check if is .jpg/png)
+
+- [ ] react-toastify
+
+- [ ] notification using mui alerts
+
+- [ ] double editor (markdown / rich text)
+
+- [ ] switch to froala ?
+
+- [ ] mailcow
+
+- [x] move thread / comment to removed collection after deleting
+
+- [ ] ban : { admin: { }, reason: string, expire: date }
+
+- [x] mute : { admin: { }, reason: string, expire: date }
+
+- [x] admin : { edits : [{ admin: { id: 1, name: "wcyat" }, reason: string }], replies: [{ admin: { }, reply: string }]
+
+- [x] add pinned: boolean to category
+
+- [x] service worker for rlp.metahkg.org
+
+- [ ] admin reply
+
+- [ ] admin edit (add the words edited by admin under the commrnt)
+
+- [x] disallow same title
+
+- [ ] tag users (e.g. @wcyat
+
+- [ ] search in recall
+
+- [ ] multiple pinned comments
+
+- [ ] picture in picture player as a snackbar
+
+- [ ] star sort by last comment and reverse star time
+
+- [x] streamable
+
+- [ ] pm
+
+- [ ] poll
+
+- [x] star, unstar
+
+- [ ] follow, unfollow
+
+- [x] emotions
+
+- [ ] report comments
+
+- [ ] regex email pattern (register restriction)
+
+- [ ] light mode
+
+- [ ] i18n
+
+- [ ] types for comments (poll/image/video etc.)
+
+- [ ] poll feature (maybe special html tag, e.g. `<poll></poll>`)
+
+- [ ] generate html title and description from server
+
+- [x] generate sitemap from server
+
+- [ ] add tags to categories
+
+- [ ] redesign sidebar (lihkg-style)
+
+- [ ] tinymce image editor
+
+- [x] Avatar editor show zoom and degree, max zoom 5x
+
+- [x] avatar editor
+
+- [ ] fully block (hide threads and all comments, including in quotes)
+
+- [x] block users should work in quotes
+
+- [ ] option to set page limit (frontend)
+
+- [ ] [animate.css](https://animate.style) for animations (e.g. image resize)
+
+- [ ] pin threads
+
+- [ ] tags for threads (reddit/stackoverflow style)
+
+- [ ] convert html to text and shortened versions
+
+- [ ] about dialog
+
+- [ ] search by thread id
+
+- [ ] sort by popularity (search, history)
+
+- [ ] follow users
+
+- [ ] get user's previous comments (maybe /api/users/{id}/comments)
+
+- [ ] markdown editor (maybe codemirror?)
+
 - [ ] add create category & add createdAt to category object
 
-- [ ] reactions
+- [x] reactions
 
 - [ ] handle synchronous requests that occur at a perfectly same time (see https://stackoverflow.com/questions/21218651/mongodb-auto-increment-id)
 
 - [ ] videojs
 
-- [ ] improve pagify (scroll to bottom after page change)
+- [x] improve pagify (scroll to bottom after page change)
 
 - [ ] improve the replies popup (more alike that of lihkg)
 
 - [ ] delete view thread history
 
-- [ ] react swipable view
+- [x] react swipable view
 
 - [ ] vote button --> not logged in --> login popup
 
@@ -44,7 +148,7 @@
 
 - [ ] admin dashboard (logs ban user etc)
 
-- [ ] block users
+- [x] block users
 
 - [ ] terms, privacy
 
@@ -52,7 +156,7 @@
 
 - [ ] <https://www.npmjs.com/package/react-grid-gallery>
 
-- [ ] user crop profile image
+- [x] user crop profile image
 
 - [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
 
@@ -60,13 +164,11 @@
 
 - [ ] react-photo-gallery
 
-- [ ] mode based menu ("profile" | "menu" | "recall")
+- [x] mode based menu ("profile" | "menu" | "recall")
 
-- [ ] react-social-media-embed
+- [x] react-social-media-embed
 
 - [ ] male & female custom colors
-
-- [ ] reactions to comments
 
 - [ ] admin: visibility (users only / everyone)
 
@@ -76,19 +178,15 @@
 
 - [ ] render comments on visible
 
-- [ ] regex email pattern (restriction)
-
-- [ ] react-avatar-editor
+- [x] react-avatar-editor
 
 - [ ] react-native-fast-image
 
 - [ ] rc-image
 
-- [ ] <https://github.com/Saren-Arterius/e2e-im> (pm?)
-
 - [ ] change global total votes on vote
 
-- [ ] <https://github.com/bvaughn/react-virtualized>
+- [ ] https://github.com/bvaughn/react-virtualized
 
 - [ ] display block for image loaders
 
@@ -104,11 +202,7 @@
 
 - [ ] notification
 
-- [ ] preview of comments
-
 - [ ] functions for quickly switching menu mode
-
-- [ ] puppeteer predeploy?
 
 - [ ] if in quote do not add treat as normal photo
 
@@ -116,9 +210,9 @@
 
 - [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)),
 
-- [ ] regex email
+- [ ] regex email for register
 
-- [ ] preview comment
+- [ ] preview comment when creating
 
 - [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
 

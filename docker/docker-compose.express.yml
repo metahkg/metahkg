@@ -119,6 +119,7 @@ services:
       - metahkg-network
     volumes:
       - ./data:/data/db
+      - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
   metahkg-mongo-express:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo-express
     image: mongo-express
