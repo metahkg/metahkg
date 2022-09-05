@@ -2,15 +2,35 @@
 
 > See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
-- [ ] use https://github.com/missive/emoji-mart after it migrates to typescript
+- [ ] tooltip preview image link (check if is .jpg/png)
 
-- [ ] add visiblity option for threads (public / internal)
+- [ ] react-toastify
 
-- [ ] https://github.com/notAI-tech/NudeNet for nude classification
+- [ ] notification using mui alerts
 
-- [ ] authentication with passkeys
+- [ ] double editor (markdown / rich text)
 
-- [ ] make list of threads the center when no threads are clicked
+- [ ] switch to froala ?
+
+- [ ] mailcow
+
+- [x] move thread / comment to removed collection after deleting
+
+- [ ] ban : { admin: { }, reason: string, expire: date }
+
+- [x] mute : { admin: { }, reason: string, expire: date }
+
+- [x] admin : { edits : [{ admin: { id: 1, name: "wcyat" }, reason: string }], replies: [{ admin: { }, reply: string }]
+
+- [x] add pinned: boolean to category
+
+- [x] service worker for rlp.metahkg.org
+
+- [ ] admin reply
+
+- [ ] admin edit (add the words edited by admin under the commrnt)
+
+- [x] disallow same title
 
 - [ ] tag users (e.g. @wcyat
 
@@ -46,7 +66,7 @@
 
 - [ ] poll feature (maybe special html tag, e.g. `<poll></poll>`)
 
-- [ ] generate title and description from server
+- [ ] generate html title and description from server
 
 - [x] generate sitemap from server
 
@@ -62,7 +82,7 @@
 
 - [ ] fully block (hide threads and all comments, including in quotes)
 
-- [ ] block users should work in quotes
+- [x] block users should work in quotes
 
 - [ ] option to set page limit (frontend)
 
@@ -88,19 +108,19 @@
 
 - [ ] add create category & add createdAt to category object
 
-- [ ] reactions
+- [x] reactions
 
 - [ ] handle synchronous requests that occur at a perfectly same time (see https://stackoverflow.com/questions/21218651/mongodb-auto-increment-id)
 
 - [ ] videojs
 
-- [ ] improve pagify (scroll to bottom after page change)
+- [x] improve pagify (scroll to bottom after page change)
 
 - [ ] improve the replies popup (more alike that of lihkg)
 
 - [ ] delete view thread history
 
-- [ ] react swipable view
+- [x] react swipable view
 
 - [ ] vote button --> not logged in --> login popup
 
@@ -128,7 +148,7 @@
 
 - [ ] admin dashboard (logs ban user etc)
 
-- [ ] block users
+- [x] block users
 
 - [ ] terms, privacy
 
@@ -136,7 +156,7 @@
 
 - [ ] <https://www.npmjs.com/package/react-grid-gallery>
 
-- [ ] user crop profile image
+- [x] user crop profile image
 
 - [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
 
@@ -144,13 +164,11 @@
 
 - [ ] react-photo-gallery
 
-- [ ] mode based menu ("profile" | "menu" | "recall")
+- [x] mode based menu ("profile" | "menu" | "recall")
 
-- [ ] react-social-media-embed
+- [x] react-social-media-embed
 
 - [ ] male & female custom colors
-
-- [ ] reactions to comments
 
 - [ ] admin: visibility (users only / everyone)
 
@@ -159,7 +177,6 @@
 - [ ] add should fold / should hide in comments (blocked)
 
 - [ ] render comments on visible
-
 
 - [x] react-avatar-editor
 
