@@ -1,12 +1,100 @@
 # Todo
 
-> See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
+See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
+
+- [ ] server & frontend: notifications
+	- save in db
+	- starred threads / threads created by the user: new comments
+	- comments created by the user: replies, emotions
+	- [web-push](https://www.npmjs.com/package/web-push)
+
+- [ ] frontend: admin dashboard
+	- [ ] create/edit categories
+	- [ ] ban / unban users
+	- [ ] delete / edit threads
+	- [ ] logs (e.g. new users, new threads)
+
+- [ ] frontend & server: admin config (config.json)
+	- [ ] register modes (  normal / regex email / none / invite )
+	- [ ] visibility: internal / public
+	- [ ] frontend fetch server config (GET /api/server/info /api/server/config etc.)
+
+- [ ] server & frontend: comment types (poll/image/video etc.)
+
+  - [ ] poll (maybe special html tag, e.g. `<poll></poll>`)
+  - [ ] image
+  - [ ] video
+  - [ ] markdown / rich text
+  - [ ] quizzes
+    - [ ] crossword
+    - [ ] mc
+  - [ ] games?
+    - [ ] 24 game
+    - [ ] tic tac toe
+  - [ ] referendum (can only be created by admin)
+
+- [ ] server & frontend: recall / search / starred / history improvements
+	- [ ] search in recall
+	- [ ] delete viewed threads records
+	- [ ] search by thread id
+	- [ ] sort by popularity
+
+- [ ] server & frontend: admin reply, ban/unban users, follow/unfollow users
+	- [ ] ban : { admin: { }, reason: string, expire: date }
+
+- [ ] frontend: implement category tags (in sidebar), category create/edit (in admin dashboard), see [api](https://docs.metahkg.org/docs/api/v5.1-dev)
+
+- [ ] frontend: implement admin edit, delete threads/comments, mute/unmute users (see [api](https://docs.metahkg.org/docs/api/v5.1-dev) admin session)
+
+- [ ] frontend: material design, rounded corners, more colorful, & redesign sidebar
+
+- [ ] frontend: improve thread list
+  - [ ] rounded
+  - [ ] button in bottom right corner (e.g. delete, star)
+
+- [ ] report comments
+
+- [ ] otp login
+
+- [ ] icon buttons: outlined when inactive; filled when active
+
+- [ ] api tokens (custom expiration)
+
+- [ ] react-motions (for scrolling)
+
+- [ ] thread tabs
+
+- [ ] (frontend) framework for user pages
+
+- [ ] api change config (config.json)
+
+- [x] save login sessions and allow remove (the auth token must be found in db to be valid)
+
+```typescript
+{
+	sessions: [
+		{
+			token: string, # jwt
+		    date: Date,
+			exp: Date
+		}
+	]
+}
+```
+
+- [ ] tags for threads (reddit/stackoverflow style)
+
+- [ ] auto run migrate script (save previous version in a file)
+
+- [x] POST /users (admin create user)
+
+- [x] POST /threads
 
 - [ ] tooltip preview image link (check if is .jpg/png)
 
 - [ ] react-toastify
 
-- [ ] notification using mui alerts
+- [x] alerts using mui alerts
 
 - [ ] double editor (markdown / rich text)
 
@@ -16,8 +104,6 @@
 
 - [x] move thread / comment to removed collection after deleting
 
-- [ ] ban : { admin: { }, reason: string, expire: date }
-
 - [x] mute : { admin: { }, reason: string, expire: date }
 
 - [x] admin : { edits : [{ admin: { id: 1, name: "wcyat" }, reason: string }], replies: [{ admin: { }, reply: string }]
@@ -26,15 +112,11 @@
 
 - [x] service worker for rlp.metahkg.org
 
-- [ ] admin reply
-
-- [ ] admin edit (add the words edited by admin under the commrnt)
+- [x] admin edit (add the words edited by admin under the commrnt)
 
 - [x] disallow same title
 
 - [ ] tag users (e.g. @wcyat
-
-- [ ] search in recall
 
 - [ ] multiple pinned comments
 
@@ -46,39 +128,25 @@
 
 - [ ] pm
 
-- [ ] poll
-
-- [x] star, unstar
-
-- [ ] follow, unfollow
-
-- [x] emotions
-
-- [ ] report comments
-
-- [ ] regex email pattern (register restriction)
-
 - [ ] light mode
 
 - [ ] i18n
-
-- [ ] types for comments (poll/image/video etc.)
-
-- [ ] poll feature (maybe special html tag, e.g. `<poll></poll>`)
 
 - [ ] generate html title and description from server
 
 - [x] generate sitemap from server
 
-- [ ] add tags to categories
-
-- [ ] redesign sidebar (lihkg-style)
+- [x] add tags to categories
 
 - [ ] tinymce image editor
 
 - [x] Avatar editor show zoom and degree, max zoom 5x
 
 - [x] avatar editor
+
+- [x] star, unstar
+
+- [x] emotions
 
 - [ ] fully block (hide threads and all comments, including in quotes)
 
@@ -90,23 +158,15 @@
 
 - [ ] pin threads
 
-- [ ] tags for threads (reddit/stackoverflow style)
-
 - [ ] convert html to text and shortened versions
 
 - [ ] about dialog
-
-- [ ] search by thread id
-
-- [ ] sort by popularity (search, history)
-
-- [ ] follow users
 
 - [ ] get user's previous comments (maybe /api/users/{id}/comments)
 
 - [ ] markdown editor (maybe codemirror?)
 
-- [ ] add create category & add createdAt to category object
+- [x] add create category & add createdAt to category object
 
 - [x] reactions
 
@@ -124,11 +184,11 @@
 
 - [ ] vote button --> not logged in --> login popup
 
-- [ ] ig / fb / reddit embed
+- [ ] ig / fb / reddit embed (ig and fb done)
 
 - [ ] if unseen add yellow dot
 
-- [ ] use elastic/open search
+- [ ] ~~use elastic/open search~~ (cancelled for high memory use)
 
 - [ ] spam detection
 
@@ -146,8 +206,6 @@
 
 - [ ] log in dialog
 
-- [ ] admin dashboard (logs ban user etc)
-
 - [x] block users
 
 - [ ] terms, privacy
@@ -158,9 +216,9 @@
 
 - [x] user crop profile image
 
-- [ ] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
+- [x] onclick -> confirm dialog (Please choose file format: jpg xxx yyy, file limit: 200k, confirm) -> upload selector (file explorer)
 
-- [ ] react-images
+- [x] react-images
 
 - [ ] react-photo-gallery
 
@@ -172,8 +230,6 @@
 
 - [ ] admin: visibility (users only / everyone)
 
-- [ ] notification
-
 - [ ] add should fold / should hide in comments (blocked)
 
 - [ ] render comments on visible
@@ -184,33 +240,29 @@
 
 - [ ] rc-image
 
-- [ ] change global total votes on vote
+- [x] change global total votes on vote
 
 - [ ] https://github.com/bvaughn/react-virtualized
 
-- [ ] display block for image loaders
+- [x] ~display block for image loaders~
 
-- [ ] add streamable
+- [x] add streamable
 
 - [ ] quote & add comment to another thread (use a dialog to choose thread)
 
 - [ ] slack-like comments
 
-- [ ] Admin management api
+- [x] Admin management api
 
 - [ ] use a global color theme
 
-- [ ] notification
-
-- [ ] functions for quickly switching menu mode
+- [x] functions for quickly switching menu mode
 
 - [ ] if in quote do not add treat as normal photo
 
-- [ ] move to nextjs
+- [ ] move to nextjs?
 
 - [ ] registration modes (backend done: see [docs](https://docs.metahkg.org/docs/customize/registermode)),
-
-- [ ] regex email for register
 
 - [ ] preview comment when creating
 
@@ -240,11 +292,11 @@
 
 - [x] compress avatar (img-reduce-size-js)
 
-- [x] notifications (logged out, not found…)
+- [x] alerts (logged out, not found…)
 
 - [x] twitter/youtube embed
 
-- [x] unify notification / shares
+- [x] unify alerts / shares
 
 - [x] 404 page
 
