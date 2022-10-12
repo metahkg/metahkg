@@ -3,21 +3,21 @@
 See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] server & frontend: notifications
-	- save in db
-	- starred threads / threads created by the user: new comments
-	- comments created by the user: replies, emotions
-	- [web-push](https://www.npmjs.com/package/web-push)
+  - save in db
+  - starred threads / threads created by the user: new comments
+  - comments created by the user: replies, emotions
+  - [web-push](https://www.npmjs.com/package/web-push)
 
 - [ ] frontend: admin dashboard
-	- [ ] create/edit categories
-	- [ ] ban / unban users
-	- [ ] delete / edit threads
-	- [ ] logs (e.g. new users, new threads)
+  - [ ] create/edit categories
+  - [ ] ban / unban users
+  - [ ] delete / edit threads
+  - [ ] logs (e.g. new users, new threads)
 
 - [ ] frontend & server: admin config (config.json)
-	- [ ] register modes (  normal / regex email / none / invite )
-	- [ ] visibility: internal / public
-	- [ ] frontend fetch server config (GET /api/server/info /api/server/config etc.)
+  - [ ] register modes (  normal / regex email / none / invite )
+  - [ ] visibility: internal / public
+  - [ ] frontend fetch server config (GET /api/server/info /api/server/config etc.)
 
 - [ ] server & frontend: comment types (poll/image/video etc.)
 
@@ -34,13 +34,13 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
   - [ ] referendum (can only be created by admin)
 
 - [ ] server & frontend: recall / search / starred / history improvements
-	- [ ] search in recall
-	- [ ] delete viewed threads records
-	- [ ] search by thread id
-	- [ ] sort by popularity
+  - [ ] search in recall
+  - [ ] delete viewed threads records
+  - [ ] search by thread id
+  - [ ] sort by popularity
 
 - [ ] server & frontend: admin reply, ban/unban users, follow/unfollow users
-	- [ ] ban : { admin: { }, reason: string, expire: date }
+  - [ ] ban : { admin: { }, reason: string, expire: date }
 
 - [ ] frontend: implement category tags (in sidebar), category create/edit (in admin dashboard), see [api](https://docs.metahkg.org/docs/api/v5.1-dev)
 
@@ -72,13 +72,13 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 ```typescript
 {
-	sessions: [
-		{
-			token: string, # jwt
-		    date: Date,
-			exp: Date
-		}
-	]
+ sessions: [
+  {
+   token: string, # jwt
+      date: Date,
+   exp: Date
+  }
+ ]
 }
 ```
 
@@ -170,7 +170,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [x] reactions
 
-- [ ] handle synchronous requests that occur at a perfectly same time (see https://stackoverflow.com/questions/21218651/mongodb-auto-increment-id)
+- [ ] handle synchronous requests that occur at a perfectly same time (see <https://stackoverflow.com/questions/21218651/mongodb-auto-increment-id>)
 
 - [ ] videojs
 
@@ -242,7 +242,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [x] change global total votes on vote
 
-- [ ] https://github.com/bvaughn/react-virtualized
+- [ ] <https://github.com/bvaughn/react-virtualized>
 
 - [x] ~display block for image loaders~
 
