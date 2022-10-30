@@ -34,6 +34,7 @@ services:
       REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
       REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       REACT_APP_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
+      GCM_SENDER_ID: ${GCM_SENDER_ID}
     volumes:
       - ../metahkg-web/src:/home/user/src
       - ../metahkg-web/public:/home/user/public
@@ -61,6 +62,7 @@ services:
       register: ${register}
       VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
+      GCM_API_KEY: ${GCM_API_KEY}
     volumes:
       - ./images:/home/user/images
       - ../metahkg-server/src:/home/user/src
