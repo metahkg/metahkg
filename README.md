@@ -13,7 +13,7 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 [![License](https://img.shields.io/gitlab/license/metahkg/metahkg)](https://gitlab.com/metahkg/metahkg/-/tree/master/LICENSE.md)
 
 [![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
-[![Discord](https://img.shields.io/discord/992390401740775555)](https://discord.gg/yrf2v8KGdc)
+[![Discord](https://badges.aleen42.com/src/discord.svg)](https://discord.gg/yrf2v8KGdc)
 
 ## About
 
