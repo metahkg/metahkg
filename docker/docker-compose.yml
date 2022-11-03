@@ -35,12 +35,14 @@ services:
         REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
         REACT_APP_build: ${REACT_APP_build}
         REACT_APP_version: ${REACT_APP_version}
+        REACT_APP_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
         env: ${env}
     tty: true
     restart: always
     environment:
       port: 3002
       env: ${env}
+      GCM_SENDER_ID: ${GCM_SENDER_ID}
     volumes:
       - ../metahkg-web/src:/home/user/src
       - ../metahkg-web/tailwind.config.js:/home/user/tailwind.config.js
@@ -73,6 +75,9 @@ services:
       cors: ${cors}
       env: ${env}
       register: ${register}
+      VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
+      VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
+      GCM_API_KEY: ${GCM_API_KEY}
     volumes:
       - ./images:/home/user/images
       - ../metahkg-server/src:/home/user/src
