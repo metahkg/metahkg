@@ -4,10 +4,7 @@
 
 It is recommended to use docker for deployment (also supports hot reload).
 
-Docs:
-
-- master branch [master.docs.metahkg.org/docker](https://master.docs.metahkg.org/docker)
-- dev branch [dev.docs.metahkg.org/docker](https://dev.docs.metahkg.org/docker)
+[Docs](https://docs.metahkg.org/docs/category/deploy-metahkg)
 
 ## Manually
 
@@ -17,8 +14,7 @@ Docs:
 
 - amd64 linux (only tested on ubuntu & arch)
 - mongodb (either locally or remotely)
-- mailgun api key (for sending emails)
-- recaptcha site key and secret pair (for anti-spamming)
+- some third-party services (see .env files in metahkg-web and metahkg-server)
 
 ### Set up
 
@@ -39,7 +35,7 @@ metahkg> exit
 
 ```bash
 cd metahkg-server
-cp templates/template.env .env
+cp temp.env .env
 ```
 
 Then edit values in the .env files.
@@ -48,6 +44,11 @@ Then edit values in the .env files.
 
 ```bash
 cd metahkg-web
+```
+
+Then edit variables in .env.
+
+```bash
 yarn install
 yarn deploy
 ```
