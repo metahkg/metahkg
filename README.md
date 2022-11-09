@@ -40,7 +40,7 @@ All sub-projects here follow a same versioning, major.minor.patch.
 
 Packages with the same minor version are fully compatibile.
 Packages with the same major but not minor version are highly compatibile.
-Packages with different major versions have few to no compatibility.
+Packages with different major versions have little to no compatibility.
 
 e.g. metahkg-server v2.5.1 would be fully compatibile with metahkg-api v2.5.x and metahkg-web v2.5.x, and vice versa.
 
@@ -60,6 +60,14 @@ We have a typescript api client [here](https://gitlab.com/metahkg/metahkg-api) (
 ## Docs
 
 [Metahkg docs](https://docs.metahkg.org)
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Issues
+
+Report a bug / submit a feature request by [creating an issue](https://gitlab.com/groups/metahkg/-/issues).
 
 ## Cloning
 
