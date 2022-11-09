@@ -28,3 +28,7 @@ Please develop base on dev branch and not master.
 ## Bugs
 
 Bug fixes are always welcome! If the bug appears in both the master and dev branches fix on dev branch first. I will port it to the master branch.
+
+## Issues
+
+Report a bug / submit a feature request by [creating an issue](https://gitlab.com/groups/metahkg/-/issues).
