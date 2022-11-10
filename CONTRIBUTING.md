@@ -19,7 +19,7 @@ Try a [deployment](https://docs.metahkg.org/docs/category/deploy-metahkg) so tha
 
 ## Features
 
-Take a look at [TODO.md](./TODO.md) for what features we want to develop. Additional features are always welcome.
+Take a look at [epics](https://gitlab.com/groups/metahkg/-/epics?state=opened&page=1&sort=start_date_desc) or [TODO.md](./TODO.md) for what features we want to develop. Additional features are always welcome.
 
 It is a good idea to notify us on [telegram](https://t.me/+WbB7PyRovUY1ZDFl) before starting to make a new feature, so it would not be multiple people working on the same feature.
 
