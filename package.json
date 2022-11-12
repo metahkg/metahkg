@@ -1,6 +1,6 @@
 {
   "name": "metahkg",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Metahkg is a free and open source lihkg-style forum.",
   "repository": {
     "type": "git",
@@ -11,9 +11,9 @@
     "setup": "(yarn install || npm install) && node mongodb/mongo-setup.js",
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
     "start:docker": "yarn docker",
-    "docker": "cd docker && docker-compose up -d --build",
+    "docker": "cd docker && docker-compose pull --ignore-pull-failures && docker-compose up -d --build",
     "docker:prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.yml pull --ignore-pull-failures && docker-compose -f docker-compose-prebuilt.yml up -d --build",
-    "docker:express": "cd docker && docker-compose -f docker-compose.express.yml up -d --build",
+    "docker:express": "cd docker && docker-compose -f docker-compose.express.yml pull --ignore-pull-failures && docker-compose -f docker-compose.express.yml up -d --build",
     "docker:express-prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.express.yml up -d --build",
     "docker:down": "cd docker && docker-compose down",
     "docker:logs": "cd docker && docker-compose logs",
@@ -34,5 +34,7 @@
     "dotenv": "^16.0.1",
     "mongodb": "^4.8.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@metahkg/api": "^5.7.3-2-dev"
+  }
 }
