@@ -65,6 +65,10 @@ We have a typescript api client [here](https://gitlab.com/metahkg/metahkg-api) (
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+## Todo / Roadmap
+
+See [epics](https://gitlab.com/groups/metahkg/-/epics?state=opened&page=1&sort=start_date_desc) or [TODO.md](./TODO.md).
+
 ## Issues
 
 Report a bug / submit a feature request by [creating an issue](https://gitlab.com/groups/metahkg/-/issues).

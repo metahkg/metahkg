@@ -17,7 +17,7 @@ If you want to develop features, please base on dev branch.
 
 Try a [deployment](https://docs.metahkg.org/docs/category/deploy-metahkg) so that you can work on the code while experimenting. Please use the dev branch.
 
-## Features
+## Develop
 
 Take a look at [epics](https://gitlab.com/groups/metahkg/-/epics?state=opened&page=1&sort=start_date_desc) or [TODO.md](./TODO.md) for what features we want to develop. Additional features are always welcome.
 
