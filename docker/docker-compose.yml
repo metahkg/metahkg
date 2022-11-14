@@ -120,7 +120,10 @@ services:
       - ./imageproxy:/tmp/imageproxy
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
-    image: registry.gitlab.com/metahkg/rlp-proxy-rewrite:latest
+    image: metahkg${COMPOSE_PROJECT_NAME}/rlp-proxy
+    build:
+      context: ../rlp-proxy-rewrite
+      dockerfile: ./Dockerfile
     tty: true
     restart: always
     environment:
