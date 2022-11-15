@@ -12,4 +12,4 @@
 	url = https://gitlab.com/metahkg/metahkg-api
 [submodule "rlp-proxy-rewrite"]
 	path = rlp-proxy-rewrite
-	url = https://github.com/metahkg/rlp-proxy-rewrite
+	url = https://gitlab.com/metahkg/rlp-proxy-rewrite
