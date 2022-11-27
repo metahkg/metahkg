@@ -1,6 +1,6 @@
 {
   "name": "metahkg",
-  "version": "5.6.0",
+  "version": "5.7.0",
   "description": "Metahkg is a free and open source lihkg-style forum.",
   "repository": {
     "type": "git",
@@ -11,14 +11,19 @@
     "setup": "(yarn install || npm install) && node mongodb/mongo-setup.js",
     "deploy": "cd metahkg-server && yarn run deploy & cd metahkg-web && yarn run deploy",
     "start:docker": "yarn docker",
-    "docker": "cd docker && docker-compose up -d --build",
-    "docker:prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.yml pull --ignore-pull-failures && docker-compose -f docker-compose-prebuilt.yml up -d --build",
-    "docker:express": "cd docker && docker-compose -f docker-compose.express.yml up -d --build",
-    "docker:express-prebuilt": "cd docker && docker-compose -f docker-compose-prebuilt.express.yml up -d --build",
+    "docker": "cd docker && docker-compose pull metahkg-images metahkg-mongo && docker-compose up -d --build",
+    "docker:prebuilt": "cd docker && docker-compose pull --ignore-pull-failures && docker-compose build metahkg-nginx && docker-compose up -d",
+    "docker:vpn": "cd docker && docker-compose -f docker-compose.vpn.yml pull metahkg-images metahkg-mongo metahkg-protonvpn && docker-compose -f docker-compose.vpn.yml up -d --build",
+    "docker:vpn:prebuilt": "cd docker && docker-compose -f docker-compose.vpn.yml pull --ignore-pull-failures && docker-compose -f docker-compose.vpn.yml build metahkg-nginx && docker-compose -f docker-compose.vpn.yml up -d",
+    "docker:vpn:express": "cd docker && docker-compose -f docker-compose.vpn.express.yml pull metahkg-images metahkg-mongo metahkg-protonvpn metahkg-mongo-express && docker-compose -f docker-compose.vpn.express.yml up -d --build",
+    "docker:vpn:express:prebuilt": "cd docker && docker-compose -f docker-compose.vpn.express.yml pull --ignore-pull-failures && docker-compose -f docker-compose.vpn.express.yml build metahkg-nginx && docker-compose -f docker-compose.vpn.express.yml up -d",
+    "docker:express": "cd docker && docker-compose -f docker-compose.express.yml pull metahkg-images metahkg-mongo metahkg-mongo-express && docker-compose -f docker-compose.express.yml up -d --build",
+    "docker:express:prebuilt": "cd docker && docker-compose -f docker-compose.express.yml pull --ignore-pull-failures && docker-compose -f docker-compose.express.yml build metahkg-nginx && docker-compose -f docker-compose.express.yml up -d",
+    "docker:express-prebuilt": "yarn docker:express:prebuilt",
     "docker:down": "cd docker && docker-compose down",
     "docker:logs": "cd docker && docker-compose logs",
     "docker:clean": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi",
-    "clean:docker": "docker images -a | grep '<none>' | awk '{print $3}' | xargs docker rmi"
+    "clean:docker": "yarn docker:clean"
   },
   "keywords": [
     "forum",
@@ -34,5 +39,7 @@
     "dotenv": "^16.0.1",
     "mongodb": "^4.8.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@metahkg/api": "^5.7.3-2-dev"
+  }
 }

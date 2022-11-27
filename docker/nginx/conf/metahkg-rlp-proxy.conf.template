@@ -1,0 +1,9 @@
+server {
+    server_tokens off;
+    listen 80;
+    listen [::]:80;
+    server_name $RLP_PROXY_DOMAIN;
+    location / {
+        proxy_pass http://${METAHKG_RLP_PROXY_NAME}:3005;
+    }
+}

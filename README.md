@@ -19,40 +19,60 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 
 This open-source project was created primarily because of me being unable to register a lihkg account as a high school student.
 
-Currently, it aims to be a fully featured alternative to lihkg. However, I might also add other useful features.
+Currently, it aims to be a fully featured alternative to lihkg. However, I might also add (and I have added) other useful features.
 
 As contrasted with lihkg, metahkg is open to everyone and anyone can create an account with a email address, no matter issued by a university or not.
 
 ## Repos
 
-This repository is a collection of four repositories:
+This repository contains five sub-repositories:
 
 - metahkg-web
 - metahkg-server
 - metahkg-links
 - metahkg-api
+- rlp-proxy-rewrite
 
 Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
 
 ## Versioning
 
-All sub-projects here follow a same versioning, based on metahkg-server's versioning, compatibility is guaranteed for a same major version.
+All sub-projects here follow a same versioning, major.minor.patch.
 
-e.g. metahkg-server v2.5.1 would be compatibile with metahkg-api v2.5.x and metahkg-web v2.5.x, and vice versa.
+Packages with the same minor version are fully compatibile.
+Packages with the same major but not minor version are highly compatibile.
+Packages with different major versions have little to no compatibility.
+
+e.g. metahkg-server v2.5.1 would be fully compatibile with metahkg-api v2.5.x and metahkg-web v2.5.x, and vice versa.
 
 ## Branches
 
-Two (or one) major versions are maintained at each time, one at the master branch and another at the dev branch. The version at dev branch is in development, and rather unstable, while that in master branch is considered stable but will only receive bug fixes until the next major version is ready. All new features are developed in dev branch.
+`dev` branch is the development branch, where new features and versions are developed.
+`master` branch is a maintained snapshot (bug fixes only) of the `dev` branch, and would be updated to a different snapshot after some development in the `dev` branch.
 
-[metahkg.org](https://metahkg.org) runs the latest master branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the dev branch.
+If you with to contribute, please develop base on the `dev` branch. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
 
-## Metahkg Api Wrapper
+[metahkg.org](https://metahkg.org) runs the latest `master` branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the latest `dev` branch code. They are updated to use the latest docker images every hour.
 
-We have an api wrapper [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api wrapper with a same major version of metahkg-server.
+## Metahkg Api Client
+
+We have a typescript api client [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api client with a same major version of metahkg-server.
 
 ## Docs
 
 [Metahkg docs](https://docs.metahkg.org)
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Todo / Roadmap
+
+See [epics](https://gitlab.com/groups/metahkg/-/epics?state=opened&page=1&sort=start_date_desc) or [TODO.md](./TODO.md).
+
+## Issues
+
+Report a bug / submit a feature request by [creating an issue](https://gitlab.com/groups/metahkg/-/issues).
 
 ## Cloning
 
