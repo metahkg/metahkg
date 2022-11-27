@@ -19,18 +19,19 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 
 This open-source project was created primarily because of me being unable to register a lihkg account as a high school student.
 
-Currently, it aims to be a fully featured alternative to lihkg. However, I might also add other useful features.
+Currently, it aims to be a fully featured alternative to lihkg. However, I might also add (and I have added) other useful features.
 
 As contrasted with lihkg, metahkg is open to everyone and anyone can create an account with a email address, no matter issued by a university or not.
 
 ## Repos
 
-This repository contains four sub-repositories:
+This repository contains five sub-repositories:
 
 - metahkg-web
 - metahkg-server
 - metahkg-links
 - metahkg-api
+- rlp-proxy-rewrite
 
 Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
 

@@ -1,46 +1,124 @@
 # Todo
 
+Also see: [epics](https://gitlab.com/groups/metahkg/-/epics)
+
 See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
-- [ ] server & frontend: notifications
-  - save in db
-  - starred threads / threads created by the user: new comments
-  - comments created by the user: replies, emotions
-  - [web-push](https://www.npmjs.com/package/web-push)
+- [ ] react-virtualized
+
+- [ ] manifest: public url
+
+- [ ] rlp proxy: support tor
+
+- [ ] web: save editor drafts
+
+- [ ] web: forgot & reset password
+  - see [epic &13](https://gitlab.com/groups/metahkg/-/epics/13)
+
+- [ ] mobile app: migrate to v5 api client
+  - see [epic &6](https://gitlab.com/groups/metahkg/-/epics/6)
+
+- [ ] server code style: add null to the db.find output types
+
+- [ ] web: custom api endpoint
+
+- [ ] user profile: user status, bio, website etc.
+  - see [epic &17](https://gitlab.com/groups/metahkg/-/epics/17)
+
+- [ ] rate limit
+  - [ ] use redis
+
+- [ ] ~~(consideration): use markdown as the main format, convert from html using turndown~~
+
+- [ ] comment types (poll/image/video etc.)
+  - [ ] see [epic &1](https://gitlab.com/groups/metahkg/-/epics/1)
+
+- [ ] Threads / thread list improvements
+  - [ ] see [epic &7](https://gitlab.com/groups/metahkg/-/epics/7)
+
+- [x] [fastify-jwt](https://github.com/fastify/fastify-jwt)
+
+- [ ] wrap web app in fastify, modify html title and description from db
+
+- [ ] server & web: push view thread history to server
+
+- [ ] sso (allow users to sign into other sites via metahkg)
+
+- [ ] third-party login & totp
+  - see [epic &2](https://gitlab.com/groups/metahkg/-/epics/2)
+
+- [ ] frontend: save comment as image
+  - see [epic &8](https://gitlab.com/groups/metahkg/-/epics/8)
+
+- [ ] frontend: switch to froala ?
+
+- [ ] frontend: auto update conversation
+
+- [ ] delete avatar
+  - [x] server
+  - [ ] web
+
+![drawing](:/02c8d9a7fe564aefa7c5e48b36f4314c)
+
+- [ ] server & web: followed users thread list
+  - see [epic &12](https://gitlab.com/groups/metahkg/-/epics/12)
+
+- [ ] server & web: admin reply, ban/unban users, follow/unfollow users
+  - [ ] admin reply
+    - see [epic 18](https://gitlab.com/groups/metahkg/-/epics/18)
+  - [x] ban / unban users
+  - [x] follow / unfollow users (with notifications)
+
+- [ ] notifications
+  - see [epic &10](https://gitlab.com/groups/metahkg/-/epics/10)
+
+- [ ] login sessions
+  - [x] save sessions
+  - [x] auth token must be found in db to be valid
+  - [x] server: get sessions
+  - [x] server: get individual sessions
+  - [x] server: revoke sessions
+  - [x] server: logout
+  - [x] frontend: send logout request to server
+  - [x] option to restrict to same ip
+    - [x] frontend: ask upon
+      - [x] login
+      - [x] verify
+    - [x] inherit to new tokens
+  - [ ] frontend: show and revoke sessions
+    - see [epic &9](https://gitlab.com/groups/metahkg/-/epics/9)
+
+```typescript
+{
+    sessions: [
+        {
+                id: string, // 30-digit id
+                token: string, // jwt
+                createdAt: Date,
+                exp: Date,
+     userAgent: string,
+                ip: string, // hashed ip
+                sameIp?: boolean // require same ip or not
+        }
+    ]
+}
+```
+
+- [ ] server: logs
+  - see [epic &16](https://gitlab.com/groups/metahkg/-/epics/16)
+
+- [ ] general: automate setup
+
+- [ ] frontend: fix mobile emotions overflow
+  - see metahkg-web [issue #10](https://gitlab.com/metahkg/metahkg-web/-/issues/10)
 
 - [ ] frontend: admin dashboard
-  - [ ] create/edit categories
-  - [ ] ban / unban users
-  - [ ] delete / edit threads
-  - [ ] logs (e.g. new users, new threads)
+  - see [epic &15](https://gitlab.com/groups/metahkg/-/epics/15)
 
-- [ ] frontend & server: admin config (config.json)
-  - [ ] register modes (  normal / regex email / none / invite )
-  - [ ] visibility: internal / public
-  - [ ] frontend fetch server config (GET /api/server/info /api/server/config etc.)
+- [ ] frontend & server: server config
+  - see [epic &14](https://gitlab.com/groups/metahkg/-/epics/14)
 
-- [ ] server & frontend: comment types (poll/image/video etc.)
-
-  - [ ] poll (maybe special html tag, e.g. `<poll></poll>`)
-  - [ ] image
-  - [ ] video
-  - [ ] markdown / rich text
-  - [ ] quizzes
-    - [ ] crossword
-    - [ ] mc
-  - [ ] games?
-    - [ ] 24 game
-    - [ ] tic tac toe
-  - [ ] referendum (can only be created by admin)
-
-- [ ] server & frontend: recall / search / starred / history improvements
-  - [ ] search in recall
-  - [ ] delete viewed threads records
-  - [ ] search by thread id
-  - [ ] sort by popularity
-
-- [ ] server & frontend: admin reply, ban/unban users, follow/unfollow users
-  - [ ] ban : { admin: { }, reason: string, expire: date }
+- [ ] ~~admin: create users~~
 
 - [ ] frontend: implement category tags (in sidebar), category create/edit (in admin dashboard), see [api](https://docs.metahkg.org/docs/api/v5.1-dev)
 
@@ -49,10 +127,10 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 - [ ] frontend: material design, rounded corners, more colorful, & redesign sidebar
 
 - [ ] frontend: improve thread list
-  - [ ] rounded
-  - [ ] button in bottom right corner (e.g. delete, star)
 
-- [ ] report comments
+  - [ ] rounded
+  - [ ] button in bottom right corner (e.g. delete, star) ![Screenshot_20221012_192626.png](:/5243edcbbc034b4287da3234318c7318)
+- [ ] report comments (send email / notification to admin?)
 
 - [ ] otp login
 
@@ -67,20 +145,6 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 - [ ] (frontend) framework for user pages
 
 - [ ] api change config (config.json)
-
-- [x] save login sessions and allow remove (the auth token must be found in db to be valid)
-
-```typescript
-{
- sessions: [
-  {
-   token: string, # jwt
-      date: Date,
-   exp: Date
-  }
- ]
-}
-```
 
 - [ ] tags for threads (reddit/stackoverflow style)
 
@@ -98,15 +162,13 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] double editor (markdown / rich text)
 
-- [ ] switch to froala ?
-
 - [ ] mailcow
 
 - [x] move thread / comment to removed collection after deleting
 
 - [x] mute : { admin: { }, reason: string, expire: date }
 
-- [x] admin : { edits : [{ admin: { id: 1, name: "wcyat" }, reason: string }], replies: [{ admin: { }, reply: string }]
+- [x] admin : { edits : \[{ admin: { id: 1, name: “wcyat” }, reason: string }\], replies: \[{ admin: { }, reply: string }\]
 
 - [x] add pinned: boolean to category
 
@@ -131,8 +193,6 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 - [ ] light mode
 
 - [ ] i18n
-
-- [ ] generate html title and description from server
 
 - [x] generate sitemap from server
 
@@ -162,7 +222,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] about dialog
 
-- [ ] get user's previous comments (maybe /api/users/{id}/comments)
+- [ ] get user’s previous comments (maybe /api/users/{id}/comments)
 
 - [ ] markdown editor (maybe codemirror?)
 
@@ -178,8 +238,6 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] improve the replies popup (more alike that of lihkg)
 
-- [ ] delete view thread history
-
 - [x] react swipable view
 
 - [ ] vote button --> not logged in --> login popup
@@ -193,8 +251,6 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 - [ ] spam detection
 
 - [ ] word limit
-
-- [ ] reset password (backend done)
 
 - [ ] del acc
 
@@ -222,7 +278,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] react-photo-gallery
 
-- [x] mode based menu ("profile" | "menu" | "recall")
+- [x] mode based menu (“profile” | “menu” | “recall”)
 
 - [x] react-social-media-embed
 
@@ -266,7 +322,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] preview comment when creating
 
-- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight) { no change? }
+- [x] if (croot.clientHeight / 5 + {pagetop’s height} > croot.clientHeight)
 
 - [x] add telegram group link
 
@@ -324,7 +380,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [x] improve api (more restful)
 
-- [x] add target="\_blank" to links
+- [x] add target="_blank" to links
 
 - [x] replies
 

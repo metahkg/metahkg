@@ -6,15 +6,13 @@ services:
       context: ./nginx
       dockerfile: ./Dockerfile
     tty: true
-    ports:
-      - ${PORT:-$port}:80
     restart: always
     environment:
-      METAHKG_LINKS_NAME: metahkg${COMPOSE_PROJECT_NAME}-links
-      METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
-      METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
-      METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
-      METAHKG_RLP_PROXY_NAME: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
+      METAHKG_LINKS_NAME: localhost
+      METAHKG_SERVER_NAME: localhost
+      METAHKG_WEB_NAME: localhost
+      METAHKG_IMAGES_NAME: localhost
+      METAHKG_RLP_PROXY_NAME: localhost
       domain: ${domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       IMAGES_DOMAIN: ${IMAGES_DOMAIN}
@@ -25,8 +23,8 @@ services:
       - metahkg-links
       - metahkg-images
       - metahkg-rlp-proxy
-    networks:
-      - metahkg-network
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-web:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-web
     image: registry.gitlab.com/metahkg/metahkg-web/${branch:-master}:${version:-latest}
@@ -60,8 +58,8 @@ services:
       - metahkg-links
       - metahkg-images
       - metahkg-rlp-proxy
-    networks:
-      - metahkg-network
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-server:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-server
     image: registry.gitlab.com/metahkg/metahkg-server/${branch:-master}:${version:-latest}
@@ -73,7 +71,7 @@ services:
     tty: true
     restart: always
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       mailgun_key: ${mailgun_key}
       mailgun_domain: ${mailgun_domain}
@@ -92,8 +90,8 @@ services:
       - ../metahkg-server/src:/home/user/src
     depends_on:
       - metahkg-mongo
-    networks:
-      - metahkg-network
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-links:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-links
     image: registry.gitlab.com/metahkg/metahkg-links/${branch:-master}:${version:-latest}
@@ -104,22 +102,23 @@ services:
     restart: always
     environment:
       PORT: 3003
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       metahkgDomain: ${domain}
-    networks:
-      - metahkg-network
     depends_on:
       - metahkg-mongo
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
     image: ghcr.io/willnorris/imageproxy:latest
     tty: true
     restart: always
     entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
-    networks:
-      - metahkg-network
     volumes:
       - ./imageproxy:/tmp/imageproxy
+    depends_on:
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
     image: registry.gitlab.com/metahkg/rlp-proxy-rewrite/${branch:-master}:${version:-latest}
@@ -129,29 +128,69 @@ services:
     tty: true
     restart: always
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       PORT: 3005
     depends_on:
       - metahkg-mongo
-    networks:
-      - metahkg-network
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
+  metahkg-mongo-express:
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo-express
+    image: mongo-express:latest
+    tty: true
+    restart: always
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_USER}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_PASSWORD}
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: false
+      ME_CONFIG_MONGODB_SERVER: localhost
+      ME_CONFIG_MONGODB_PORT: ${MONGO_PORT}
+      ME_CONFIG_MONGODB_AUTH_DATABASE: metahkg
+      ME_CONFIG_MONGODB_AUTH_USERNAME: ${MONGO_USER}
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: ${MONGO_PASSWORD}
+    depends_on:
+      - metahkg-mongo
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
     image: mongo:latest
     tty: true
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
-    ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: metahkg
-    networks:
-      - metahkg-network
     volumes:
       - ./data:/data/db
       - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    depends_on:
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
+  metahkg-protonvpn:
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
+    environment:
+      # Credentials
+      PROTONVPN_USERNAME: ${PROTONVPN_USERNAME}
+      PROTONVPN_PASSWORD: ${PROTONVPN_PASSWORD}
+      # Override these where applicable
+      PROTONVPN_SERVER: ${PROTONVPN_SERVER:-JP}
+      PROTONVPN_TIER: ${PROTONVPN_TIER:-0}
+    # Always use semver tags, avoid using tag latest!
+    image: ghcr.io/tprasadtp/protonvpn:latest
+    restart: always
+    ports:
+      - ${PORT:-$port}:80
+      - ${MONGO_PORT}:${MONGO_PORT}
+    networks:
+      - internet
+      - proxy
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
 networks:
-  metahkg-network:
-    driver: bridge
+  internet:
+  proxy:
+    internal: true

@@ -3,6 +3,7 @@
 .env
 /docker/data/
 /docker/images/
+/docker/imageproxy/
 /.vscode/
 /.idea/
 yarn*.log
