@@ -88,7 +88,7 @@ services:
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
     volumes:
-      - ./images:/home/user/images
+      - ./images:/home/user/images:z
       - ../metahkg-server/src:/home/user/src
     depends_on:
       - metahkg-mongo
@@ -112,14 +112,14 @@ services:
       - metahkg-mongo
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
-    image:  ghcr.io/willnorris/imageproxy:latest
+    image: ghcr.io/willnorris/imageproxy:latest
     tty: true
     restart: always
     entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
     networks:
       - metahkg-network
     volumes:
-      - ./imageproxy:/tmp/imageproxy
+      - ./imageproxy:/tmp/imageproxy:z
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
     image: registry.gitlab.com/metahkg/rlp-proxy-rewrite/${branch:-master}:${version:-latest}
