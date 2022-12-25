@@ -88,7 +88,7 @@ services:
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
     volumes:
-      - ./images:/home/user/images
+      - ./images:/home/user/images:z
       - ../metahkg-server/src:/home/user/src
     depends_on:
       - metahkg-mongo
@@ -119,7 +119,7 @@ services:
     networks:
       - metahkg-network
     volumes:
-      - ./imageproxy:/tmp/imageproxy
+      - ./imageproxy:/tmp/imageproxy:z
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
     image: registry.gitlab.com/metahkg/rlp-proxy-rewrite/${branch:-master}:${version:-latest}

@@ -89,7 +89,7 @@ services:
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
     volumes:
-      - ./images:/home/user/images
+      - ./images:/home/user/images:z
       - ../metahkg-server/src:/home/user/src
     depends_on:
       - metahkg-mongo
@@ -114,14 +114,12 @@ services:
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
     image: ghcr.io/willnorris/imageproxy:latest
+
     tty: true
     restart: always
-    environment:
-      IMAGEPROXY_CACHE: /tmp/imageproxy
-      IMAGEPROXY_ADDR: 0.0.0.0:3004
-    entrypoint: "/app/imageproxy"
+    entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
     volumes:
-      - ./imageproxy:/tmp/imageproxy
+      - ./imageproxy:/tmp/imageproxy:z
 
     depends_on:
       - metahkg-protonvpn
