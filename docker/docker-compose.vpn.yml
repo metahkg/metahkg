@@ -80,7 +80,7 @@ services:
     mem_limit: 500mb
     memswap_limit: 500mb
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
@@ -114,7 +114,7 @@ services:
     memswap_limit: 500mb
     environment:
       PORT: 3003
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
       metahkgDomain: ${DOMAIN:-$domain}
     depends_on:
       - metahkg-mongo
@@ -146,7 +146,7 @@ services:
     mem_limit: 500mb
     memswap_limit: 500mb
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       PORT: 3005
     depends_on:
       - metahkg-mongo
@@ -160,8 +160,6 @@ services:
     restart: always
     mem_limit: 500mb
     memswap_limit: 500mb
-    ports:
-      - ${MONGO_PORT}:${MONGO_PORT}
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
@@ -169,8 +167,7 @@ services:
     volumes:
       - ./data:/data/db
       - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
-    networks:
-      - metahkg-network
+    network_mode: service:metahkg-protonvpn
   metahkg-protonvpn:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
     environment:
@@ -185,6 +182,8 @@ services:
     restart: always
     mem_limit: 500mb
     memswap_limit: 500mb
+    ports:
+      - ${MONGO_PORT}:${MONGO_PORT}
     networks:
       - metahkg-proxy
       - metahkg-network
