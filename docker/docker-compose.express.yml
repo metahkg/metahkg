@@ -15,7 +15,7 @@ services:
       METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
       METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
       METAHKG_RLP_PROXY_NAME: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
-      domain: ${domain}
+      DOMAIN: ${DOMAIN:-$domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
@@ -34,7 +34,7 @@ services:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
       args:
-        REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
+        REACT_APP_recaptchasitekey: ${RECAPTCHA_SITE_KEY:-$REACT_APP_recaptchasitekey}
         REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
         REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
         REACT_APP_build: ${REACT_APP_build}
@@ -46,15 +46,15 @@ services:
     environment:
       PORT: 3002
       env: ${env}
-      REACT_APP_recaptchasitekey: ${REACT_APP_recaptchasitekey}
+      REACT_APP_recaptchasitekey: ${RECAPTCHA_SITE_KEY:-$REACT_APP_recaptchasitekey}
       REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
       REACT_APP_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       GCM_SENDER_ID: ${GCM_SENDER_ID}
     volumes:
-      - ../metahkg-web/src:/home/user/src
-      - ../metahkg-web/tailwind.config.js:/home/user/tailwind.config.js
-      - ../metahkg-web/public:/home/user/public
+      - ../metahkg-web/src:/app/src
+      - ../metahkg-web/tailwind.config.js:/app/tailwind.config.js
+      - ../metahkg-web/public:/app/public
     depends_on:
       - metahkg-server
       - metahkg-links
@@ -75,21 +75,22 @@ services:
     environment:
       DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
-      mailgun_key: ${mailgun_key}
-      mailgun_domain: ${mailgun_domain}
-      domain: ${domain}
+      MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
+      MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
+      DOMAIN: ${DOMAIN:-$domain}
       PORT: 3001
-      recaptchasecret: ${recaptchasecret}
-      jwtKey: ${jwtKey}
-      cors: ${cors}
+      RECAPTCHA_SECRET: ${RECAPTCHA_SECRET:-$recaptchasecret}
+      CORS: ${CORS:-$cors}
       env: ${env}
-      register: ${register}
+      REGISTER_MODE: ${REGISTER_MODE:-$register}
       VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
+      KEY_PASSPHRASE: ${KEY_PASSPHRASE}
     volumes:
-      - ./images:/home/user/images:z
-      - ../metahkg-server/src:/home/user/src
+      - ./images:/app/images:Z
+      - ./certs:/app/certs:Z
+      - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
     networks:
@@ -105,7 +106,7 @@ services:
     environment:
       PORT: 3003
       DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
-      metahkgDomain: ${domain}
+      metahkgDomain: ${DOMAIN:-$domain}
     networks:
       - metahkg-network
     depends_on:
@@ -119,7 +120,7 @@ services:
     networks:
       - metahkg-network
     volumes:
-      - ./imageproxy:/tmp/imageproxy:z
+      - ./imageproxy:/tmp/imageproxy:Z
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
     image: registry.gitlab.com/metahkg/rlp-proxy-rewrite/${branch:-master}:${version:-latest}

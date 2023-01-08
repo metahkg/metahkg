@@ -4,6 +4,7 @@
 /docker/data/
 /docker/images/
 /docker/imageproxy/
+/docker/certs/
 /.vscode/
 /.idea/
 yarn*.log
