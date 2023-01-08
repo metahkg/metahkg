@@ -144,6 +144,7 @@ services:
     environment:
       DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       PORT: 3005
+      NO_HEADLESS: "false"
     depends_on:
       - metahkg-mongo
     networks:

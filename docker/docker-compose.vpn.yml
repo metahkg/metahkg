@@ -148,6 +148,7 @@ services:
     environment:
       DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       PORT: 3005
+      NO_HEADLESS: "false"
     depends_on:
       - metahkg-mongo
       - metahkg-protonvpn
