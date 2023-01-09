@@ -33,7 +33,7 @@ This repository contains five sub-repositories:
 - metahkg-api
 - rlp-proxy-rewrite
 
-Projects on the same branch should follow a same major version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
+Projects on the same branch should follow a same minor version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
 
 ## Versioning
 
@@ -56,7 +56,7 @@ If you with to contribute, please develop base on the `dev` branch. See [CONTRIB
 
 ## Metahkg Api Client
 
-We have a typescript api client [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api client with a same major version of metahkg-server.
+We have a typescript api client [here](https://gitlab.com/metahkg/metahkg-api) (in metahkg-api), for easily accessing the api. Please use the api client with a same minor version of metahkg-server.
 
 ## Docs
 
