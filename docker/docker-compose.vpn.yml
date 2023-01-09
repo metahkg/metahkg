@@ -80,7 +80,7 @@ services:
     mem_limit: 500mb
     memswap_limit: 500mb
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
+      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
@@ -114,7 +114,7 @@ services:
     memswap_limit: 500mb
     environment:
       PORT: 3003
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
+      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
       metahkgDomain: ${DOMAIN:-$domain}
     depends_on:
       - metahkg-mongo
@@ -146,7 +146,7 @@ services:
     mem_limit: 500mb
     memswap_limit: 500mb
     environment:
-      DB_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
+      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}
       PORT: 3005
       NO_HEADLESS: "false"
     depends_on:
