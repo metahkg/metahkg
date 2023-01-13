@@ -81,6 +81,9 @@ services:
     memswap_limit: 500mb
     environment:
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-protonvpn:${MONGO_PORT}
+      REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
@@ -90,6 +93,8 @@ services:
       CORS: ${CORS:-$cors}
       env: ${env}
       REGISTER_MODE: ${REGISTER_MODE:-$register}
+      REGISTER_DOMAINS: ${REGISTER_DOMAINS}
+      VISIBILITY: ${VISIBILITY}
       VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
@@ -190,6 +195,16 @@ services:
       - ./data:/data/db
       - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     network_mode: service:metahkg-protonvpn
+  metahkg-redis:
+    image: redis:alpine
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-redis
+    command: redis-server --save 10 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    restart: always
+    mem_limit: 500mb
+    memswap_limit: 500mb
+    volumes:
+      - ./redis_data:/data
+    network_mode: service:metahkg-protonvpn
   metahkg-protonvpn:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
     environment:
@@ -206,6 +221,7 @@ services:
     memswap_limit: 500mb
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
+      - ${REDIS_PORT}:6379
     networks:
       - metahkg-proxy
       - metahkg-network
