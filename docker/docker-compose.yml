@@ -126,7 +126,7 @@ services:
       - metahkg-mongo
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
-    image: ghcr.io/willnorris/imageproxy:latest
+    image: registry.gitlab.com/metahkg/forks/imageproxy:latest
     tty: true
     restart: always
     mem_limit: 500mb
