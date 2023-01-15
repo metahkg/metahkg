@@ -1,9 +1,12 @@
+limit_req_zone $binary_remote_addr zone=metahkg-images:10m rate=4r/s;
+
 server {
     server_tokens off;
     listen 80;
     listen [::]:80;
     server_name $IMAGES_DOMAIN;
     location / {
+        limit_req zone=metahkg-images burst=150 delay=10;
         proxy_pass http://${METAHKG_IMAGES_NAME}:3004;
     }
 }
