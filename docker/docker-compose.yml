@@ -142,18 +142,26 @@ services:
     build:
       context: ../rlp-proxy-rewrite
       dockerfile: ./Dockerfile
+      args:
+        env: ${env}
     tty: true
     restart: always
     mem_limit: 500mb
     memswap_limit: 500mb
     environment:
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
       PORT: 3005
       NO_HEADLESS: "false"
+      env: ${env}
     depends_on:
       - metahkg-mongo
     networks:
       - metahkg-network
+    volumes:
+      - ../rlp-proxy-rewrite/src:/app/src
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
     image: mongo:latest
