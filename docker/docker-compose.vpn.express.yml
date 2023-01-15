@@ -202,6 +202,8 @@ services:
     volumes:
       - ./data:/data/db
       - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+    depends_on:
+      - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
   metahkg-redis:
     image: redis:alpine
@@ -212,6 +214,8 @@ services:
     memswap_limit: 500mb
     volumes:
       - ./redis_data:/data
+    depends_on:
+      - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
   metahkg-protonvpn:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
