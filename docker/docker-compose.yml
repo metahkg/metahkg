@@ -104,6 +104,7 @@ services:
       - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
   metahkg-links:
@@ -158,6 +159,7 @@ services:
       env: ${env}
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
     volumes:

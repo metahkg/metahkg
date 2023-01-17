@@ -105,6 +105,7 @@ services:
       - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
   metahkg-links:
@@ -123,6 +124,7 @@ services:
       metahkgDomain: ${DOMAIN:-$domain}
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
   metahkg-images:

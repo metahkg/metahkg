@@ -105,6 +105,7 @@ services:
       - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
   metahkg-links:
@@ -185,6 +186,7 @@ services:
       ME_CONFIG_MONGODB_AUTH_PASSWORD: ${MONGO_PASSWORD}
     depends_on:
       - metahkg-mongo
+      - metahkg-redis
     networks:
       - metahkg-network
   metahkg-mongo:
