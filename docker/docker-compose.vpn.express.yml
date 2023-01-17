@@ -16,6 +16,7 @@ services:
       METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
       METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
       METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
+      METAHKG_IMGPUSH_NAME: metahkg${COMPOSE_PROJECT_NAME}-imgpush
       METAHKG_RLP_PROXY_NAME: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
       DOMAIN: ${DOMAIN:-$domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
@@ -126,6 +127,42 @@ services:
       - metahkg-mongo
     networks:
       - metahkg-network
+  metahkg-imgpush:
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-imgpush
+    image: registry.gitlab.com/metahkg/forks/imgpush:latest
+    tty: true
+    restart: always
+    environment:
+      PORT: 3006
+      IMAGES_DIR: /images/
+      CACHE_DIR: /cache/
+      MAX_UPLOADS_PER_DAY: 300
+      MAX_UPLOADS_PER_HOUR: 100
+      MAX_UPLOADS_PER_MINUTE: 20
+      ALLOWED_ORIGINS: "['https://${DOMAIN:-$domain}']"
+      NAME_STRATEGY: randomstr
+      MAX_TMP_FILE_AGE: "5 * 60"
+      RESIZE_TIMEOUT: 5
+      JWT_PUBLIC_KEY: /certs/public.pem
+      JWT_ALGORITHM: EdDSA
+      UPLOAD_REQUIRE_AUTH: True
+      GET_REQUIRE_AUTH: False
+      DISABLE_RESIZE: True
+      DISABLE_URL_UPLOAD: True
+      UPLOAD_ROUTE: "/upload"
+      IMAGES_ROOT: "/images"
+      MAX_SIZE_MB: 2
+    mem_limit: 500mb
+    memswap_limit: 500mb
+    networks:
+      - metahkg-network
+    volumes:
+      - ./imgpush:/images
+      - ./certs:/certs
+    depends_on:
+      - metahkg-server
+      - metahkg-protonvpn
+    network_mode: service:metahkg-protonvpn
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
     image: registry.gitlab.com/metahkg/forks/imageproxy:latest

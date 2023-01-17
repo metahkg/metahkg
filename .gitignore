@@ -4,6 +4,7 @@
 /docker/data/
 /docker/redis_data/
 /docker/images/
+/docker/imgpush/
 /docker/imageproxy/
 /docker/certs/
 /.vscode/
