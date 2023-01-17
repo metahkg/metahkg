@@ -16,7 +16,7 @@ services:
       METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
       METAHKG_WEB_NAME: metahkg${COMPOSE_PROJECT_NAME}-web
       METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
-      METAHKG_IMGPUSH_NAME: metahkg${COMPOSE_PROJECT_NAME}-imgpush
+      METAHKG_IMGPUSH_NAME: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
       METAHKG_RLP_PROXY_NAME: metahkg${COMPOSE_PROJECT_NAME}-protonvpn
       DOMAIN: ${DOMAIN:-$domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
@@ -154,8 +154,6 @@ services:
       MAX_SIZE_MB: 2
     mem_limit: 500mb
     memswap_limit: 500mb
-    networks:
-      - metahkg-network
     volumes:
       - ./imgpush:/images
       - ./certs:/certs
