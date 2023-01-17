@@ -144,10 +144,10 @@ services:
       RESIZE_TIMEOUT: 5
       JWT_PUBLIC_KEY: /certs/public.pem
       JWT_ALGORITHM: EdDSA
-      UPLOAD_REQUIRE_AUTH: True
-      GET_REQUIRE_AUTH: False
-      DISABLE_RESIZE: True
-      DISABLE_URL_UPLOAD: True
+      UPLOAD_REQUIRE_AUTH: "True"
+      GET_REQUIRE_AUTH: "False"
+      DISABLE_RESIZE: "True"
+      DISABLE_URL_UPLOAD: "True"
       UPLOAD_ROUTE: "/upload"
       IMAGES_ROOT: "/images"
       MAX_SIZE_MB: 2
