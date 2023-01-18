@@ -27,6 +27,7 @@ services:
       - metahkg-web
       - metahkg-links
       - metahkg-images
+      - metahkg-imgpush
       - metahkg-rlp-proxy
     networks:
       - metahkg-network
@@ -64,6 +65,7 @@ services:
       - metahkg-server
       - metahkg-links
       - metahkg-images
+      - metahkg-imgpush
       - metahkg-rlp-proxy
     networks:
       - metahkg-network
