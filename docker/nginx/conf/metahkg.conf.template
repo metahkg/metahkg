@@ -5,7 +5,7 @@ server {
     server_tokens off;
     listen 80 default;
     listen [::]:80 default;
-    server_name $domain;
+    server_name $DOMAIN;
     location /api {
         limit_req zone=metahkg-server burst=200 delay=20;
         proxy_pass http://${METAHKG_SERVER_NAME}:3001;
