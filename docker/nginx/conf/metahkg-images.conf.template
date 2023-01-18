@@ -1,9 +1,23 @@
+limit_req_zone $binary_remote_addr zone=metahkg-images:10m rate=4r/s;
+limit_req_zone $binary_remote_addr zone=metahkg-imgpush:10m rate=20r/m;
+
 server {
     server_tokens off;
     listen 80;
     listen [::]:80;
     server_name $IMAGES_DOMAIN;
     location / {
+        limit_req zone=metahkg-images burst=150 delay=10;
         proxy_pass http://${METAHKG_IMAGES_NAME}:3004;
+    }
+    location /upload {
+        limit_req zone=metahkg-imgpush burst=50 delay=10;
+        proxy_set_header Host $host;
+        proxy_pass http://${METAHKG_IMGPUSH_NAME}:3006;
+    }
+    location /images {
+        limit_req zone=metahkg-imgpush burst=200 delay=50;
+        proxy_set_header Host $host;
+        proxy_pass http://${METAHKG_IMGPUSH_NAME}:3006;
     }
 }

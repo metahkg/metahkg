@@ -1,9 +1,12 @@
+limit_req_zone $binary_remote_addr zone=metahkg-links:10m rate=5r/s;
+
 server {
     server_tokens off;
     listen 80;
     listen [::]:80;
     server_name $LINKS_DOMAIN;
     location / {
+        limit_req zone=metahkg-links burst=100 delay=10;
         proxy_pass http://${METAHKG_LINKS_NAME}:3003;
     }
 }

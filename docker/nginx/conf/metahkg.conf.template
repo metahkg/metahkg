@@ -1,15 +1,21 @@
+limit_req_zone $binary_remote_addr zone=metahkg-server:10m rate=5r/s;
+limit_req_zone $binary_remote_addr zone=metahkg-web:10m rate=5r/s;
+
 server {
     server_tokens off;
     listen 80 default;
     listen [::]:80 default;
     server_name $domain;
     location /api {
+        limit_req zone=metahkg-server burst=200 delay=20;
         proxy_pass http://${METAHKG_SERVER_NAME}:3001;
     }
     location /sitemap.xml {
+        limit_req zone=metahkg-server delay=2;
         proxy_pass http://${METAHKG_SERVER_NAME}:3001;
     }
     location / {
+        limit_req zone=metahkg-web burst=300 delay=50;
         proxy_pass http://${METAHKG_WEB_NAME}:3002;
     }
 }
