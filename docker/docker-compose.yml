@@ -123,7 +123,10 @@ services:
     environment:
       PORT: 3003
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
-      metahkgDomain: ${DOMAIN:-$domain}
+      METAHKG_DOMAIN: ${DOMAIN:-$domain}
+      REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     networks:
       - metahkg-network
     depends_on:
