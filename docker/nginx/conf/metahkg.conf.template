@@ -6,6 +6,7 @@ server {
     listen 80 default;
     listen [::]:80 default;
     server_name $DOMAIN;
+    resolver 127.0.0.1 [::1]:5353 valid=30s;
     location /api {
         limit_req zone=metahkg-server burst=200 delay=20;
         proxy_pass http://${METAHKG_SERVER_NAME}:3001;
