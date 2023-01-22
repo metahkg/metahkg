@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   metahkg-nginx:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-nginx
