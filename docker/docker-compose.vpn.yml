@@ -90,6 +90,12 @@ services:
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SSL: ${SMTP_SSL}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_EMAIL: ${SMTP_EMAIL}
       DOMAIN: ${DOMAIN:-$domain}
       PORT: 3001
       RECAPTCHA_SECRET: ${RECAPTCHA_SECRET:-$recaptchasecret}
