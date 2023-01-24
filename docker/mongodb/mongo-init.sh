@@ -1,6 +1,6 @@
 set -e
 
-mongo <<EOF
+mongosh <<EOF
 db = db.getSiblingDB('metahkg')
 
 db.createUser({
