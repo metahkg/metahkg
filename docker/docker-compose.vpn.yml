@@ -227,7 +227,7 @@ services:
       MONGO_INITDB_DATABASE: metahkg
     volumes:
       - ./data:/data/db
-      - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+      - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     depends_on:
       - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
