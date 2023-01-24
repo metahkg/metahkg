@@ -213,7 +213,7 @@ services:
       - ../rlp-proxy-rewrite/src:/app/src
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
-    image: mongo:latest
+    image: ${MONGO_IMAGE:-mongo:6.0}
     tty: true
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
