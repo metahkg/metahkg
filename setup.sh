@@ -165,16 +165,18 @@ install_dependencies_darwin() {
 check_arch () {
     ARCH=$(uname -m)
 
-    if [ ""$ARCH"" != "x86_64" ] && [ ""$ARCH"" != "aarch64" ]; then
+    if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "aarch64" ]; then
         echo "Error: Unsupported architecture "$ARCH""
         echo "Use --no-check-arch to bypass this check"
         exit 1
     fi;
+
+    echo "Detected architecture: $ARCH"
 }
 
 
 check_os () {
-    case ""$OSTYPE"" in
+    case "$OSTYPE" in
         "linux-gnu")
             # check the linux distribution and version
             # code from unix stack exchange user Mikel https://unix.stackexchange.com/users/3169/mikel
@@ -255,9 +257,7 @@ install_dependencies() {
 
 config_env() {
     # configuration
-    if [ -f "docker/.env" ]; then
-        source docker/.env;
-        elif [ -f "docker/temp.env" ]; then
+    if [ -f "docker/temp.env" ]; then
         source docker/temp.env
     else
         echo "docker/temp.env not found"
@@ -265,6 +265,9 @@ config_env() {
         echo "Please rerun using:"
         echo "./setup.sh --config"
         exit 1;
+    fi;
+    if [ -f "docker/.env" ]; then
+        source docker/.env;
     fi;
 
     # if is a raspberry pi
@@ -496,7 +499,7 @@ input "Do you want to use prebuilt docker images (if not, you will build the ima
 
 echo ""
 echo "Metahkg is now configured."
-echo "You can now start metahkg by running:"
+echo "You can start metahkg by running:"
 CMD="yarn docker"
 if [ ""$PROTONVPN"" = "y" ]; then
     CMD+=":vpn"
@@ -508,9 +511,15 @@ if [ ""$PREBUILT"" = "y" ]; then
     CMD+=":prebuilt"
 fi;
 echo ""$CMD""
+echo "Then, you can access metahkg at http://localhost:${PORT}"
+echo ""
+
+echo "To complete the installation further steps are required."
+echo "See https://docs.metahkg.org/docs/category/configure-nginx"
 echo ""
 
 echo "You can reconfigure using:";
 echo "./setup.sh --config";
+
 echo "If you encounter errors please report to our telegram group:";
 echo "https://t.me/+WbB7PyRovUY1ZDFl";
