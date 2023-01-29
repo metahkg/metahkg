@@ -13,12 +13,103 @@
 # macos is untested, use at your own risk
 
 input () {
-    read -p "$1" input;
-    if [ -n "$input" ]; then
-        eval "$3"="$input"
-    else
-        eval "$3"="$2";
+    # parse arguments
+    # https://stackoverflow.com/a/14203146
+    local POSITIONAL_ARGS=()
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -s|--secure)
+                local SECURE="1"
+                shift
+            ;;
+            -p|--prompt)
+                local PROMPT="$2"
+                shift
+                shift
+            ;;
+            -d|--default)
+                local DEFAULT="$2"
+                shift
+                shift
+            ;;
+            -o|--options)
+                IFS=', ' read -r -a OPTIONS <<< "$2";
+                shift
+                shift
+            ;;
+            --allow-empty)
+                local ALLOW_EMPTY="1"
+                shift
+            ;;
+            --allow-other)
+                local ALLOW_OTHER="1"
+                shift
+            ;;
+            *)
+                local POSITIONAL_ARGS+=("$1") # save positional arg
+                shift # past argument
+            ;;
+        esac
+    done
+
+    set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
+    local VAR=$1
+
+    local CMD="read"
+
+    if [ -n "${PROMPT}" ]; then
+        if [ -n "${OPTIONS}" ]; then
+          local OPTIONS_STR=""
+          for i in ${OPTIONS[*]}; do
+            local OPTIONS_STR+="$i, "
+          done;
+          local OPTIONS_STR=${OPTIONS_STR::-2}
+          local PROMPT+=" ($OPTIONS_STR)"
+        fi;
+        if [ -n "${DEFAULT}" ]; then
+          local PROMPT+=" [${DEFAULT}]"
+        fi;
+        local PROMPT+=": "
+        local CMD+=" -p \"${PROMPT}\" "
     fi;
+
+    if [ "${SECURE}" = "1" ]; then
+        local CMD+=" -s "
+    fi;
+
+    read_var() {
+        eval "$CMD input";
+
+        if [ "$SECURE" = "1" ]; then
+            echo "";
+        fi;
+
+        if [ -z "$input" ]; then
+            if [ "${ALLOW_EMPTY}" != "1" ]; then
+                if [ -n "$DEFAULT" ]; then
+                  input="$DEFAULT";
+                else
+                  echo "Empty is not allowed for variable $VAR";
+                  read_var;
+                fi;
+            fi;
+        fi;
+
+        if [ -n "${OPTIONS}" ]; then
+            if ! [ "$ALLOW_EMPTY" = "1" ] && [ -z "$input" ]; then
+                while [[ ! " ${OPTIONS[*]} " =~ " ${input} " ]] && [ "${ALLOW_OTHER}" != "1" ]; do
+                    echo "${input} is not a valid option"
+                    read_var;
+                done;
+            fi;
+        fi;
+        eval "$VAR"="$input"
+    }
+
+    read_var;
+    unset OPTIONS
 }
 
 install_dependencies_debian() {
@@ -163,7 +254,6 @@ install_dependencies_darwin() {
 }
 
 check_arch () {
-    local SUPPORTED_ARCH=('x86_64' 'amd64' 'aarch64' 'arm64')
     ARCH=$(uname -m)
 
     case $ARCH in
@@ -275,119 +365,119 @@ config_env() {
         MONGO_IMAGE="registry.gitlab.com/metahkg/bin/mongodb-arm64-bin:6.0"
     fi;
 
-    input "Port for metahkg [${PORT}]: " "$PORT" PORT;
+    input -p "Port for metahkg" -d "$PORT" PORT;
 
     echo ""
     echo "Mongdb options: these are used for configuring the mongodb container. Their's no need to deploy an external mongodb instance."
-    input "Port for mongodb [${MONGO_PORT}]: " "$MONGO_PORT" MONGO_PORT;
-    input "Mongodb username [${MONGO_USER}]: " "$MONGO_USER" MONGO_USER;
-    input "Mongodb password [${MONGO_PASSWORD}]: " "$MONGO_PASSWORD" MONGO_PASSWORD;
-    input "Mongodb image [${MONGO_IMAGE}]: " "$MONGO_IMAGE" MONGO_IMAGE;
+    input -p "Port for mongodb" -d "$MONGO_PORT" MONGO_PORT;
+    input -p "Mongodb username" -d "$MONGO_USER" MONGO_USER;
+    input -p "Mongodb password" -d "$MONGO_PASSWORD" MONGO_PASSWORD;
+    input --allow-empty --allow-other -o "mongo:6.0, registry.gitlab.com/metahkg/bin/mongodb-arm64-bin:6.0" -p "Mongodb image" -d "$MONGO_IMAGE" MONGO_IMAGE;
     echo ""
 
-    input "Do you want to use Mongo Express (a mongodb gui, https://github.com/mongo-express/mongo-express)? (y/n) [n]: " no MONGO_EXPRESS;
+    input -p "Do you want to use Mongo Express (a mongodb gui, https://github.com/mongo-express/mongo-express)?" -o "y, n" -d "n" MONGO_EXPRESS;
     if [ ""$MONGO_EXPRESS"" = "y" ]; then
-        input "Port for mongo express [${MONGO_EXPRESS_PORT}]: " "$MONGO_EXPRESS_PORT" MONGO_EXPRESS_PORT;
+        input -p "Port for mongo express" -d "$MONGO_EXPRESS_PORT" MONGO_EXPRESS_PORT;
     fi;
 
     echo ""
     echo "Redis options: these are used for configuring the redis container. Their's no need to deploy an external redis instance."
-    input "Redis port [${REDIS_PORT}]: " "$REDIS_PORT" REDIS_PORT;
-    input "Redis password [${REDIS_PASSWORD}]: " "$REDIS_PASSWORD" REDIS_PASSWORD;
+    input -p "Redis port" -d "$REDIS_PORT" REDIS_PORT;
+    input -p "Redis password" -d "$REDIS_PASSWORD" REDIS_PASSWORD;
     echo ""
 
-    input "Domain for metahkg [${DOMAIN}]: " "$DOMAIN" DOMAIN;
-    input "Domain for metahkg links (a link shortener for metahkg) [${LINKS_DOMAIN}]: " "$LINKS_DOMAIN" LINKS_DOMAIN;
-    input "Domain for metahkg images (used for uploading and serving images, and as image proxy) [${IMAGES_DOMAIN}]: " "$IMAGES_DOMAIN" IMAGES_DOMAIN;
-    input "Enable CORS for the main metahkg api server (true/false) [${CORS}]: " "$CORS" CORS;
+    input -p "Domain for metahkg" -d "$DOMAIN" DOMAIN;
+    input -p "Domain for metahkg links (a link shortener for metahkg)" -d "$LINKS_DOMAIN" LINKS_DOMAIN;
+    input -p "Domain for metahkg images (used for uploading and serving images, and as image proxy)" -d "$IMAGES_DOMAIN" IMAGES_DOMAIN;
+
+    echo ""
+    input --allow-empty -p "Enable CORS for the main metahkg api server" -o "true, false" -d "$CORS" CORS;
 
     echo ""
     echo "Do you want to use mailgun or a custom smtp server to send emails?";
     echo "For mailgun you would need to obtain an api key at https://mailgun.com.";
     echo "For smtp you would need to obtain the credentials yourself.";
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
-    input "Your choice (mailgun/smtp) [mailgun]: " mailgun EMAIL_PROVIDER;
+    input -p "Your choice" -o "mailgun, smtp" -d mailgun EMAIL_PROVIDER;
 
     case ""$EMAIL_PROVIDER"" in
         mailgun)
-            input "Mailgun api key (obtain one at https://mailgun.com, or leave empty and set up SMTP) [${MAILGUN_KEY}]: " "$MAILGUN_KEY" MAILGUN_KEY;
-            input "Mailgun domain [${MAILGUN_DOMAIN:-"$DOMAIN"}]: " ${MAILGUN_DOMAIN:-"$DOMAIN"} MAILGUN_DOMAIN;
+            input -p "Mailgun api key (obtain one at https://mailgun.com)" -d "$MAILGUN_KEY" MAILGUN_KEY;
+            input -p "Mailgun domain" -d "${MAILGUN_DOMAIN:-$DOMAIN}" MAILGUN_DOMAIN;
         ;;
         smtp)
-            input "SMTP host [${SMTP_HOST}]: " "$SMTP_HOST" SMTP_HOST;
-            input "SMTP port [${SMTP_PORT}]: " "$SMTP_PORT" SMTP_PORT;
-            input "Use SSL for SMTP connections (normally false) [${SMTP_SSL}]: " "$SMTP_SSL" SMTP_SSL;
-            input "Enable starttls for SMTP connections (does not fail if tls is not available) [${SMTP_TLS}]: " "$SMTP_TLS" SMTP_TLS;
-            if [ ""$SMTP_TLS"" = "true" ]; then
-                input "Require starttls for SMTP connections (fails if tls is not available) [${SMTP_REQUIRE_TLS}]: " "$SMTP_REQUIRE_TLS" SMTP_REQUIRE_TLS;
+            input -p "SMTP host" -d "$SMTP_HOST" SMTP_HOST;
+            input -p "SMTP port" -d "$SMTP_PORT" SMTP_PORT;
+            input -p "Use SSL for SMTP connections (normally false)" -o "true, false" -d "$SMTP_SSL" SMTP_SSL;
+            input --allow-empty -p "Enable starttls for SMTP connections (does not fail if tls is not available)" -o "true, false" -d "$SMTP_TLS" SMTP_TLS;
+            if [ "$SMTP_TLS" = "true" ]; then
+                input --allow-empty -p "Require starttls for SMTP connections (fails if tls is not available)" -o "true, false" -d "$SMTP_REQUIRE_TLS" SMTP_REQUIRE_TLS;
             fi;
-            input "SMTP username [${SMTP_USERNAME}]: " "$SMTP_USERNAME" SMTP_USERNAME;
-            input "SMTP password [${SMTP_PASSWORD}]: " "$SMTP_PASSWORD" SMTP_PASSWORD;
-            input "SMTP email (email address for sending emails) [${SMTP_EMAIL}]: " "$SMTP_EMAIL" SMTP_EMAIL;
-        ;;
-        *)
-            echo "Invalid email provider "$EMAIL_PROVIDER"";
-            exit 1;
+            input -p "SMTP username" -d "$SMTP_USERNAME" SMTP_USERNAME;
+            input -p "SMTP password" -d "$SMTP_PASSWORD" SMTP_PASSWORD;
+            input -p "SMTP email (email address for sending emails)" -d "$SMTP_EMAIL" SMTP_EMAIL;
         ;;
     esac
     echo ""
 
-    input "Register mode (normal/none, see https://docs.metahkg.org/docs/customize/registermode/) [normal]: " "$REGISTER_MODE" REGISTER_MODE;
-    input "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains) [${REGISTER_DOMAINS}]: " "$REGISTER_DOMAINS" REGISTER_DOMAINS;
-    input "Visibility (public/internal) [${VISIBILITY}]: " "$VISIBILITY" VISIBILITY;
+    input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, none" -d "$REGISTER_MODE" REGISTER_MODE;
+    input -p "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains)" -d "$REGISTER_DOMAINS" REGISTER_DOMAINS;
+    input -p "Visibility" -o "public, internal" -d "$VISIBILITY" VISIBILITY;
 
     echo ""
     echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
-    input "Recaptcha site key [${RECAPTCHA_SITE_KEY}]: " "$RECAPTCHA_SITE_KEY" RECCAPTCHA_SITE_KEY;
-    input "Recaptcha secret [${RECAPTCHA_SECRET}]: " "$RECAPTCHA_SECRET" RECCAPTCHA_SECRET;
-    echo ""
+    input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECCAPTCHA_SITE_KEY;
+    input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECCAPTCHA_SECRET;
 
+    echo ""
     echo "VAPID options: generate a VAPID key pair using web-push, see https://www.npmjs.com/package/web-push#command-line"
-    input "VAPID public key [${VAPID_PUBLIC_KEY}]: " "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
-    input "VAPID private key [${VAPID_PRIVATE_KEY}]: " "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
-    echo ""
+    input -p "VAPID public key" -d "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
+    input -p "VAPID private key" -d "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
 
+    echo ""
     echo "GCM options: see https://www.connecto.io/kb/knwbase/getting-gcm-sender-id-and-gcm-api-key/"
-    input "GCM api key [${GCM_API_KEY}]: " "$GCM_API_KEY" GCM_API_KEY;
-    input "GCM sender id [${GCM_SENDER_ID}]: " "$GCM_SENDER_ID" GCM_SENDER_ID;
+    input -p "GCM api key" -d "$GCM_API_KEY" GCM_API_KEY;
+    input -p "GCM sender id" -d "$GCM_SENDER_ID" GCM_SENDER_ID;
+
     echo ""
+    input -p "Passphrase for the (will-be-generated) private key (used for jwt signing)" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
 
-    input "Passphrase for the (will-be-generated) private key (used for jwt signing) [${KEY_PASSPHRASE}]: " "$KEY_PASSPHRASE" KEY_PASSPHRASE;
-
-    input "Do you want to use protonvpn for network requests in some of the services? (y/n) [n]: " no PROTONVPN;
-    if [ ""$PROTONVPN"" = "y" ]; then
+    input -p "Do you want to use protonvpn for network requests in some of the services?" -o "y, n" -d n PROTONVPN;
+    if [ "$PROTONVPN" = "y" ]; then
+        echo ""
         echo "For protonvpn options, please see https://github.com/tprasadtp/protonvpn-docker for more information."
-        input "Protonvpn username [${PROTONVPN_USERNAME}]: " "$PROTONVPN_USERNAME" PROTONVPN_USERNAME;
-        input "Protonvpn password [${PROTONVPN_PASSWORD}]: " "$PROTONVPN_PASSWORD" PROTONVPN_PASSWORD;
-        input "Protonvpn server [${PROTONVPN_SERVER}]: " "$PROTONVPN_SERVER" PROTONVPN_SERVER;
-        input "Protonvpn tier [${PROTONVPN_TIER}]: " "$PROTONVPN_TIER" PROTONVPN_TIER;
+        input -p "Protonvpn username (NOT your account username)" -d "$PROTONVPN_USERNAME" PROTONVPN_USERNAME;
+        input -p "Protonvpn password (NOT your account password)" -d "$PROTONVPN_PASSWORD" PROTONVPN_PASSWORD;
+        input --allow-other -p "Protonvpn server" -o "JP, NL, US, RANDOM, P2P" -d "$PROTONVPN_SERVER" PROTONVPN_SERVER;
+        input -p "Protonvpn tier" -o "0, 1, 2, 3" -d "$PROTONVPN_TIER" PROTONVPN_TIER;
     fi;
+
     echo ""
 
-    input "Compose project name (skip normally) [${COMPOSE_PROJECT_NAME}]: " "$COMPOSE_PROJECT_NAME" COMPOSE_PROJECT_NAME;
-    input "Environment (production/dev) (use production normally) (dev would enable hot reload, incompatible with prebuilt images) [${env}]: " "$env" env;
-    input "Branch (master/dev) (use master normally) (things are more likely to break in the dev branch) [${branch}]: " "$branch" branch;
-    input "Version (latest / any major or minor version that is available in all sub-repositories, e.g. 6) [${version}]: " "$version" version;
+    input -p "Compose project name (skip normally)" -d "$COMPOSE_PROJECT_NAME" COMPOSE_PROJECT_NAME;
+    input -p "Environment (choose production normally, choosing dev would enable hot reload, but incompatible with prebuilt images)" -o "production, dev" -d "$env" env;
+    input -p "Branch (use master normally)" -o "master, dev" -d "$branch" branch;
+    input --allow-other -p "Version (latest / any major or minor version that is available in all sub-repositories)" -o "latest, 6, 5" -d "$version" version;
 
     echo ""
     if [ -f "docker/.env" ]; then
         echo "docker/.env exists"
-        input "overwrite? (y/n) [n]: " n OVERWRITE;
-        if [ ""$OVERWRITE"" = "y" ]; then
-            DEST="docker/.env"
+        input -p "overwrite?" -o "y, n" -d n OVERWRITE;
+        if [ "$OVERWRITE" = "y" ]; then
+            local DEST="docker/.env"
         else
             if [ -f "docker/.env.new" ]; then
                 local i=1
                 while [ -f "docker/.env.new.${i}" ]; do
                     ((i++))
                 done;
-                DEST="docker/.env.new.${i}"
+                local DEST="docker/.env.new.${i}"
             else
-                DEST="docker/.env.new"
+                local DEST="docker/.env.new"
             fi;
         fi;
     else
-        DEST="docker/.env"
+        local DEST="docker/.env"
     fi;
 
     echo """PORT=${PORT}
@@ -433,7 +523,7 @@ branch=${branch}
 version=${version}
     """ > "$DEST"
 
-    echo "New configuration written to $DEST";
+    echo "New configuration file written to $DEST";
     if [ "$DEST" != "docker/.env" ]; then
         echo "You will have to merge docker/.env and $DEST"
         echo "Or you can replace docker/.env with $DEST, using:"
@@ -495,7 +585,7 @@ fi;
 
 config_env;
 
-input "Do you want to use prebuilt docker images (if not, you will build the images from source)? (y/n) [y]: " y PREBUILT;
+input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
 
 echo ""
 echo "Metahkg is now configured."
@@ -514,7 +604,7 @@ echo ""$CMD""
 echo "Then, you can access metahkg at http://localhost:${PORT}"
 echo ""
 
-echo "To complete the installation further steps are required."
+echo "To complete the installation, further steps are required."
 echo "See https://docs.metahkg.org/docs/category/configure-nginx"
 echo ""
 
