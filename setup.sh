@@ -583,6 +583,8 @@ fi;
 
 config_env;
 
+mkdir docker/certs docker/images docker/imageproxy docker/imgpush
+
 input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
 
 echo ""
