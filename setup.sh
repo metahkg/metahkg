@@ -163,13 +163,22 @@ install_dependencies_darwin() {
 }
 
 check_arch () {
+    local SUPPORTED_ARCH=('x86_64' 'amd64' 'aarch64' 'arm64')
     ARCH=$(uname -m)
 
-    if [ "$ARCH" != "x86_64" ] && [ "$ARCH" != "aarch64" ]; then
-        echo "Error: Unsupported architecture "$ARCH""
-        echo "Use --no-check-arch to bypass this check"
-        exit 1
-    fi;
+    case $ARCH in
+        'x86_64'|'amd64')
+            ARCH='amd64'
+        ;;
+        'aarch64'|'arm64')
+            ARCH='arm64'
+        ;;
+        *)
+            echo "Error: Unsupported architecture "$ARCH""
+            echo "Use --no-check-arch to bypass this check"
+            exit 1
+        ;;
+    esac
 
     echo "Detected architecture: $ARCH"
 }
@@ -200,22 +209,13 @@ check_os () {
                 DISTRO="Raspbian"
             fi;
             case "$DISTRO" in
-                "Debian GNU/Linux")
-                    OS="debian"
-                ;;
-                "Raspbian")
-                    OS="debian"
-                ;;
-                "Ubuntu")
+                "Debian GNU/Linux"|"Raspbian"|"Ubuntu")
                     OS="debian"
                 ;;
                 "Arch Linux")
                     OS="arch"
                 ;;
-                "Rocky Linux")
-                    OS="redhat"
-                ;;
-                "Red Hat Enterprise Linux"*)
+                "Rocky Linux"|"Red Hat Enterprise Linux"*)
                     OS="redhat"
                 ;;
                 *)
@@ -226,9 +226,9 @@ check_os () {
             esac
             echo "Detected linux distribution: $DISTRO"
         ;;
-        "darwin")
+        "darwin"*)
             OS="darwin"
-            echo "Detected darwin"
+            echo "Detected OS: darwin"
         ;;
         *)
             echo "Error: Unsupported OS $OSTYPE"
