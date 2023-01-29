@@ -7,7 +7,10 @@
 #   - debian / raspbian / ubuntu
 #   - arch linux
 #   - rocky linux / rhel
-#   - macos (untested, use at your own risk!)
+#   - macos (darwin)
+# tested on debian and rocky linux docker images
+# tested on an amd64 machine running arch linux
+# macos is untested, use at your own risk
 
 input () {
     read -p "$1" input;
@@ -19,24 +22,28 @@ input () {
 }
 
 install_dependencies_debian() {
-    echo "Installing dependencies using apt-get";
+    echo "Installing dependencies using apt-get...";
 
     if [ "$(whoami)" = "root" ]; then
         apt-get update;
         apt-get install sudo -y;
     fi;
 
+    sudo apt-get update;
+    sudo apt-get install -y ca-certificates curl wget git docker.io nginx gnupg;
+
+    echo "Installing node.js from nodesource..."
     # use the nodesource setup script (for nodejs)
     # https://docs.metahkg.org/docs/deploy/setup/requirements#debian-1
     curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -;
-
     sudo apt-get update;
-    sudo apt-get install -y ca-certificates curl git nodejs docker.io nginx gnupg
+    sudo apt-get install -y nodejs;
 
     # enable yarn
     # https://docs.metahkg.org/docs/deploy/setup/requirements#debian-1
     sudo corepack enable
 
+    echo "Installing docker-compose..."
     # docker-compose
     # https://docs.metahkg.org/docs/deploy/setup/requirements#debian-2
     sudo curl -L "https://github.com/docker/compose/releases/download/$(curl --silent "https://api.github.com/repos/docker/compose/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -45,6 +52,7 @@ install_dependencies_debian() {
     # mongosh and mongodb database tools
     # https://docs.metahkg.org/docs/deploy/setup/requirements#debian-4
 
+    echo "Installing mongosh and mongodb database tools..."
     # import public key
     wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
 
@@ -59,8 +67,11 @@ install_dependencies_debian() {
 }
 
 install_dependencies_arch () {
+    echo "Installing dependencies using pacman...";
+
     if [ "$(whoami)" = "root" ]; then
-        pacman -Sy sudo;
+        echo "You cannot run as root on arch linux."
+        exit 1
     fi;
     sudo pacman -Sy --noconfirm ca-certificates git nodejs docker docker-compose nginx-mainline;
 
@@ -68,12 +79,17 @@ install_dependencies_arch () {
     # https://docs.metahkg.org/docs/deploy/setup/requirements#arch-1
     sudo corepack enable
 
+    echo "Installing mongosh and mongodb database tools..."
     # install mongosh and mongodb database tools
     # https://docs.metahkg.org/docs/deploy/setup/requirements#arch-4
 
     local ORIG_DIR="$PWD"
 
-    mkdir -p "$HOME"/Downloads
+    # installing mongosh and mongodb database tools
+    if ! [ -f "$HOME/Downloads" ]; then
+        mkdir -p "$HOME"/Downloads
+        REMOVE_DOWNLOADS="1"
+    fi;
     cd "$HOME"/Downloads
     # go to downloads folder (or any other folders)
 
@@ -82,11 +98,11 @@ install_dependencies_arch () {
     # clone the aur repositories
 
     cd "$HOME"/Downloads/mongosh-bin
-    makepkg -si
+    makepkg -si --noconfirm
     # install mongosh
 
-    cd "$HOME"/Downloads/mongodb-tool-bin
-    makepkg -si
+    cd "$HOME"/Downloads/mongodb-tools-bin
+    makepkg -si --noconfirm
     # install mongodb tools
 
     cd "$HOME"/Downloads/
@@ -94,9 +110,15 @@ install_dependencies_arch () {
     # remove the repositories after installation
 
     cd "$ORIG_DIR"
+
+    if [ "$REMOVE_DOWNLOADS" = "1" ]; then
+        rm -rf "$HOME/Downloads"
+    fi;
 }
 
 install_dependencies_redhat () {
+    echo "Installing dependencies using dnf...";
+
     if [ "$(whoami)" = "root" ]; then
         dnf install sudo -y;
     fi;
@@ -106,11 +128,13 @@ install_dependencies_redhat () {
     # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-1
     sudo corepack enable
 
+    echo "Installing docker-compose..."
     # docker-compose
     # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-2
     sudo curl -L "https://github.com/docker/compose/releases/download/$(curl --silent "https://api.github.com/repos/docker/compose/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose;
     sudo chmod +x /usr/local/bin/docker-compose;
 
+    echo "Installing mongosh and mongodb database tools..."
     # install mongosh and mongodb database tools
     # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-4
     echo """[mongodb-org-6.0]
@@ -123,9 +147,13 @@ enabled=1
 }
 
 install_dependencies_darwin() {
+    echo "installing homebrew...";
+
     # install homebrew
     # https://brew.sh/
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    echo "installing dependencies using homebrew...";
 
     # add mongodb formula repository
     brew tap mongodb/brew
@@ -189,24 +217,39 @@ check_os () {
                     OS="redhat"
                 ;;
                 *)
-                    echo "Error: Unsupported linux distribution "$NAME"";
+                    echo "Error: Unsupported linux distribution $NAME";
+                    echo "Use --no-check-os --skip-install to bypass check"
                     exit 1;
                 ;;
             esac
+            echo "Detected linux distribution: $DISTRO"
         ;;
         "darwin")
             OS="darwin"
+            echo "Detected darwin"
         ;;
         *)
-            echo "Error: Unsupported OS "$OSTYPE""
+            echo "Error: Unsupported OS $OSTYPE"
+            echo "Use --no-check-os --skip-install to bypass check"
             exit 1;
         ;;
     esac;
 }
 
 install_dependencies() {
-    case ""$OS"" in
+    case "$OS" in
         "debian")
+            install_dependencies_debian;
+        ;;
+        "arch")
+            install_dependencies_arch;
+        ;;
+        "redhat")
+            install_dependencies_redhat;
+        ;;
+        "darwin")
+            install_dependencies_darwin;
+        ;;
     esac
 }
 
@@ -220,7 +263,7 @@ config_env() {
         echo "docker/temp.env not found"
         echo "Are you in the right directory?"
         echo "Please rerun using:"
-        echo "./setup.sh --skip-install"
+        echo "./setup.sh --config"
         exit 1;
     fi;
 
@@ -242,9 +285,9 @@ config_env() {
     input "Do you want to use Mongo Express (a mongodb gui, https://github.com/mongo-express/mongo-express)? (y/n) [n]: " no MONGO_EXPRESS;
     if [ ""$MONGO_EXPRESS"" = "y" ]; then
         input "Port for mongo express [${MONGO_EXPRESS_PORT}]: " "$MONGO_EXPRESS_PORT" MONGO_EXPRESS_PORT;
-        echo ""
     fi;
 
+    echo ""
     echo "Redis options: these are used for configuring the redis container. Their's no need to deploy an external redis instance."
     input "Redis port [${REDIS_PORT}]: " "$REDIS_PORT" REDIS_PORT;
     input "Redis password [${REDIS_PASSWORD}]: " "$REDIS_PASSWORD" REDIS_PASSWORD;
@@ -331,12 +374,11 @@ config_env() {
             DEST="docker/.env"
         else
             if [ -f "docker/.env.new" ]; then
-                for i in {1..100}; do
-                    if ! [ -f "docker/.env.new.${i}" ]; then
-                        DEST="docker/.env.new.${i}"
-                        break
-                    fi;
+                local i=1
+                while [ -f "docker/.env.new.${i}" ]; do
+                    ((i++))
                 done;
+                DEST="docker/.env.new.${i}"
             else
                 DEST="docker/.env.new"
             fi;
@@ -387,6 +429,13 @@ env=${env}
 branch=${branch}
 version=${version}
     """ > "$DEST"
+
+    echo "New configuration written to $DEST";
+    if [ "$DEST" != "docker/.env" ]; then
+        echo "You will have to merge docker/.env and $DEST"
+        echo "Or you can replace docker/.env with $DEST, using:"
+        echo "cp $DEST docker/.env"
+    fi;
 }
 
 # parse arguments
@@ -401,7 +450,7 @@ while [[ $# -gt 0 ]]; do
             echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install]"
             echo "--no-check-arch: disable architecture checking"
             echo "--no-check-os: disable OS checking"
-            echo "--skip-install: skip installation of dependencies"
+            echo "[--skip-install|--config|-c]: skip installation of dependencies"
             exit 0
         ;;
         "--skip-install"|"--config"|"-c")
@@ -409,10 +458,6 @@ while [[ $# -gt 0 ]]; do
             shift
         ;;
         "--no-check-os")
-            if [ ""$SKIP_INSTALL"" != "1" ]; then
-                echo "--no-check-os must be used with --skip-install";
-                exit 1;
-            fi;
             NO_CHECK_OS="1"
             shift
         ;;
@@ -425,6 +470,10 @@ while [[ $# -gt 0 ]]; do
             shift # past argument
         ;;
     esac
+    if [ "$NO_CHECK_OS" = "1" ] && [ "$SKIP_INSTALL" != "1" ]; then
+        echo "--no-check-os must be used with [--skip-install|--config|-c]";
+        exit 1;
+    fi;
 done
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
@@ -434,9 +483,11 @@ if [ "$NO_CHECK_ARCH" != "1" ]; then
 fi;
 if [ "$NO_CHECK_OS" != "1" ]; then
     check_os;
+    echo ""
 fi;
 if [ "$SKIP_INSTALL" != "1" ]; then
     install_dependencies;
+    echo ""
 fi;
 
 config_env;
