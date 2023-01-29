@@ -15,6 +15,15 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 [![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
 [![Discord](https://badges.aleen42.com/src/discord.svg)](https://discord.gg/yrf2v8KGdc)
 
+## TL;DR
+
+```bash
+branch=dev
+git clone --recurse-submodules -b $branch https://gitlab.com/metahkg/metahkg.git
+cd metahkg && git pull origin $branch && git submodule foreach git checkout $branch && git submodule foreach git pull
+./setup.sh
+```
+
 ## About
 
 This open-source project was created primarily because of me being unable to register a lihkg account as a high school student.
@@ -86,14 +95,14 @@ cd metahkg && git submodule foreach git pull
 
 ## Deploying
 
-### Docker
+Metahkg currently only supports using docker for deployment.
 
-It is recommended to use docker for deployment (also supports hot reload).
+### Docker
 
 [Docs](https://docs.metahkg.org/docs/category/deploy-metahkg)
 
-### Manually
+#### Script
 
-**_WARNING:_** This is NOT RECOMMENDED and might be OUTDATED!
-
-For manual deployment, see DEPLOY.md.
+```bash
+./setup.sh
+```
