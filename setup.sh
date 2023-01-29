@@ -103,7 +103,7 @@ input () {
                 done;
             fi;
         fi;
-        eval "$VAR"="$input"
+        eval "$VAR"="\"$input\""
     }
 
     read_var;
@@ -419,13 +419,13 @@ config_env() {
     echo ""
 
     input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, none" -d "$REGISTER_MODE" REGISTER_MODE;
-    input -p "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains)" -d "$REGISTER_DOMAINS" REGISTER_DOMAINS;
+    input --allow-empty -p "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains)" -d "$REGISTER_DOMAINS" REGISTER_DOMAINS;
     input -p "Visibility" -o "public, internal" -d "$VISIBILITY" VISIBILITY;
 
     echo ""
     echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
-    input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECCAPTCHA_SITE_KEY;
-    input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECCAPTCHA_SECRET;
+    input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECAPTCHA_SITE_KEY;
+    input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECAPTCHA_SECRET;
 
     echo ""
     echo "VAPID options: generate a VAPID key pair using web-push, see https://www.npmjs.com/package/web-push#command-line"
@@ -519,7 +519,7 @@ COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
 env=${env}
 branch=${branch}
 version=${version}
-    """ > "$DEST"
+""" > "$DEST"
 
     echo "New configuration file written to $DEST";
     if [ "$DEST" != "docker/.env" ]; then
