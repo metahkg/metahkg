@@ -87,13 +87,11 @@ input () {
         fi;
 
         if [ -z "$input" ]; then
-            if [ "${ALLOW_EMPTY}" != "1" ]; then
-                if [ -n "$DEFAULT" ]; then
-                  input="$DEFAULT";
-                else
-                  echo "Empty is not allowed for variable $VAR";
-                  read_var;
-                fi;
+            if [ -n "$DEFAULT" ]; then
+                input="$DEFAULT";
+            elif [ "${ALLOW_EMPTY}" != "1" ]; then
+                echo "Empty is not allowed for variable $VAR";
+                read_var;
             fi;
         fi;
 
