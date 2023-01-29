@@ -538,10 +538,10 @@ while [[ $# -gt 0 ]]; do
         -h|--help)
             echo "Metahkg setup script"
             echo "Usage:"
-            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install]"
+            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install|--config|-c]"
             echo "--no-check-arch: disable architecture checking"
             echo "--no-check-os: disable OS checking"
-            echo "[--skip-install|--config|-c]: skip installation of dependencies"
+            echo "--skip-install|--config|-c: skip installation of dependencies (directy jump to configure)"
             exit 0
         ;;
         "--skip-install"|"--config"|"-c")
