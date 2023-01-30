@@ -175,7 +175,7 @@ install_dependencies_arch () {
     local ORIG_DIR="$PWD"
 
     # installing mongosh and mongodb database tools
-    if ! [ -f "$HOME/Downloads" ]; then
+    if ! [ -d "$HOME/Downloads" ]; then
         mkdir -p "$HOME"/Downloads
         REMOVE_DOWNLOADS="1"
     fi;
