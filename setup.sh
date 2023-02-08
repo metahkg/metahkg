@@ -389,7 +389,7 @@ config_env() {
     input -p "Domain for metahkg images (used for uploading and serving images, and as image proxy)" -d "$IMAGES_DOMAIN" IMAGES_DOMAIN;
 
     echo ""
-    input --allow-empty -p "Enable CORS for the main metahkg api server" -o "true, false" -d "$CORS" CORS;
+    input -p "Enable CORS for the main metahkg api server" -o "true, false" -d "$CORS" CORS;
 
     echo ""
     echo "Do you want to use mailgun or a custom smtp server to send emails?";
