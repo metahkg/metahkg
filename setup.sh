@@ -175,34 +175,26 @@ install_dependencies_arch () {
     local ORIG_DIR="$PWD"
 
     # installing mongosh and mongodb database tools
-    if ! [ -d "$HOME/Downloads" ]; then
-        mkdir -p "$HOME"/Downloads
-        REMOVE_DOWNLOADS="1"
-    fi;
-    cd "$HOME"/Downloads
+    cd /tmp
     # go to downloads folder (or any other folders)
 
     git clone https://aur.archlinux.org/mongosh-bin.git
     git clone https://aur.archlinux.org/mongodb-tools-bin.git
     # clone the aur repositories
 
-    cd "$HOME"/Downloads/mongosh-bin
+    cd /tmp/mongosh-bin
     makepkg -si --noconfirm
     # install mongosh
 
-    cd "$HOME"/Downloads/mongodb-tools-bin
+    cd /tmp/mongodb-tools-bin
     makepkg -si --noconfirm
     # install mongodb tools
 
-    cd "$HOME"/Downloads/
+    cd /tmp
     rm -rf mongodb-tools-bin mongosh-bin
     # remove the repositories after installation
 
     cd "$ORIG_DIR"
-
-    if [ "$REMOVE_DOWNLOADS" = "1" ]; then
-        rm -rf "$HOME/Downloads"
-    fi;
 }
 
 install_dependencies_redhat () {
