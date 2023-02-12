@@ -380,6 +380,7 @@ config_env() {
     input -p "Domain for metahkg links (a link shortener for metahkg)" -d "$LINKS_DOMAIN" LINKS_DOMAIN;
     input -p "Domain for metahkg images (used for uploading and serving images, and as image proxy)" -d "$IMAGES_DOMAIN" IMAGES_DOMAIN;
     input -p "Domain for rlp proxy (used for getting url metadata)" -d "$RLP_PROXY_DOMAIN" RLP_PROXY_DOMAIN;
+    input -p "Domain for metahkg redirect (used for scanning URLs, and redirect)" -d "$REDIRECT_DOMAIN" REDIRECT_DOMAIN;
 
     echo ""
     input -p "Enable CORS for the main metahkg api server" -o "true, false" -d "$CORS" CORS;
@@ -429,6 +430,11 @@ config_env() {
     echo "GCM options: see https://www.connecto.io/kb/knwbase/getting-gcm-sender-id-and-gcm-api-key/"
     input -p "GCM api key" -d "$GCM_API_KEY" GCM_API_KEY;
     input -p "GCM sender id" -d "$GCM_SENDER_ID" GCM_SENDER_ID;
+
+    echo ""
+    echo "Google safebrowsing: see https://developers.google.com/safe-browsing/v4/get-started"
+    echo "Get an api key at https://console.cloud.google.com/apis/api/safebrowsing.googleapis.com/credentials"
+    input -p "Google safebrowsing api key" -d "$SAFEBROWSING_API_KEY" SAFEBROWSING_API_KEY;
 
     echo ""
     input -p "Passphrase for the (will-be-generated) private key (used for jwt signing)" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
@@ -492,6 +498,7 @@ DOMAIN=${DOMAIN}
 LINKS_DOMAIN=${LINKS_DOMAIN}
 IMAGES_DOMAIN=${IMAGES_DOMAIN}
 RLP_PROXY_DOMAIN=${RLP_PROXY_DOMAIN}
+REDIRECT_DOMAIN=${REDIRECT_DOMAIN}
 CORS=${CORS}
 MAILGUN_KEY=${MAILGUN_KEY}
 MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
@@ -512,11 +519,14 @@ VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
 VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
 GCM_API_KEY=${GCM_API_KEY}
 GCM_SENDER_ID=${GCM_SENDER_ID}
+SAFEBROWSING_API_KEY=${SAFEBROWSING_API_KEY}
 KEY_PASSPHRASE=${KEY_PASSPHRASE}
 PROTONVPN_USERNAME=${PROTONVPN_USERNAME}
 PROTONVPN_PASSWORD=${PROTONVPN_PASSWORD}
 PROTONVPN_SERVER=${PROTONVPN_SERVER}
 PROTONVPN_TIER=${PROTONVPN_TIER}
+MEM_LIMIT=${MEM_LIMIT}
+MEMSWAP_LIMIT=${MEMSWAP_LIMIT}
 COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}
 env=${env}
 branch=${branch}
@@ -585,7 +595,7 @@ fi;
 
 config_env;
 
-mkdir docker/certs docker/images docker/imageproxy docker/imgpush
+mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush
 
 input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
 
