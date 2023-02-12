@@ -13,3 +13,12 @@
 [submodule "rlp-proxy-rewrite"]
 	path = rlp-proxy-rewrite
 	url = https://gitlab.com/metahkg/rlp-proxy-rewrite
+[submodule "metahkg-redirect"]
+	path = metahkg-redirect
+	url = https://gitlab.com/metahkg/metahkg-redirect
+[submodule "forks/imgpush"]
+	path = forks/imgpush
+	url = https://gitlab.com/metahkg/forks/imgpush
+[submodule "forks/imageproxy"]
+	path = forks/imageproxy
+	url = https://gitlab.com/metahkg/forks/imageproxy
