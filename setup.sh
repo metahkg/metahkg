@@ -444,6 +444,15 @@ config_env() {
 
     echo ""
 
+    echo "Memory / swap limit options: these are used for all containers.";
+    echo "For example, if you set memory limit to be 500mb, then each container could use at maximum 500mB of memory";
+    echo "If you are in a dev environment, you may want to set a higher memory limit, ~2gb is recommended.";
+    echo "Otherwise, ~500mb is recommended.";
+    input --allow-other -p "Memory limit (for each container)" -o "250mb, 500mb, 1gb, 2gb, 4gb, 8gb" -d "$MEM_LIMIT" MEM_LIMIT;
+    input --allow-other -p "Swap limit (for each container)" -o "250mb, 500mb, 1gb, 2gb, 4gb, 8gb" -d "$MEMSWAP_LIMIT" MEMSWAP_LIMIT;
+
+    echo ""
+
     input -p "Compose project name (skip normally)" -d "$COMPOSE_PROJECT_NAME" COMPOSE_PROJECT_NAME;
     input -p "Environment (choose production normally, choosing dev would enable hot reload, but incompatible with prebuilt images)" -o "production, dev" -d "$env" env;
     input -p "Branch (use master normally)" -o "master, dev" -d "$branch" branch;
