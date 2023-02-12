@@ -379,6 +379,7 @@ config_env() {
     input -p "Domain for metahkg" -d "$DOMAIN" DOMAIN;
     input -p "Domain for metahkg links (a link shortener for metahkg)" -d "$LINKS_DOMAIN" LINKS_DOMAIN;
     input -p "Domain for metahkg images (used for uploading and serving images, and as image proxy)" -d "$IMAGES_DOMAIN" IMAGES_DOMAIN;
+    input -p "Domain for rlp proxy (used for getting url metadata)" -d "$RLP_PROXY_DOMAIN" RLP_PROXY_DOMAIN;
 
     echo ""
     input -p "Enable CORS for the main metahkg api server" -o "true, false" -d "$CORS" CORS;
