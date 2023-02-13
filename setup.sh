@@ -337,10 +337,10 @@ install_dependencies() {
 
 config_env() {
     # configuration
-    if [ -f "docker/temp.env" ]; then
-        source docker/temp.env
+    if [ -f "docker/example.env" ]; then
+        source docker/example.env
     else
-        echo "docker/temp.env not found"
+        echo "docker/example.env not found"
         echo "Are you in the right directory?"
         echo "Please rerun using:"
         echo "./setup.sh --config"
