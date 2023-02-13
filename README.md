@@ -34,15 +34,23 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Repos
 
-This repository contains five sub-repositories:
+This repository contains eight sub-repositories:
+
+### Core
 
 - metahkg-web
 - metahkg-server
 - metahkg-links
 - metahkg-api
 - rlp-proxy-rewrite
+- metahkg-redirect
 
 Projects on the same branch should follow a same minor version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
+
+### Forks
+
+- forks/imageproxy
+- forks/imgpush
 
 ## Versioning
 
@@ -89,8 +97,10 @@ Please clone with:
 
 ```bash
 git clone --recurse-submodules https://gitlab.com/metahkg/metahkg.git
-# and then
-cd metahkg && git submodule foreach git pull
+cd metahkg
+git submodule update --init --recursive
+git submodule foreach git checkout dev
+git submodule foreach git pull
 ```
 
 ## Deploying
