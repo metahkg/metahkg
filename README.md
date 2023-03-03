@@ -15,6 +15,8 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 [![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
 [![Discord](https://badges.aleen42.com/src/discord.svg)](https://discord.gg/yrf2v8KGdc)
 
+Maintainers wanted! See https://l.metahkg.org/239.
+
 ## TL;DR
 
 ```bash
