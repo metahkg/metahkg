@@ -62,7 +62,7 @@ input () {
     if [ -n "${PROMPT}" ]; then
         if [ -n "${OPTIONS}" ]; then
           local OPTIONS_STR=""
-          for i in ${OPTIONS[@]}; do
+          for i in "${OPTIONS[@]}"; do
             local OPTIONS_STR+="$i, "
           done;
           local OPTIONS_STR=${OPTIONS_STR::-2}
