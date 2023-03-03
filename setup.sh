@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 # supported architectures:
 #   - amd64
@@ -62,7 +62,7 @@ input () {
     if [ -n "${PROMPT}" ]; then
         if [ -n "${OPTIONS}" ]; then
           local OPTIONS_STR=""
-          for i in ${OPTIONS[*]}; do
+          for i in ${OPTIONS[@]}; do
             local OPTIONS_STR+="$i, "
           done;
           local OPTIONS_STR=${OPTIONS_STR::-2}
@@ -254,7 +254,7 @@ check_arch () {
             ARCH='arm64'
         ;;
         *)
-            echo "Error: Unsupported architecture "$ARCH""
+            echo "Error: Unsupported architecture $ARCH"
             echo "Use --no-check-arch to bypass this check"
             exit 1
         ;;
@@ -285,7 +285,7 @@ check_os () {
                 exit 1;
             fi;
             # check if this is a raspberry pi
-            if [ "$DISTRO" = "Debian GNU/Linux" ] && [ -n "$(cat /proc/cpuinfo | grep 'Raspberry Pi')" ]; then
+            if [ "$DISTRO" = "Debian GNU/Linux" ] && grep -q 'Raspberry Pi' < /proc/cpuinfo; then
                 DISTRO="Raspbian"
             fi;
             case "$DISTRO" in
@@ -366,7 +366,7 @@ config_env() {
     echo ""
 
     input -p "Do you want to use Mongo Express (a mongodb gui, https://github.com/mongo-express/mongo-express)?" -o "y, n" -d "n" MONGO_EXPRESS;
-    if [ ""$MONGO_EXPRESS"" = "y" ]; then
+    if [ "$MONGO_EXPRESS" = "y" ]; then
         input -p "Port for mongo express" -d "$MONGO_EXPRESS_PORT" MONGO_EXPRESS_PORT;
     fi;
 
@@ -392,7 +392,7 @@ config_env() {
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
     input -p "Your choice" -o "mailgun, smtp" -d mailgun EMAIL_PROVIDER;
 
-    case ""$EMAIL_PROVIDER"" in
+    case "$EMAIL_PROVIDER" in
         mailgun)
             input -p "Mailgun api key (obtain one at https://mailgun.com)" -d "$MAILGUN_KEY" MAILGUN_KEY;
             input -p "Mailgun domain" -d "${MAILGUN_DOMAIN:-$DOMAIN}" MAILGUN_DOMAIN;
@@ -603,16 +603,16 @@ echo ""
 echo "Metahkg is now configured."
 echo "You can start metahkg by running:"
 CMD="yarn docker"
-if [ ""$PROTONVPN"" = "y" ]; then
+if [ "$PROTONVPN" = "y" ]; then
     CMD+=":vpn"
 fi;
-if [ ""$MONGO_EXPRESS"" = "y" ]; then
+if [ "$MONGO_EXPRESS" = "y" ]; then
     CMD+=":express"
 fi;
-if [ ""$PREBUILT"" = "y" ]; then
+if [ "$PREBUILT" = "y" ]; then
     CMD+=":prebuilt"
 fi;
-echo ""$CMD""
+echo "$CMD"
 echo "Then, you can access metahkg at http://localhost:${PORT}"
 echo ""
 
