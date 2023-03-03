@@ -285,7 +285,7 @@ check_os () {
                 exit 1;
             fi;
             # check if this is a raspberry pi
-            if [ "$DISTRO" = "Debian GNU/Linux" ] && [ -n "$(cat /proc/cpuinfo | grep 'Raspberry Pi')" ]; then
+            if [ "$DISTRO" = "Debian GNU/Linux" ] && [ -n "$(grep 'Raspberry Pi' < /proc/cpuinfo)" ]; then
                 DISTRO="Raspbian"
             fi;
             case "$DISTRO" in
