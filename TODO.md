@@ -4,6 +4,14 @@ Also see: [epics](https://gitlab.com/groups/metahkg/-/epics)
 
 See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
+- [ ] add branding variable to replace metahkg
+
+- [ ] setup screen (initialize on first run) (config)
+
+- [ ] plugins / bots triggered on new thread / comment
+
+- [ ] <https://github.com/FriendlyCaptcha/friendly-challenge>
+
 - [ ] react-virtualized
 
 - [ ] manifest: public url
@@ -12,7 +20,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] web: save editor drafts
 
-- [ ] web: forgot & reset password
+- [x] web: forgot & reset password
   - see [epic &13](https://gitlab.com/groups/metahkg/-/epics/13)
 
 - [ ] mobile app: migrate to v5 api client
@@ -25,7 +33,7 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 - [ ] user profile: user status, bio, website etc.
   - see [epic &17](https://gitlab.com/groups/metahkg/-/epics/17)
 
-- [ ] rate limit
+- [x] rate limit
   - [ ] use redis
 
 - [ ] ~~(consideration): use markdown as the main format, convert from html using turndown~~
@@ -49,8 +57,6 @@ See [the live version](https://joplin.wcyat.me/shares/2kmfXm9Xi18qDxGbaFJq4Y)
 
 - [ ] frontend: save comment as image
   - see [epic &8](https://gitlab.com/groups/metahkg/-/epics/8)
-
-- [ ] frontend: switch to froala ?
 
 - [ ] frontend: auto update conversation
 

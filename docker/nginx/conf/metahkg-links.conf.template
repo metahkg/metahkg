@@ -5,6 +5,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name $LINKS_DOMAIN;
+    resolver 127.0.0.1 [::1]:5353 valid=30s;
     location / {
         limit_req zone=metahkg-links burst=100 delay=10;
         proxy_pass http://${METAHKG_LINKS_NAME}:3003;

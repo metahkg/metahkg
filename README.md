@@ -15,6 +15,17 @@ dev build: [dev.metahkg.org](https://dev.metahkg.org)
 [![Telegram](https://patrolavia.github.io/telegram-badge/chat.svg)](https://t.me/+WbB7PyRovUY1ZDFl)
 [![Discord](https://badges.aleen42.com/src/discord.svg)](https://discord.gg/yrf2v8KGdc)
 
+Maintainers wanted! See https://l.metahkg.org/239.
+
+## TL;DR
+
+```bash
+branch=dev
+git clone --recurse-submodules -b $branch https://gitlab.com/metahkg/metahkg.git
+cd metahkg && git pull origin $branch && git submodule foreach git checkout $branch && git submodule foreach git pull
+./setup.sh
+```
+
 ## About
 
 This open-source project was created primarily because of me being unable to register a lihkg account as a high school student.
@@ -25,15 +36,23 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Repos
 
-This repository contains five sub-repositories:
+This repository contains eight sub-repositories:
+
+### Core
 
 - metahkg-web
 - metahkg-server
 - metahkg-links
 - metahkg-api
 - rlp-proxy-rewrite
+- metahkg-redirect
 
 Projects on the same branch should follow a same minor version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
+
+### Forks
+
+- forks/imageproxy
+- forks/imgpush
 
 ## Versioning
 
@@ -80,20 +99,22 @@ Please clone with:
 
 ```bash
 git clone --recurse-submodules https://gitlab.com/metahkg/metahkg.git
-# and then
-cd metahkg && git submodule foreach git pull
+cd metahkg
+git submodule update --init --recursive
+git submodule foreach git checkout dev
+git submodule foreach git pull
 ```
 
 ## Deploying
 
-### Docker
+Metahkg currently only supports using docker for deployment.
 
-It is recommended to use docker for deployment (also supports hot reload).
+### Docker
 
 [Docs](https://docs.metahkg.org/docs/category/deploy-metahkg)
 
-### Manually
+#### Script
 
-**_WARNING:_** This is NOT RECOMMENDED and might be OUTDATED!
-
-For manual deployment, see DEPLOY.md.
+```bash
+./setup.sh
+```

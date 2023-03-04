@@ -6,6 +6,7 @@ server {
     listen 80;
     listen [::]:80;
     server_name $IMAGES_DOMAIN;
+    resolver 127.0.0.1 [::1]:5353 valid=30s;
     location / {
         limit_req zone=metahkg-images burst=150 delay=10;
         proxy_pass http://${METAHKG_IMAGES_NAME}:3004;

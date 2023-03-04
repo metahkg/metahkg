@@ -1,6 +1,7 @@
 /.lh/
 /node_modules/
 .env
+.env.new*
 /docker/data/
 /docker/redis_data/
 /docker/images/

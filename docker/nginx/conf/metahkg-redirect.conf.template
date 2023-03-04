@@ -1,0 +1,13 @@
+limit_req_zone $binary_remote_addr zone=metahkg-redirect:10m rate=20r/m;
+
+server {
+    server_tokens off;
+    listen 80;
+    listen [::]:80;
+    server_name $REDIRECT_DOMAIN;
+    resolver 127.0.0.1 [::1]:5353 valid=30s;
+    location / {
+        limit_req zone=metahkg-redirect burst=50 delay=5;
+        proxy_pass http://${METAHKG_REDIRECT_NAME}:3007;
+    }
+}
