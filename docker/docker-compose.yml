@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   metahkg-nginx:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-nginx
@@ -9,8 +10,8 @@ services:
     ports:
       - ${PORT:-$port}:80
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     environment:
       METAHKG_LINKS_NAME: metahkg${COMPOSE_PROJECT_NAME}-links
       METAHKG_SERVER_NAME: metahkg${COMPOSE_PROJECT_NAME}-server
@@ -18,10 +19,12 @@ services:
       METAHKG_IMAGES_NAME: metahkg${COMPOSE_PROJECT_NAME}-images
       METAHKG_IMGPUSH_NAME: metahkg${COMPOSE_PROJECT_NAME}-imgpush
       METAHKG_RLP_PROXY_NAME: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
+      METAHKG_REDIRECT_NAME: metahkg${COMPOSE_PROJECT_NAME}-redirect
       DOMAIN: ${DOMAIN:-$domain}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
+      REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
     depends_on:
       - metahkg-server
       - metahkg-web
@@ -29,6 +32,7 @@ services:
       - metahkg-images
       - metahkg-imgpush
       - metahkg-rlp-proxy
+      - metahkg-redirect
     networks:
       - metahkg-network
   metahkg-web:
@@ -41,20 +45,22 @@ services:
         REACT_APP_recaptchasitekey: ${RECAPTCHA_SITE_KEY:-$REACT_APP_recaptchasitekey}
         REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
         REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
+        REACT_APP_REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
         REACT_APP_build: ${REACT_APP_build}
         REACT_APP_version: ${REACT_APP_version}
         REACT_APP_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
         env: ${env}
     tty: true
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     environment:
       PORT: 3002
       env: ${env}
       REACT_APP_recaptchasitekey: ${RECAPTCHA_SITE_KEY:-$REACT_APP_recaptchasitekey}
       REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
+      REACT_APP_REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
       REACT_APP_VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       GCM_SENDER_ID: ${GCM_SENDER_ID}
     volumes:
@@ -67,6 +73,7 @@ services:
       - metahkg-images
       - metahkg-imgpush
       - metahkg-rlp-proxy
+      - metahkg-redirect
     networks:
       - metahkg-network
   metahkg-server:
@@ -79,8 +86,8 @@ services:
         env: ${env}
     tty: true
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     environment:
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
@@ -89,6 +96,12 @@ services:
       LINKS_DOMAIN: ${LINKS_DOMAIN}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SSL: ${SMTP_SSL}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_EMAIL: ${SMTP_EMAIL}
       DOMAIN: ${DOMAIN:-$domain}
       PORT: 3001
       RECAPTCHA_SECRET: ${RECAPTCHA_SECRET:-$recaptchasecret}
@@ -118,8 +131,8 @@ services:
       dockerfile: ./Dockerfile
     tty: true
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     environment:
       PORT: 3003
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
@@ -133,7 +146,10 @@ services:
       - metahkg-mongo
   metahkg-imgpush:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-imgpush
-    image: registry.gitlab.com/metahkg/forks/imgpush:latest
+    image: registry.gitlab.com/metahkg/forks/imgpush/${branch:-master}:latest
+    build:
+      context: ../forks/imgpush
+      dockerfile: Dockerfile
     tty: true
     restart: always
     environment:
@@ -156,8 +172,8 @@ services:
       UPLOAD_ROUTE: "/upload"
       IMAGES_ROOT: "/images"
       MAX_SIZE_MB: 2
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     networks:
       - metahkg-network
     volumes:
@@ -167,11 +183,14 @@ services:
       - metahkg-server
   metahkg-images:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-images
-    image: registry.gitlab.com/metahkg/forks/imageproxy:latest
+    image: registry.gitlab.com/metahkg/forks/imageproxy/${branch:-master}:latest
+    build:
+      context: ../forks/imageproxy
+      dockerfile: Dockerfile
     tty: true
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
     networks:
       - metahkg-network
@@ -187,8 +206,8 @@ services:
         env: ${env}
     tty: true
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     environment:
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
       REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
@@ -204,14 +223,43 @@ services:
       - metahkg-network
     volumes:
       - ../rlp-proxy-rewrite/src:/app/src
+  metahkg-redirect:
+    image: registry.gitlab.com/metahkg/metahkg-redirect/${branch:-master}:${version:-latest}
+    container_name: metahkg${COMPOSE_PROJECT_NAME}-redirect
+    build:
+      context: ../metahkg-redirect
+      dockerfile: Dockerfile
+      args:
+        env: ${env}
+    tty: true
+    restart: always
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
+    environment:
+      PORT: 3007
+      SAFEBROWSING_API_KEY: ${SAFEBROWSING_API_KEY}
+      MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
+      REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      env: ${env}
+    depends_on:
+      - metahkg-mongo
+      - metahkg-redis
+    networks:
+      - metahkg-network
+    volumes:
+      - ../metahkg-redirect/src:/app/src
+      - ../metahkg-redirect/public:/app/public
+      - ../metahkg-redirect/tailwind.config.js:/app/tailwind.config.js
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
-    image: mongo:latest
+    image: ${MONGO_IMAGE:-mongo:6.0}
     tty: true
     command: mongod --auth --port=${MONGO_PORT} --bind_ip_all
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     ports:
       - ${MONGO_PORT}:${MONGO_PORT}
     environment:
@@ -222,18 +270,18 @@ services:
       - metahkg-network
     volumes:
       - ./data:/data/db
-      - ../mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+      - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
   metahkg-redis:
     image: redis:alpine
     container_name: metahkg${COMPOSE_PROJECT_NAME}-redis
     command: redis-server --save 10 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     restart: always
-    mem_limit: 500mb
-    memswap_limit: 500mb
+    mem_limit: ${MEM_LIMIT:-500mb}
+    memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     ports:
       - ${REDIS_PORT}:6379
     networks:
-       - metahkg-network
+      - metahkg-network
     volumes:
       - ./redis_data:/data
 networks:
