@@ -390,7 +390,7 @@ config_env() {
     echo "For mailgun you would need to obtain an api key at https://mailgun.com.";
     echo "For smtp you would need to obtain the credentials yourself.";
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
-    input -p "Your choice" -o "mailgun, smtp" -d mailgun EMAIL_PROVIDER;
+    input -p "Your choice" -o "mailgun, smtp" -d ${EMAIL_PROVIDER:-mailgun} EMAIL_PROVIDER;
 
     case "$EMAIL_PROVIDER" in
         mailgun)
@@ -417,9 +417,23 @@ config_env() {
     input -p "Visibility" -o "public, internal" -d "$VISIBILITY" VISIBILITY;
 
     echo ""
-    echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
-    input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECAPTCHA_SITE_KEY;
-    input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECAPTCHA_SECRET;
+    echo "Do you want to use ReCAPTCHA or Turnstile for Captchas?";
+    echo "For ReCAPTCHA, see https://developers.google.com/recaptcha";
+    echo "For Turnstile, see https://developers.cloudflare.com/turnstile/";
+    input -p "Your choice" -o "recaptcha, turnstile" -d ${CAPTCHA:-recaptcha} CAPTCHA;
+
+    case $CAPTCHA in
+      recaptcha)
+        echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
+        input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECAPTCHA_SITE_KEY;
+        input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECAPTCHA_SECRET;
+      ;;
+      turnstile)
+        echo "Turnstile options: see https://developers.cloudflare.com/turnstile/get-started/#get-a-sitekey-and-secret-key to create a turnstile site key and secret pair"
+        input -p "Turnstile site key" -d "$TURNSTILE_SITE_KEY" TURNSTILE_SITE_KEY;
+        input -p "Turnstile secret" -d "$TURNSTILE_SECRET" TURNSTILE_SECRET;
+      ;;
+    esac
 
     echo ""
     echo "VAPID options: generate a VAPID key pair using web-push, see https://www.npmjs.com/package/web-push#command-line"
@@ -513,8 +527,11 @@ SMTP_EMAIL=${SMTP_EMAIL}
 REGISTER_MODE=${REGISTER_MODE}
 REGISTER_DOMAINS=${REGISTER_DOMAINS}
 VISIBILITY=${VISIBILITY}
+CAPTCHA=${CAPTCHA}
 RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY}
 RECAPTCHA_SECRET=${RECAPTCHA_SECRET}
+TURNSTILE_SITE_KEY=${TURNSTILE_SITE_KEY}
+TURNSTILE_SECRET=${TURNSTILE_SECRET}
 VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
 VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
 GCM_API_KEY=${GCM_API_KEY}
@@ -598,6 +615,7 @@ config_env;
 mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush
 if ! [ -f "docker/version.txt" ]; then touch docker/version.txt; fi;
 
+echo ""
 input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
 
 echo ""
