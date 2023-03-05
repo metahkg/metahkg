@@ -117,6 +117,7 @@ services:
     volumes:
       - ./images:/app/images:Z
       - ./certs:/app/certs:Z
+      - ./version.txt:/app/version.txt:Z
       - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
