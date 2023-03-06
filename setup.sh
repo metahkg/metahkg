@@ -96,7 +96,7 @@ input () {
         fi;
 
         if [ -n "${OPTIONS}" ]; then
-            if ! [ "$ALLOW_EMPTY" = "1" ] && [ -z "$input" ]; then
+            if ! ([ "$ALLOW_EMPTY" = "1" ] && [ -z "$input" ]); then
                 while [[ ! " ${OPTIONS[*]} " =~ " ${input} " ]] && [ "${ALLOW_OTHER}" != "1" ]; do
                     echo "${input} is not a valid option"
                     read_var;
