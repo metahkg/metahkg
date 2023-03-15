@@ -451,6 +451,13 @@ config_env() {
     input -p "Google safebrowsing api key" -d "$SAFEBROWSING_API_KEY" SAFEBROWSING_API_KEY;
 
     echo ""
+    echo "Imgpush options (the image upload server built-in to metahkg)"
+    input -p "Maximum number of uploads per day" --allow-other -o "50, 100, 200, 500, 1000" -d "$IMGPUSH_MAX_UPLOADS_PER_DAY" IMGPUSH_MAX_UPLOADS_PER_DAY;
+    input -p "Maximum number of uploads per hour" --allow-other -o "10, 20, 50, 100, 200" -d "$IMGPUSH_MAX_UPLOADS_PER_HOUR" IMGPUSH_MAX_UPLOADS_PER_HOUR;
+    input -p "Maximum number of uploads per minute" --allow-other -o "5, 10, 20, 50, 100" -d "$IMGPUSH_MAX_UPLOADS_PER_MINUTE" IMGPUSH_MAX_UPLOADS_PER_MINUTE;
+    input -p "Maximum size of an image (in MB)" --allow-other -o "1, 2, 5, 10, 20" -d "$IMGPUSH_MAX_SIZE_MB" IMGPUSH_MAX_SIZE_MB;
+
+    echo ""
     input -p "Passphrase for the (will-be-generated) private key (used for jwt signing)" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
 
     input -p "Do you want to use protonvpn for network requests in some of the services?" -o "y, n" -d n PROTONVPN;
@@ -537,6 +544,10 @@ VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
 GCM_API_KEY=${GCM_API_KEY}
 GCM_SENDER_ID=${GCM_SENDER_ID}
 SAFEBROWSING_API_KEY=${SAFEBROWSING_API_KEY}
+IMGPUSH_MAX_UPLOADS_PER_DAY=${IMGPUSH_MAX_UPLOADS_PER_DAY}
+IMGPUSH_MAX_UPLOADS_PER_HOUR=${IMGPUSH_MAX_UPLOADS_PER_HOUR}
+IMGPUSH_MAX_UPLOADS_PER_MINUTE=${IMGPUSH_MAX_UPLOADS_PER_MINUTE}
+IMGPUSH_MAX_SIZE_MB=${IMGPUSH_MAX_SIZE_MB}
 KEY_PASSPHRASE=${KEY_PASSPHRASE}
 PROTONVPN_USERNAME=${PROTONVPN_USERNAME}
 PROTONVPN_PASSWORD=${PROTONVPN_PASSWORD}
