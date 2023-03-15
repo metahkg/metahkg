@@ -162,12 +162,12 @@ services:
       PORT: 3006
       IMAGES_DIR: /images/
       CACHE_DIR: /cache/
-      MAX_UPLOADS_PER_DAY: 100
-      MAX_UPLOADS_PER_HOUR: 50
-      MAX_UPLOADS_PER_MINUTE: 20
+      MAX_UPLOADS_PER_DAY: ${IMGPUSH_MAX_UPLOADS_PER_DAY:-100}
+      MAX_UPLOADS_PER_HOUR: ${IMGPUSH_MAX_UPLOADS_PER_HOUR:-50}
+      MAX_UPLOADS_PER_MINUTE: ${IMGPUSH_MAX_UPLOADS_PER_MINUTE:-20}
       ALLOWED_ORIGINS: "['https://${DOMAIN:-$domain}']"
       NAME_STRATEGY: randomstr
-      MAX_TMP_FILE_AGE: 300
+      MAX_TMP_FILE_AGE: 3600
       RESIZE_TIMEOUT: 5
       JWT_PUBLIC_KEY: /certs/public.pem
       JWT_ALGORITHM: EdDSA
@@ -177,7 +177,7 @@ services:
       DISABLE_URL_UPLOAD: "True"
       UPLOAD_ROUTE: "/upload"
       IMAGES_ROOT: "/images"
-      MAX_SIZE_MB: 5
+      MAX_SIZE_MB: ${IMGPUSH_MAX_SIZE_MB:-5}
       USE_MONGO: "True"
       MONGO_URI: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@metahkg${COMPOSE_PROJECT_NAME}-mongo:${MONGO_PORT}
     mem_limit: ${MEM_LIMIT:-500mb}
