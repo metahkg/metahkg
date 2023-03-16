@@ -8,17 +8,18 @@
 #   - arch linux / manjaro linux
 #   - rocky linux / rhel / oracle linux / amazon linux 2
 #   - macos (darwin)
+#   - freebsd (partial)
 # tested on:
-#   - debian (docker amd64, arm64)
-#   - ubuntu (docker amd64, arm64)
-#   - linux mint (docker amd64)
-#   - lmde (docker amd64)
-#   - rocky linux (docker amd64)
-#   - amazon linux (docker amd64)
-#   - oracle linux (docker amd64)
-#   - alpine linux (docker amd64, arm64)
-#   - arch linux (bare metal amd64)
-#   - manjaro linux (docker amd64)
+#   - debian bullseye (docker amd64, arm64), debian bookworm (bare-metal amd64)
+#   - ubuntu 22.04 jammy (docker amd64, arm64)
+#   - linux mint 21.1 Vera (docker amd64)
+#   - lmde 5 elsie (docker amd64)
+#   - rocky linux 8.6 Green Obsidian (docker amd64)
+#   - amazon linux 2023 (docker amd64)
+#   - oracle linux 9.1 (docker amd64)
+#   - alpine linux v3.17 (docker amd64, arm64)
+#   - arch linux 20230315 (bare metal amd64)
+#   - manjaro linux 20230315 (docker amd64)
 #   - darling (macos 10.15) (partial success, bash version problem)
 #   - freebsd (virtualbox amd64) (partial success, cannot get the docker daemon running)
 # macos is untested, use at your own risk
@@ -260,17 +261,22 @@ gpgkey=https://dl.yarnpkg.com/rpm/pubkey.gpg
     sudo chmod +x /usr/local/bin/docker-compose;
 
     echo "Installing mongosh and mongodb database tools..."
-    # install mongosh and mongodb database tools
-    # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-4
-    if ! [ -f "/etc/yum.repos.d/mongodb-org-6.0.repo" ]; then
-      echo """[mongodb-org-6.0]
+
+    if [ "$ARCH" = "arm64" ]; then
+        echo -e "${YELLOW}WARNING: mongodb does not support arm64 on redhat. NOT installing mongosh and mongodb database tools.";
+    else
+        # install mongosh and mongodb database tools
+        # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-4
+        if ! [ -f "/etc/yum.repos.d/mongodb-org-6.0.repo" ]; then
+          echo """[mongodb-org-6.0]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/${OS}/${VER:0:1}/mongodb-org/6.0/x86_64/
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc""" | sudo tee /etc/yum.repos.d/mongodb-org-6.0.repo;
+        fi;
+        sudo dnf install mongodb-mongosh mongodb-database-tools -y;
     fi;
-    sudo dnf install mongodb-mongosh mongodb-database-tools -y;
 }
 
 install_dependencies_alpine() {
@@ -315,15 +321,19 @@ install_dependencies_opensuse() {
     # mongosh and mongodb database tools
     echo "Installing mongosh and mongodb database tools...";
 
-    # add mongodb rpm repository
-    echo """[mongodb-org-6.0]
+    if [ "$ARCH" = "arm64" ]; then
+        echo -e "${YELLOW}WARNING: mongodb does not support arm64 on opensuse. NOT installing mongosh and mongodb database tools.";
+    else
+        # add mongodb rpm repository
+        echo """[mongodb-org-6.0]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/zypper/suse/$(. /etc/os-release; echo ${VERSION:0:2})/mongodb-org/6.0/x86_64
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc""" | sudo tee /etc/zypp/repos.d/mongodb-org-6.0.repo
-    sudo zypper refresh --gpg-auto-import-keys
-    sudo zypper install -y mongodb-mongosh mongodb-database-tools;
+        sudo zypper refresh --gpg-auto-import-keys
+        sudo zypper install -y mongodb-mongosh mongodb-database-tools;
+    fi;
 }
 
 install_dependencies_darwin() {
@@ -454,11 +464,6 @@ check_os () {
             exit 1;
         ;;
     esac;
-
-    if [ "$ARCH" = "arm64" ] && ([ "$OS" = "redhat" ] || [ "$OS" = "amazon" ] || [ "$OS" = "opensuse" ]); then
-      echo "Architecture arm64 is not supported for $OS";
-      exit 1;
-    fi;
 }
 
 install_dependencies() {
