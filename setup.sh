@@ -733,19 +733,46 @@ version=${version}
 # https://stackoverflow.com/a/14203146
 POSITIONAL_ARGS=()
 
+INSTALL=1
+CONFIG=1
+SETUP=1
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
             echo "Metahkg setup script"
             echo "Usage:"
-            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install|--config|-c]"
+            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install|--config|-c] [--install|-i] [--setup|-s] [--skip-config] [--skip-setup] [--no-prompt]"
             echo "--no-check-arch: disable architecture checking"
             echo "--no-check-os: disable OS checking"
-            echo "--skip-install|--config|-c: skip installation of dependencies (directy jump to configure)"
+            echo "--skip-install|--config|-c: skip installation of dependencies (configure and setup only)"
+            echo "--install|-i: install dependencies only"
+            echo "--setup|-s: setup only"
+            echo "--skip-config: skip configuration"
+            echo "--skip-setup: skip setup"
+            echo "--no-prompt: never prompt unless when configuring"
             exit 0
         ;;
         "--skip-install"|"--config"|"-c")
-            SKIP_INSTALL="1"
+            INSTALL=0
+            shift
+        ;;
+        "--skip-config")
+            CONFIG=0
+            shift
+        ;;
+        "--skip-setup")
+            SETUP=0
+            shift
+        ;;
+        "--install"|"-i")
+            CONFIG=0
+            SETUP=0
+            shift
+        ;;
+        "--setup"|"-s")
+            INSTALL=0
+            CONFIG=0
             shift
         ;;
         "--no-check-os")
@@ -756,16 +783,20 @@ while [[ $# -gt 0 ]]; do
             NO_CHECK_ARCH="1"
             shift
         ;;
+        "--no-prompt")
+            NO_PROMPT="1"
+            shift
+        ;;
         *)
             POSITIONAL_ARGS+=("$1") # save positional arg
             shift # past argument
         ;;
     esac
-    if [ "$NO_CHECK_OS" = "1" ] && [ "$SKIP_INSTALL" != "1" ]; then
-        echo "--no-check-os must be used with [--skip-install|--config|-c]";
-        exit 1;
-    fi;
 done
+if [ "$NO_CHECK_OS" = "1" ] && [ "$INSTALL" = "1" ]; then
+    echo "--no-check-os must be used with [--skip-install|--config|-c|--setup|-s]";
+    exit 1;
+fi;
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
@@ -776,18 +807,27 @@ if [ "$NO_CHECK_OS" != "1" ]; then
     check_os;
     echo "";
 fi;
-if [ "$SKIP_INSTALL" != "1" ]; then
+if [ "$INSTALL" = "1" ]; then
     install_dependencies;
     echo "";
 fi;
+if [ "$CONFIG" = "1" ]; then
+    config_env;
+    echo ""
+fi;
+if [ "$SETUP" = "1" ]; then
+  echo "Setting up...";
+  echo "mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush";
+  mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush;
+  if ! [ -f "docker/version.txt" ]; then
+    echo "touch docker/version.txt";
+    touch docker/version.txt;
+  fi;
+fi;
 
-config_env;
-
-mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush;
-if ! [ -f "docker/version.txt" ]; then touch docker/version.txt; fi;
-
-echo ""
-input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
+if [ "$NO_PROMPT" != "1" ]; then
+  input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
+fi;
 
 CMD="yarn docker";
 if [ "$PROTONVPN" = "y" ]; then
@@ -800,8 +840,10 @@ if [ "$PREBUILT" = "y" ]; then
     CMD+=":prebuilt"
 fi;
 
-echo ""
-input -p "Do you want to start metahkg now?" -o "y, n" -d y STARTNOW;
+if [ "$NO_PROMPT" != "1" ]; then
+  echo ""
+  input -p "Do you want to start metahkg now?" -o "y, n" -d y STARTNOW;
+fi;
 
 if [ "$STARTNOW" == "y" ]; then
   eval "$CMD"
