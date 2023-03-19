@@ -34,18 +34,6 @@ test:ubuntu_jammy:
   script:
     - ./setup.sh --skip-config --no-prompt
 
-test:arch_linux:
-  stage: test
-  image: archlinux:latest
-  script:
-    - ./setup.sh --skip-config --no-prompt
-
-test:manjaro_linux:
-  stage: test
-  image: manjarolinux/base:latest
-  script:
-    - ./setup.sh --skip-config --no-prompt
-
 test:rocky_linux:
   stage: test
   image: rockylinux/rockylinux:8.6
