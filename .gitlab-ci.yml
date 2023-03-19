@@ -54,7 +54,7 @@ test:rocky_linux:
 
 test:oracle_linux:
   stage: test
-  image: oraclelinux:9.1
+  image: oraclelinux:9
   script:
     - ./setup.sh --skip-config --no-prompt
 
