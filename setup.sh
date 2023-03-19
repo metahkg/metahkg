@@ -298,7 +298,7 @@ install_dependencies_alpine() {
     sudo chmod +x /usr/local/bin/docker-compose;
 
     # mongosh
-    sudo yarn global install mongosh;
+    sudo yarn global add mongosh;
 }
 
 install_dependencies_opensuse() {
@@ -369,7 +369,7 @@ install_dependencies_freebsd() {
     sudo corepack enable;
 
     # mongosh
-    sudo yarn global install mongosh;
+    sudo yarn global add mongosh;
 
     # docker-compose
     # build dependencies
