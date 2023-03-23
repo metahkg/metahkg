@@ -36,23 +36,23 @@ As contrasted with lihkg, metahkg is open to everyone and anyone can create an a
 
 ## Repos
 
-This repository contains eight sub-repositories:
+This repository contains eight sub-repositories written in different languages and frameworks:
 
 ### Core
 
-- metahkg-web
-- metahkg-server
-- metahkg-links
-- metahkg-api
-- rlp-proxy-rewrite
-- metahkg-redirect
+- metahkg-web (typescript, react)
+- metahkg-server (typescript, nodejs, fastify)
+- metahkg-links (typescript,nodejs, fastify)
+- metahkg-api (typescript, auto-generated)
+- rlp-proxy-rewrite (typescript, nodejs, fastify)
+- metahkg-redirect (typescript, next.js)
 
 Projects on the same branch should follow a same minor version. Note that there might be delays, make sure to pull new changes from the sub-repositories, as this repository is not frequently updated.
 
 ### Forks
 
-- forks/imageproxy
-- forks/imgpush
+- forks/imageproxy (go)
+- forks/imgpush (python, flask)
 
 ## Versioning
 
