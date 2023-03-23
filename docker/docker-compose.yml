@@ -198,7 +198,11 @@ services:
     restart: always
     mem_limit: ${MEM_LIMIT:-500mb}
     memswap_limit: ${MEMSWAP_LIMIT:-500mb}
-    entrypoint: "/app/imageproxy -addr 0.0.0.0:3004 -cache /tmp/imageproxy"
+    entrypoint: "/app/imageproxy"
+    environment:
+      IMAGEPROXY_ADDR: 0.0.0.0:3004
+      IMAGEPROXY_CACHE: /tmp/imageproxy
+      IMAGEPROXY_ALLOWORIGINS: ${DOMAIN:-$domain}
     networks:
       - metahkg-network
     volumes:
