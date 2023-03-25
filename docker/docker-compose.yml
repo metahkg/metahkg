@@ -283,7 +283,7 @@ services:
       - ./data:/data/db
       - ./mongodb/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
   metahkg-redis:
-    image: redis:alpine
+    image: redis:7.0-alpine
     container_name: metahkg${COMPOSE_PROJECT_NAME}-redis
     command: redis-server --save 10 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     restart: always
