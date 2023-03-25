@@ -597,8 +597,9 @@ config_env() {
 
     echo ""
     echo "VAPID options: generate a VAPID key pair using web-push, see https://www.npmjs.com/package/web-push#command-line"
-    input -p "VAPID public key" -d "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
-    input -p "VAPID private key" -d "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
+    echo "Leave empty to use auto-generated keys"
+    input --allow-empty -p "VAPID public key" -d "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
+    input --allow-empty -p "VAPID private key" -d "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
 
     echo ""
     echo "GCM options: see https://www.connecto.io/kb/knwbase/getting-gcm-sender-id-and-gcm-api-key/"
@@ -618,7 +619,7 @@ config_env() {
     input -p "Maximum size of an image (in MB)" --allow-other -o "1, 2, 5, 10, 20" -d "$IMGPUSH_MAX_SIZE_MB" IMGPUSH_MAX_SIZE_MB;
 
     echo ""
-    input -p "Passphrase for the (will-be-generated) private key (used for jwt signing)" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
+    input --allow-empty -p "Passphrase for the (will-be-generated) private key (used for jwt signing), leave empty to use auto-generated passphrase" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
 
     input -p "Do you want to use protonvpn for network requests in some of the services?" -o "y, n" -d n PROTONVPN;
     if [ "$PROTONVPN" = "y" ]; then
