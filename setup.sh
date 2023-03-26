@@ -824,6 +824,10 @@ if [ "$SETUP" = "1" ]; then
     echo "touch docker/version.txt";
     touch docker/version.txt;
   fi;
+  if ! [ -f "docker/secrets.json" ]; then
+    echo "touch docker/secrets.json";
+    touch docker/secrets.json;
+  fi;
 fi;
 
 if [ "$NO_PROMPT" != "1" ]; then
