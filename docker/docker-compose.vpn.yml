@@ -122,6 +122,7 @@ services:
       - ./images:/app/images:Z
       - ./certs:/app/certs:Z
       - ./version.txt:/app/version.txt:Z
+      - ./secrets.json:/app/secrets.json:Z
       - ../metahkg-server/src:/app/src
     depends_on:
       - metahkg-mongo
