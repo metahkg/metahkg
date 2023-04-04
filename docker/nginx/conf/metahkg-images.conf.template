@@ -15,6 +15,7 @@ server {
         limit_req zone=metahkg-imgpush burst=50 delay=10;
         proxy_set_header Host $host;
         proxy_pass http://${METAHKG_IMGPUSH_NAME}:3006;
+        client_max_body_size ${IMGPUSH_MAX_SIZE_MB}m;
     }
     location /images {
         limit_req zone=metahkg-imgpush burst=200 delay=50;
