@@ -25,7 +25,6 @@ services:
       IMAGES_DOMAIN: ${IMAGES_DOMAIN}
       RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
       REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
-      IMGPUSH_MAX_SIZE_MB: ${IMGPUSH_MAX_SIZE_MB}
     depends_on:
       - metahkg-server
       - metahkg-web
