@@ -572,7 +572,7 @@ config_env() {
     esac
     echo ""
 
-    input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, none" -d "$REGISTER_MODE" REGISTER_MODE;
+    input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, invite, none" -d "$REGISTER_MODE" REGISTER_MODE;
     input --allow-empty -p "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains)" -d "$REGISTER_DOMAINS" REGISTER_DOMAINS;
     input -p "Visibility" -o "public, internal" -d "$VISIBILITY" VISIBILITY;
 
