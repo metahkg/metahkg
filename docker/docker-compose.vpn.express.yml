@@ -185,7 +185,7 @@ services:
     memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     volumes:
       - ./imgpush:/images
-      - ./certs:/certs
+      - ./certs:/certs:ro
     depends_on:
       - metahkg-server
       - metahkg-protonvpn
@@ -205,8 +205,11 @@ services:
       IMAGEPROXY_ADDR: 0.0.0.0:3004
       IMAGEPROXY_CACHE: /tmp/imageproxy
       IMAGEPROXY_ALLOWORIGINS: ${DOMAIN:-$domain}
+      IMAGEPROXY_ALLOWOPTIONS: "300x300,q50;540x350,fit,q80"
+      IMAGEPROXY_SIGNATUREKEY: "@/app/certs/hmac.key"
     volumes:
       - ./imageproxy:/tmp/imageproxy:Z
+      - ./certs:/app/certs:ro
     depends_on:
       - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
