@@ -209,7 +209,7 @@ services:
       - metahkg-network
     volumes:
       - ./imageproxy:/tmp/imageproxy:Z
-      - ./certs:/app/certs:ro
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
   metahkg-rlp-proxy:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-rlp-proxy
     image: registry.gitlab.com/metahkg/rlp-proxy-rewrite/${branch:-master}:${version:-latest}
@@ -240,7 +240,7 @@ services:
       - metahkg-network
     volumes:
       - ../rlp-proxy-rewrite/src:/app/src
-      - ./certs:/app/certs:ro
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
   metahkg-redirect:
     image: registry.gitlab.com/metahkg/metahkg-redirect/${branch:-master}:${version:-latest}
     container_name: metahkg${COMPOSE_PROJECT_NAME}-redirect
@@ -260,6 +260,8 @@ services:
       REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD}
+      HMAC_KEY: "@certs/hmac.key"
+      HMAC_VERIFY: true
       env: ${env}
     depends_on:
       - metahkg-mongo
@@ -270,6 +272,7 @@ services:
       - ../metahkg-redirect/src:/app/src
       - ../metahkg-redirect/public:/app/public
       - ../metahkg-redirect/tailwind.config.js:/app/tailwind.config.js
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
     image: ${MONGO_IMAGE:-mongo:6.0}
