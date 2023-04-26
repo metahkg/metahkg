@@ -230,6 +230,9 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       PORT: 3005
       NO_HEADLESS: "false"
+      HMAC_KEY: "@certs/hmac.key"
+      HMAC_SIGN: true
+      HMAC_VERIFY: true
       env: ${env}
     depends_on:
       - metahkg-mongo
