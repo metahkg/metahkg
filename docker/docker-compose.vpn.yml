@@ -184,7 +184,8 @@ services:
     memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     volumes:
       - ./imgpush:/images
-      - ./certs:/certs:ro
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
+      - ./certs/public.pem:/app/certs/public.pem:ro
     depends_on:
       - metahkg-server
       - metahkg-protonvpn
@@ -208,7 +209,7 @@ services:
       IMAGEPROXY_SIGNATUREKEY: "@/app/certs/hmac.key"
     volumes:
       - ./imageproxy:/tmp/imageproxy:Z
-      - ./certs:/app/certs:ro
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
     depends_on:
       - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
@@ -260,6 +261,8 @@ services:
       REDIS_HOST: metahkg${COMPOSE_PROJECT_NAME}-redis
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD}
+      HMAC_KEY: "@certs/hmac.key"
+      HMAC_VERIFY: true
       env: ${env}
     depends_on:
       - metahkg-mongo
@@ -269,6 +272,7 @@ services:
       - ../metahkg-redirect/src:/app/src
       - ../metahkg-redirect/public:/app/public
       - ../metahkg-redirect/tailwind.config.js:/app/tailwind.config.js
+      - ./certs/hmac.key:/app/certs/hmac.key:ro
     network_mode: service:metahkg-protonvpn
   metahkg-mongo:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo
