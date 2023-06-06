@@ -534,8 +534,11 @@ config_env() {
     echo "Redis options: these are used for configuring the redis container. Their's no need to deploy an external redis instance."
     input -p "Redis port" -d "$REDIS_PORT" REDIS_PORT;
     input -p "Redis password" -d "$REDIS_PASSWORD" REDIS_PASSWORD;
-    echo ""
 
+    echo ""
+    input -p "Alternative branding to replace 'Metahkg' (leave blank for the default 'Metahkg')" -d "$BRANDING" BRANDING;
+
+    echo ""
     input -p "Domain for metahkg" -d "$DOMAIN" DOMAIN;
     input -p "Domain for metahkg links (a link shortener for metahkg)" -d "$LINKS_DOMAIN" LINKS_DOMAIN;
     input -p "Domain for metahkg images (used for uploading and serving images, and as image proxy)" -d "$IMAGES_DOMAIN" IMAGES_DOMAIN;
@@ -550,9 +553,9 @@ config_env() {
     echo "For mailgun you would need to obtain an api key at https://mailgun.com.";
     echo "For smtp you would need to obtain the credentials yourself.";
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
-    input -p "Your choice" -o "mailgun, smtp" -d ${EMAIL_PROVIDER:-mailgun} EMAIL_PROVIDER;
+    input -p "Your choice" -o "mailgun, smtp" -d ${MAIL:-mailgun} MAIL;
 
-    case "$EMAIL_PROVIDER" in
+    case "$MAIL" in
         mailgun)
             input -p "Mailgun api key (obtain one at https://mailgun.com)" -d "$MAILGUN_KEY" MAILGUN_KEY;
             input -p "Mailgun domain" -d "${MAILGUN_DOMAIN:-$DOMAIN}" MAILGUN_DOMAIN;
@@ -676,12 +679,14 @@ MONGO_IMAGE=${MONGO_IMAGE}
 MONGO_EXPRESS_PORT=${MONGO_EXPRESS_PORT}
 REDIS_PORT=${REDIS_PORT}
 REDIS_PASSWORD=${REDIS_PASSWORD}
+BRANDING=${BRANDING}
 DOMAIN=${DOMAIN}
 LINKS_DOMAIN=${LINKS_DOMAIN}
 IMAGES_DOMAIN=${IMAGES_DOMAIN}
 RLP_PROXY_DOMAIN=${RLP_PROXY_DOMAIN}
 REDIRECT_DOMAIN=${REDIRECT_DOMAIN}
 CORS=${CORS}
+MAIL=${MAIL}
 MAILGUN_KEY=${MAILGUN_KEY}
 MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
 SMTP_HOST=${SMTP_HOST}

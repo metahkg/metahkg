@@ -43,11 +43,6 @@ services:
       context: ../metahkg-web
       dockerfile: ./Dockerfile
       args:
-        REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY:-$REACT_APP_RECAPTCHA_SITE_KEY}
-        REACT_APP_TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-        REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
-        REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
-        REACT_APP_REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
         REACT_APP_build: ${REACT_APP_build}
         REACT_APP_version: ${REACT_APP_version}
         env: ${env}
@@ -58,11 +53,6 @@ services:
     environment:
       PORT: 3002
       env: ${env}
-      REACT_APP_RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY:-$REACT_APP_RECAPTCHA_SITE_KEY}
-      REACT_APP_TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-      REACT_APP_IMAGES_DOMAIN: ${IMAGES_DOMAIN}
-      REACT_APP_RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
-      REACT_APP_REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
       GCM_SENDER_ID: ${GCM_SENDER_ID}
     volumes:
       - ../metahkg-web/src:/app/src
@@ -95,6 +85,10 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       LINKS_DOMAIN: ${LINKS_DOMAIN}
+      IMAGES_DOMAIN: ${IMAGES_DOMAIN}
+      RLP_PROXY_DOMAIN: ${RLP_PROXY_DOMAIN}
+      REDIRECT_DOMAIN: ${REDIRECT_DOMAIN}
+      MAIL: ${MAIL}
       MAILGUN_KEY: ${MAILGUN_KEY:-$mailgun_key}
       MAILGUN_DOMAIN: ${MAILGUN_DOMAIN:-$mailgun_domain}
       SMTP_HOST: ${SMTP_HOST}
@@ -106,7 +100,9 @@ services:
       DOMAIN: ${DOMAIN:-$domain}
       PORT: 3001
       CAPTCHA: ${CAPTCHA}
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY}
       RECAPTCHA_SECRET: ${RECAPTCHA_SECRET:-$recaptchasecret}
+      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
       TURNSTILE_SECRET: ${TURNSTILE_SECRET}
       CORS: ${CORS:-$cors}
       env: ${env}
@@ -117,6 +113,7 @@ services:
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       GCM_API_KEY: ${GCM_API_KEY}
       KEY_PASSPHRASE: ${KEY_PASSPHRASE}
+      BRANDING: ${BRANDING}
     volumes:
       - ./images:/app/images:Z
       - ./certs:/app/certs:Z
