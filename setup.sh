@@ -553,9 +553,9 @@ config_env() {
     echo "For mailgun you would need to obtain an api key at https://mailgun.com.";
     echo "For smtp you would need to obtain the credentials yourself.";
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
-    input -p "Your choice" -o "mailgun, smtp" -d ${MAIL:-mailgun} MAIL;
+    input -p "Your choice" -o "mailgun, smtp" -d ${MAIL_PROVIDER:-mailgun} MAIL_PROVIDER;
 
-    case "$MAIL" in
+    case "$MAIL_PROVIDER" in
         mailgun)
             input -p "Mailgun api key (obtain one at https://mailgun.com)" -d "$MAILGUN_KEY" MAILGUN_KEY;
             input -p "Mailgun domain" -d "${MAILGUN_DOMAIN:-$DOMAIN}" MAILGUN_DOMAIN;
@@ -686,7 +686,7 @@ IMAGES_DOMAIN=${IMAGES_DOMAIN}
 RLP_PROXY_DOMAIN=${RLP_PROXY_DOMAIN}
 REDIRECT_DOMAIN=${REDIRECT_DOMAIN}
 CORS=${CORS}
-MAIL=${MAIL}
+MAIL_PROVIDER=${MAIL_PROVIDER}
 MAILGUN_KEY=${MAILGUN_KEY}
 MAILGUN_DOMAIN=${MAILGUN_DOMAIN}
 SMTP_HOST=${SMTP_HOST}
