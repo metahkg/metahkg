@@ -8,6 +8,8 @@
 /docker/imgpush/
 /docker/imageproxy/
 /docker/certs/
+/docker/version.txt
+/docker/secrets.json
 /.vscode/
 /.idea/
 yarn*.log

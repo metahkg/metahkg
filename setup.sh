@@ -3,14 +3,49 @@
 # supported architectures:
 #   - amd64
 #   - arm64
-# supported distros / systems:
-#   - debian / raspbian / ubuntu
-#   - arch linux
-#   - rocky linux / rhel
+# supported distros / systems (can't be too old):
+#   - debian / raspbian / ubuntu / linux mint / lmde
+#   - arch linux / manjaro linux
+#   - rocky linux / rhel / oracle linux / amazon linux 2
 #   - macos (darwin)
-# tested on debian and rocky linux docker images
-# tested on an amd64 machine running arch linux
+#   - freebsd (partial)
+# tested on:
+#   - debian bullseye (docker amd64, arm64), debian bookworm (bare-metal amd64)
+#   - ubuntu 22.04 jammy (docker amd64, arm64)
+#   - linux mint 21.1 Vera (docker amd64)
+#   - lmde 5 elsie (docker amd64)
+#   - rocky linux 8.6 Green Obsidian (docker amd64)
+#   - amazon linux 2023 (docker amd64)
+#   - oracle linux 9.1 (docker amd64)
+#   - alpine linux v3.17 (docker amd64, arm64)
+#   - arch linux 20230315 (bare metal amd64)
+#   - manjaro linux 20230315 (docker amd64)
+#   - darling (macos 10.15) (partial success, bash version problem)
+#   - freebsd (virtualbox amd64) (partial success, cannot get the docker daemon running)
 # macos is untested, use at your own risk
+
+# Regular Colors
+Black='\033[0;30m'        # Black
+Red='\033[0;31m'          # Red
+Green='\033[0;32m'        # Green
+Yellow='\033[0;33m'       # Yellow
+Blue='\033[0;34m'         # Blue
+Purple='\033[0;35m'       # Purple
+Cyan='\033[0;36m'         # Cyan
+White='\033[0;37m'        # White
+
+# check if shell is bash
+if [ -z "$BASH_VERSION" ]; then
+    echo -e "${YELLOW}WARNING: You are not using bash. Only bash is supported."
+    echo -e "${YELLOW}This script uses features that are only available in bash.";
+    echo "Do you wish to continue anyway? (y/n)"
+    read CONTINUE;
+    if [ "$CONTINUE" != "y" ]; then
+      echo "Aborted.";
+      exit 1;
+    fi;
+fi;
+
 
 input () {
     # parse arguments
@@ -146,13 +181,13 @@ install_dependencies_debian() {
     wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
 
     # add mongodb apt repository
-    echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+    echo "deb http://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
 
     # update packages list
     sudo apt-get update
 
     # install mongosh and mongodb database tools
-    sudo apt-get install mongodb-org-shell mongodb-org-tools -y
+    sudo apt-get install mongodb-mongosh mongodb-database-tools -y
 }
 
 install_dependencies_arch () {
@@ -162,7 +197,7 @@ install_dependencies_arch () {
         echo "You cannot run as root on arch linux."
         exit 1
     fi;
-    sudo pacman -Sy --noconfirm ca-certificates git nodejs docker docker-compose nginx-mainline;
+    sudo pacman -Sy --noconfirm --needed ca-certificates git nodejs docker docker-compose nginx-mainline binutils fakeroot;
 
     # enable yarn
     # https://docs.metahkg.org/docs/deploy/setup/requirements#arch-1
@@ -197,7 +232,7 @@ install_dependencies_arch () {
     cd "$ORIG_DIR"
 }
 
-install_dependencies_redhat () {
+install_dependencies_redhat() {
     echo "Installing dependencies using dnf...";
 
     if [ "$(whoami)" = "root" ]; then
@@ -207,7 +242,17 @@ install_dependencies_redhat () {
 
     # enable yarn
     # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-1
-    sudo corepack enable
+    echo "Installing yarn..."
+    if ! [ -f "/etc/yum.repos.d/yarn.repo" ]; then
+      echo """[yarn]
+name=Yarn Repository
+baseurl=https://dl.yarnpkg.com/rpm/
+enabled=1
+gpgcheck=1
+gpgkey=https://dl.yarnpkg.com/rpm/pubkey.gpg
+""" | sudo tee /etc/yum.repos.d/yarn.repo;
+    fi;
+    sudo dnf install yarn -y;
 
     echo "Installing docker-compose..."
     # docker-compose
@@ -216,15 +261,79 @@ install_dependencies_redhat () {
     sudo chmod +x /usr/local/bin/docker-compose;
 
     echo "Installing mongosh and mongodb database tools..."
-    # install mongosh and mongodb database tools
-    # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-4
-    echo """[mongodb-org-6.0]
+
+    if [ "$ARCH" = "arm64" ]; then
+        echo -e "${YELLOW}WARNING: mongodb does not support arm64 on redhat. NOT installing mongosh and mongodb database tools.";
+    else
+        # install mongosh and mongodb database tools
+        # https://docs.metahkg.org/docs/deploy/setup/requirements#rhel-4
+        if ! [ -f "/etc/yum.repos.d/mongodb-org-6.0.repo" ]; then
+          echo """[mongodb-org-6.0]
 name=MongoDB Repository
-baseurl=https://repo.mongodb.org/yum/redhat/${VER:0:1}/mongodb-org/6.0/x86_64/
+baseurl=https://repo.mongodb.org/yum/${OS}/${VER:0:1}/mongodb-org/6.0/x86_64/
 gpgcheck=1
 enabled=1
-    gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc""" | sudo tee /etc/yum.repos.d/mongodb-org-6.0.repo;
-    sudo dnf install mongodb-org-shell mongodb-org-tools -y;
+gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc""" | sudo tee /etc/yum.repos.d/mongodb-org-6.0.repo;
+        fi;
+        sudo dnf install mongodb-mongosh mongodb-database-tools -y;
+    fi;
+}
+
+install_dependencies_alpine() {
+    echo "installing dependencies using apk...";
+
+    if [ "$(whoami)" = "root" ]; then
+        apk update;
+        apk add sudo;
+    fi;
+
+    sudo apk update;
+    sudo apk add ca-certificates curl wget git docker nginx nodejs yarn mongodb-tools;
+
+    echo "Installing docker-compose...";
+
+    # docker-compose
+    # https://docs.metahkg.org/docs/deploy/setup/requirements#alpine-1
+    sudo curl -L "https://github.com/docker/compose/releases/download/$(curl --silent "https://api.github.com/repos/docker/compose/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose;
+    sudo chmod +x /usr/local/bin/docker-compose;
+
+    # mongosh
+    sudo yarn global add mongosh;
+}
+
+install_dependencies_opensuse() {
+    echo "Installing dependencies using zypper...";
+
+    if [ "$(whoami)" = "root" ]; then
+      zypper refresh;
+      zypper install -y sudo;
+    fi;
+
+    sudo zypper refresh;
+    sudo zypper install -y ca-certificates curl wget git docker nginx nodejs18 gpg2;
+
+    echo "Installing docker-compose...";
+
+    # install docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/$(curl --silent "https://api.github.com/repos/docker/compose/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+    # mongosh and mongodb database tools
+    echo "Installing mongosh and mongodb database tools...";
+
+    if [ "$ARCH" = "arm64" ]; then
+        echo -e "${YELLOW}WARNING: mongodb does not support arm64 on opensuse. NOT installing mongosh and mongodb database tools.";
+    else
+        # add mongodb rpm repository
+        echo """[mongodb-org-6.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/zypper/suse/$(. /etc/os-release; echo ${VERSION:0:2})/mongodb-org/6.0/x86_64
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-6.0.asc""" | sudo tee /etc/zypp/repos.d/mongodb-org-6.0.repo
+        sudo zypper refresh --gpg-auto-import-keys
+        sudo zypper install -y mongodb-mongosh mongodb-database-tools;
+    fi;
 }
 
 install_dependencies_darwin() {
@@ -241,6 +350,32 @@ install_dependencies_darwin() {
 
     brew update
     brew install nodejs yarn docker docker-compose nginx mongodb-database-tools mongodb-community-shell
+}
+
+install_dependencies_freebsd() {
+    echo "Installing dependencies using pkg..."
+
+    if [ "$(whoami)" != "root" ]; then
+        pkg update;
+        pkg install sudo;
+    fi
+
+    # update packages list
+    sudo pkg update;
+
+    # install dependencies
+    sudo pkg install -y ca_root_nss curl wget git docker docker-compose nginx node mongodb-tools;
+
+    sudo corepack enable;
+
+    # mongosh
+    sudo yarn global add mongosh;
+
+    # docker-compose
+    # build dependencies
+    sudo pkg install rust python3 py39-pip;
+    # install using pip
+    sudo pip install docker-compose;
 }
 
 check_arch () {
@@ -266,7 +401,7 @@ check_arch () {
 
 check_os () {
     case "$OSTYPE" in
-        "linux-gnu")
+        "linux"*)
             # check the linux distribution and version
             # code from unix stack exchange user Mikel https://unix.stackexchange.com/users/3169/mikel
             # CC-BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0/>
@@ -289,14 +424,23 @@ check_os () {
                 DISTRO="Raspbian"
             fi;
             case "$DISTRO" in
-                "Debian GNU/Linux"|"Raspbian"|"Ubuntu")
+                "Debian GNU/Linux"*|"Raspbian"|"Ubuntu"*|"LMDE"|"Linux Mint")
                     OS="debian"
                 ;;
-                "Arch Linux")
+                "Arch Linux"|"Manjaro Linux")
                     OS="arch"
                 ;;
-                "Rocky Linux"|"Red Hat Enterprise Linux"*)
+                "Rocky Linux"*|"Red Hat Enterprise Linux"*|"Oracle Linux"*)
                     OS="redhat"
+                ;;
+                "Amazon Linux"*)
+                    OS="amazon"
+                ;;
+                "Alpine Linux"*)
+                    OS="alpine"
+                ;;
+                "openSUSE"*|"SUSE Linux"*)
+                    OS="opensuse"
                 ;;
                 *)
                     echo "Error: Unsupported linux distribution $NAME";
@@ -309,6 +453,10 @@ check_os () {
         "darwin"*)
             OS="darwin"
             echo "Detected OS: darwin"
+        ;;
+        "FreeBSD")
+            OS="freebsd"
+            echo "Detected OS: freebsd"
         ;;
         *)
             echo "Error: Unsupported OS $OSTYPE"
@@ -329,8 +477,20 @@ install_dependencies() {
         "redhat")
             install_dependencies_redhat;
         ;;
+        "amazon")
+            install_dependencies_redhat;
+        ;;
+        "alpine")
+            install_dependencies_alpine;
+        ;;
+        "opensuse")
+            install_dependencies_opensuse;
+        ;;
         "darwin")
             install_dependencies_darwin;
+        ;;
+        "freebsd")
+            install_dependencies_freebsd;
         ;;
     esac
 }
@@ -390,7 +550,7 @@ config_env() {
     echo "For mailgun you would need to obtain an api key at https://mailgun.com.";
     echo "For smtp you would need to obtain the credentials yourself.";
     echo "An example using gmail: https://forwardemail.net/en/guides/send-mail-as-gmail-custom-domain.";
-    input -p "Your choice" -o "mailgun, smtp" -d mailgun EMAIL_PROVIDER;
+    input -p "Your choice" -o "mailgun, smtp" -d ${EMAIL_PROVIDER:-mailgun} EMAIL_PROVIDER;
 
     case "$EMAIL_PROVIDER" in
         mailgun)
@@ -412,19 +572,34 @@ config_env() {
     esac
     echo ""
 
-    input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, none" -d "$REGISTER_MODE" REGISTER_MODE;
+    input -p "Register mode (see https://docs.metahkg.org/docs/customize/registermode/)" -o "normal, invite, none" -d "$REGISTER_MODE" REGISTER_MODE;
     input --allow-empty -p "Whitelisted email domains for registration (separated by a comma, no white space, leave empty for allow all domains)" -d "$REGISTER_DOMAINS" REGISTER_DOMAINS;
     input -p "Visibility" -o "public, internal" -d "$VISIBILITY" VISIBILITY;
 
     echo ""
-    echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
-    input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECAPTCHA_SITE_KEY;
-    input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECAPTCHA_SECRET;
+    echo "Do you want to use ReCAPTCHA or Turnstile for Captchas?";
+    echo "For ReCAPTCHA, see https://developers.google.com/recaptcha";
+    echo "For Turnstile, see https://developers.cloudflare.com/turnstile/";
+    input -p "Your choice" -o "recaptcha, turnstile" -d ${CAPTCHA:-recaptcha} CAPTCHA;
+
+    case $CAPTCHA in
+      recaptcha)
+        echo "Recaptcha options: create a recaptcha site key and secret pair at https://www.google.com/recaptcha/admin"
+        input -p "Recaptcha site key" -d "$RECAPTCHA_SITE_KEY" RECAPTCHA_SITE_KEY;
+        input -p "Recaptcha secret" -d "$RECAPTCHA_SECRET" RECAPTCHA_SECRET;
+      ;;
+      turnstile)
+        echo "Turnstile options: see https://developers.cloudflare.com/turnstile/get-started/#get-a-sitekey-and-secret-key to create a turnstile site key and secret pair"
+        input -p "Turnstile site key" -d "$TURNSTILE_SITE_KEY" TURNSTILE_SITE_KEY;
+        input -p "Turnstile secret" -d "$TURNSTILE_SECRET" TURNSTILE_SECRET;
+      ;;
+    esac
 
     echo ""
     echo "VAPID options: generate a VAPID key pair using web-push, see https://www.npmjs.com/package/web-push#command-line"
-    input -p "VAPID public key" -d "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
-    input -p "VAPID private key" -d "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
+    echo "Leave empty to use auto-generated keys"
+    input --allow-empty -p "VAPID public key" -d "$VAPID_PUBLIC_KEY" VAPID_PUBLIC_KEY;
+    input --allow-empty -p "VAPID private key" -d "$VAPID_PRIVATE_KEY" VAPID_PRIVATE_KEY;
 
     echo ""
     echo "GCM options: see https://www.connecto.io/kb/knwbase/getting-gcm-sender-id-and-gcm-api-key/"
@@ -437,7 +612,14 @@ config_env() {
     input -p "Google safebrowsing api key" -d "$SAFEBROWSING_API_KEY" SAFEBROWSING_API_KEY;
 
     echo ""
-    input -p "Passphrase for the (will-be-generated) private key (used for jwt signing)" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
+    echo "Imgpush options (the image upload server built-in to metahkg)"
+    input -p "Maximum number of uploads per day" --allow-other -o "50, 100, 200, 500, 1000" -d "$IMGPUSH_MAX_UPLOADS_PER_DAY" IMGPUSH_MAX_UPLOADS_PER_DAY;
+    input -p "Maximum number of uploads per hour" --allow-other -o "10, 20, 50, 100, 200" -d "$IMGPUSH_MAX_UPLOADS_PER_HOUR" IMGPUSH_MAX_UPLOADS_PER_HOUR;
+    input -p "Maximum number of uploads per minute" --allow-other -o "5, 10, 20, 50, 100" -d "$IMGPUSH_MAX_UPLOADS_PER_MINUTE" IMGPUSH_MAX_UPLOADS_PER_MINUTE;
+    input -p "Maximum size of an image (in MB)" --allow-other -o "1, 2, 5, 10, 20" -d "$IMGPUSH_MAX_SIZE_MB" IMGPUSH_MAX_SIZE_MB;
+
+    echo ""
+    input --allow-empty -p "Passphrase for the (will-be-generated) private key (used for jwt signing), leave empty to use auto-generated passphrase" -d "$KEY_PASSPHRASE" KEY_PASSPHRASE;
 
     input -p "Do you want to use protonvpn for network requests in some of the services?" -o "y, n" -d n PROTONVPN;
     if [ "$PROTONVPN" = "y" ]; then
@@ -513,13 +695,20 @@ SMTP_EMAIL=${SMTP_EMAIL}
 REGISTER_MODE=${REGISTER_MODE}
 REGISTER_DOMAINS=${REGISTER_DOMAINS}
 VISIBILITY=${VISIBILITY}
+CAPTCHA=${CAPTCHA}
 RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY}
 RECAPTCHA_SECRET=${RECAPTCHA_SECRET}
+TURNSTILE_SITE_KEY=${TURNSTILE_SITE_KEY}
+TURNSTILE_SECRET=${TURNSTILE_SECRET}
 VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
 VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
 GCM_API_KEY=${GCM_API_KEY}
 GCM_SENDER_ID=${GCM_SENDER_ID}
 SAFEBROWSING_API_KEY=${SAFEBROWSING_API_KEY}
+IMGPUSH_MAX_UPLOADS_PER_DAY=${IMGPUSH_MAX_UPLOADS_PER_DAY}
+IMGPUSH_MAX_UPLOADS_PER_HOUR=${IMGPUSH_MAX_UPLOADS_PER_HOUR}
+IMGPUSH_MAX_UPLOADS_PER_MINUTE=${IMGPUSH_MAX_UPLOADS_PER_MINUTE}
+IMGPUSH_MAX_SIZE_MB=${IMGPUSH_MAX_SIZE_MB}
 KEY_PASSPHRASE=${KEY_PASSPHRASE}
 PROTONVPN_USERNAME=${PROTONVPN_USERNAME}
 PROTONVPN_PASSWORD=${PROTONVPN_PASSWORD}
@@ -545,19 +734,46 @@ version=${version}
 # https://stackoverflow.com/a/14203146
 POSITIONAL_ARGS=()
 
+INSTALL=1
+CONFIG=1
+SETUP=1
+
 while [[ $# -gt 0 ]]; do
     case $1 in
         -h|--help)
             echo "Metahkg setup script"
             echo "Usage:"
-            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install|--config|-c]"
+            echo "./setup.sh [--no-check-arch] [--no-check-os] [--skip-install|--config|-c] [--install|-i] [--setup|-s] [--skip-config] [--skip-setup] [--no-prompt]"
             echo "--no-check-arch: disable architecture checking"
             echo "--no-check-os: disable OS checking"
-            echo "--skip-install|--config|-c: skip installation of dependencies (directy jump to configure)"
+            echo "--skip-install|--config|-c: skip installation of dependencies (configure and setup only)"
+            echo "--install|-i: install dependencies only"
+            echo "--setup|-s: setup only"
+            echo "--skip-config: skip configuration"
+            echo "--skip-setup: skip setup"
+            echo "--no-prompt: never prompt unless when configuring"
             exit 0
         ;;
         "--skip-install"|"--config"|"-c")
-            SKIP_INSTALL="1"
+            INSTALL=0
+            shift
+        ;;
+        "--skip-config")
+            CONFIG=0
+            shift
+        ;;
+        "--skip-setup")
+            SETUP=0
+            shift
+        ;;
+        "--install"|"-i")
+            CONFIG=0
+            SETUP=0
+            shift
+        ;;
+        "--setup"|"-s")
+            INSTALL=0
+            CONFIG=0
             shift
         ;;
         "--no-check-os")
@@ -568,16 +784,20 @@ while [[ $# -gt 0 ]]; do
             NO_CHECK_ARCH="1"
             shift
         ;;
+        "--no-prompt")
+            NO_PROMPT="1"
+            shift
+        ;;
         *)
             POSITIONAL_ARGS+=("$1") # save positional arg
             shift # past argument
         ;;
     esac
-    if [ "$NO_CHECK_OS" = "1" ] && [ "$SKIP_INSTALL" != "1" ]; then
-        echo "--no-check-os must be used with [--skip-install|--config|-c]";
-        exit 1;
-    fi;
 done
+if [ "$NO_CHECK_OS" = "1" ] && [ "$INSTALL" = "1" ]; then
+    echo "--no-check-os must be used with [--skip-install|--config|-c|--setup|-s]";
+    exit 1;
+fi;
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
@@ -586,23 +806,35 @@ if [ "$NO_CHECK_ARCH" != "1" ]; then
 fi;
 if [ "$NO_CHECK_OS" != "1" ]; then
     check_os;
-    echo ""
+    echo "";
 fi;
-if [ "$SKIP_INSTALL" != "1" ]; then
+if [ "$INSTALL" = "1" ]; then
     install_dependencies;
+    echo "";
+fi;
+if [ "$CONFIG" = "1" ]; then
+    config_env;
     echo ""
 fi;
+if [ "$SETUP" = "1" ]; then
+  echo "Setting up...";
+  echo "mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush";
+  mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush;
+  if ! [ -f "docker/version.txt" ]; then
+    echo "touch docker/version.txt";
+    touch docker/version.txt;
+  fi;
+  if ! [ -f "docker/secrets.json" ]; then
+    echo "touch docker/secrets.json";
+    touch docker/secrets.json;
+  fi;
+fi;
 
-config_env;
+if [ "$NO_PROMPT" != "1" ]; then
+  input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
+fi;
 
-mkdir -p docker/certs docker/images docker/imageproxy docker/imgpush
-
-input -p "Do you want to use prebuilt docker images (if not, you will build the images from source)?" -o "y, n" -d y PREBUILT;
-
-echo ""
-echo "Metahkg is now configured."
-echo "You can start metahkg by running:"
-CMD="yarn docker"
+CMD="yarn docker";
 if [ "$PROTONVPN" = "y" ]; then
     CMD+=":vpn"
 fi;
@@ -612,16 +844,44 @@ fi;
 if [ "$PREBUILT" = "y" ]; then
     CMD+=":prebuilt"
 fi;
-echo "$CMD"
-echo "Then, you can access metahkg at http://localhost:${PORT}"
-echo ""
 
+if [ "$NO_PROMPT" != "1" ]; then
+  echo ""
+  input -p "Do you want to start metahkg now?" -o "y, n" -d y STARTNOW;
+fi;
+
+if [ "$STARTNOW" == "y" ]; then
+  eval "$CMD"
+fi;
+
+echo ""
+if [ "$STARTNOW" != "y" ]; then
+  echo "Metahkg is now configured."
+  echo "You can start metahkg by running:"
+  echo "$CMD"
+  echo "Then, you can access metahkg at http://localhost:${PORT}"
+else
+  echo "Metahkg is now configured and started."
+  echo "You can access metahkg at http://localhost:${PORT}"
+  echo "You can restart metahkg by running:"
+  echo "$CMD"
+fi;
+
+echo ""
+echo "If you encountered an error while starting metahkg, please check if docker is started in systemd:"
+echo "sudo systemctl status docker"
+echo "If you are in docker, check if /var/run/docker.sock is mounted."
+echo "If you got a permission denied error, please add yourself to the docker group:"
+echo "sudo usermod -aG docker $(whoami)"
+
+echo ""
 echo "To complete the installation, further steps are required."
 echo "See https://docs.metahkg.org/docs/category/configure-nginx"
-echo ""
 
+echo ""
 echo "You can reconfigure using:";
 echo "./setup.sh --config";
 
+echo ""
 echo "If you encounter errors please report to our telegram group:";
 echo "https://t.me/+WbB7PyRovUY1ZDFl";
