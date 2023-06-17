@@ -645,7 +645,7 @@ config_env() {
 
     echo ""
 
-    input -p "Compose project name (skip normally)" -d "$COMPOSE_PROJECT_NAME" COMPOSE_PROJECT_NAME;
+    input --allow-empty -p "Compose project name (skip normally)" -d "$COMPOSE_PROJECT_NAME" COMPOSE_PROJECT_NAME;
     input -p "Environment (choose production normally, choosing dev would enable hot reload, but incompatible with prebuilt images)" -o "production, dev" -d "$env" env;
     input -p "Branch (use master normally)" -o "master, dev" -d "$branch" branch;
     input --allow-other -p "Version (latest / any major or minor version that is available in all sub-repositories)" -o "latest, 6, 5" -d "$version" version;
