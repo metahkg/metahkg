@@ -180,8 +180,7 @@ services:
     memswap_limit: ${MEMSWAP_LIMIT:-500mb}
     volumes:
       - ./imgpush:/images
-      - ./certs/hmac.key:/app/certs/hmac.key:ro
-      - ./certs/public.pem:/app/certs/public.pem:ro
+      - ./certs:/app/certs:ro
     depends_on:
       - metahkg-server
       - metahkg-protonvpn
@@ -205,7 +204,7 @@ services:
       IMAGEPROXY_SIGNATUREKEY: "@/app/certs/hmac.key"
     volumes:
       - ./imageproxy:/tmp/imageproxy:Z
-      - ./certs/hmac.key:/app/certs/hmac.key:ro
+      - ./certs:/app/certs:ro
     depends_on:
       - metahkg-protonvpn
     network_mode: service:metahkg-protonvpn
@@ -268,7 +267,7 @@ services:
       - ../metahkg-redirect/src:/app/src
       - ../metahkg-redirect/public:/app/public
       - ../metahkg-redirect/tailwind.config.js:/app/tailwind.config.js
-      - ./certs/hmac.key:/app/certs/hmac.key:ro
+      - ./certs:/app/certs:ro
     network_mode: service:metahkg-protonvpn
   metahkg-mongo-express:
     container_name: metahkg${COMPOSE_PROJECT_NAME}-mongo-express
