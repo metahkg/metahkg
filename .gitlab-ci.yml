@@ -1,3 +1,64 @@
+stages:
+  - lint
+  - test
+  - build
+  - deploy
+  - review
+  - dast
+  - fuzz
+  - staging
+  - canary
+  - production
+  - incremental rollout 10%
+  - incremental rollout 25%
+  - incremental rollout 50%
+  - incremental rollout 100%
+  - performance
+  - cleanup
+
+test:debian_bullseye:
+  stage: test
+  image: debian:bullseye
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:debian_bookworm:
+  stage: test
+  image: debian:bookworm
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:ubuntu_jammy:
+  stage: test
+  image: ubuntu:22.04
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:rocky_linux:
+  stage: test
+  image: rockylinux/rockylinux:8.6
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:oracle_linux:
+  stage: test
+  image: oraclelinux:9
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:amazon_linux:
+  stage: test
+  image: amazonlinux:latest
+  script:
+    - ./setup.sh --skip-config --no-prompt
+
+test:alpine:
+  stage: test
+  image: alpine:latest
+  script:
+    - apk add --no-cache bash
+    - ./setup.sh --skip-config --no-prompt
+
 tagging:
   image: node:18-alpine
   stage: deploy
