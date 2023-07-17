@@ -619,7 +619,7 @@ config_env() {
             if [ "$SMTP_TLS" = "true" ]; then
                 input --allow-empty -p "Require starttls for SMTP connections (fails if tls is not available)" -o "true, false" -d "$SMTP_REQUIRE_TLS" SMTP_REQUIRE_TLS;
             fi;
-            input -p "SMTP username" -d "$SMTP_USERNAME" SMTP_USERNAME;
+            input -p "SMTP username" -d "$SMTP_USER" SMTP_USER;
             input -p "SMTP password" -d "$SMTP_PASSWORD" SMTP_PASSWORD;
             input -p "SMTP email (email address for sending emails)" -d "$SMTP_EMAIL" SMTP_EMAIL;
         ;;
