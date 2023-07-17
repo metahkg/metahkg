@@ -466,6 +466,57 @@ check_os () {
     esac;
 }
 
+# Function to prompt the user to exit or continue
+exit_or_continue() {
+    echo -n "Do you want to continue? (y/n): "
+    read -r choice
+    if [ "$choice" != "y" ] && [ "$choice" != "Y" ]; then
+        exit 1
+    fi
+}
+
+# Function to create a swap file
+create_swap_file() {
+    echo "Follow this link to learn how to create a swap file: https://itsfoss.com/create-swap-file-linux/"
+    # Add the commands to create the swap file here if needed.
+    # For example, you can use 'fallocate' or 'dd' to create a swap file.
+}
+
+# Function to check system requirements
+check_requirements() {
+    # Get the number of CPU cores and total memory in GB
+    cpu_cores=$(nproc)
+    total_memory=$(free -g | awk '/^Mem:/{print $2}')
+    swap_memory=$(free -g | awk '/^Swap:/{print $2}')
+
+    # Check CPU requirements
+    if [ "$cpu_cores" -lt 1 ]; then
+        echo "Minimum CPU requirement (1 vCPU) not met."
+        exit_or_continue
+    fi
+
+    # Check RAM requirements
+    if [ "$total_memory" -lt 1 ]; then
+        echo "Minimum RAM requirement (1GB) not met."
+        exit_or_continue
+    fi
+
+    # Check swap requirements
+    if [ "$total_memory" -ge 1 ] && [ "$total_memory" -le 2 ] && [ "$swap_memory" -lt 1 ]; then
+        echo "Swap space requirement not met."
+        echo "You need at least 1GB of swap space."
+        echo -n "Do you want to create a swap file? (y/n): "
+        read -r choice
+        if [ "$choice" == "y" ] || [ "$choice" == "Y" ]; then
+            create_swap_file
+        else
+            exit_or_continue
+        fi
+    fi
+
+    echo "System meets the minimum requirements."
+}
+
 install_dependencies() {
     case "$OS" in
         "debian")
@@ -806,6 +857,7 @@ fi;
 
 set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
 
+
 if [ "$NO_CHECK_ARCH" != "1" ]; then
     check_arch;
 fi;
@@ -813,6 +865,8 @@ if [ "$NO_CHECK_OS" != "1" ]; then
     check_os;
     echo "";
 fi;
+# Call the function to check requirements
+check_requirements
 if [ "$INSTALL" = "1" ]; then
     install_dependencies;
     echo "";
