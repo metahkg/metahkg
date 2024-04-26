@@ -69,7 +69,7 @@ e.g. metahkg-server v2.5.1 would be fully compatibile with metahkg-api v2.5.x an
 `dev` branch is the development branch, where new features and versions are developed.
 `master` branch is a maintained snapshot (bug fixes only) of the `dev` branch, and would be updated to a different snapshot after some development in the `dev` branch.
 
-If you with to contribute, please develop base on the `dev` branch. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
+If you wish to contribute, please develop base on the `dev` branch. See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
 
 [metahkg.org](https://metahkg.org) runs the latest `master` branch code, while [dev.metahkg.org](https://dev.metahkg.org) runs the latest `dev` branch code. They are updated to use the latest docker images every hour.
 
