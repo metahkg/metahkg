@@ -43,3 +43,7 @@ If you could, help fix the [issues](https://gitlab.com/groups/metahkg/-/issues).
 Create an [issue](https://gitlab.com/groups/metahkg/-/issues) with the tag `feature`.
 
 Or, speak in the [telegram group](https://t.me/+WbB7PyRovUY1ZDFl).
+
+## Licensing
+
+By contributing, you grant the author of Metahkg, Wong Chun Yat (wcyat), the right to use, modify, redistribute, sublicense, or sell your code for any purposes he wishes.
